@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>NATS Streaming实践 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/03/17/NATS-Streaming实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">NATS Streaming实践</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-17T10:35:13+08:00">2019-03-17</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/distributed-system/" itemprop="url" rel="index">
+                    <span itemprop="name">distributed-system</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/17/NATS-Streaming实践/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/17/NATS-Streaming实践/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="/uploads/chengdu-3.jpg" rel="gallery_ck8o9pn1z001djroy54rbxavw" itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/uploads/chengdu-3.jpg" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>Rocket MQ在业务开发中用的比较多，无论是其功能还是易用性方面表现很不错。先前云平台代码中也是用RMQ作为消息中间件，但是在上生产的前夜，QA对微服务做高可用测试时发现一些连接相关的问题。连夜分析，深入追踪当时使用的一个RMQ非官方golang库，发现其代码比较乱，最终评估下来决定在放弃对RMQ的使用。<br><a id="more"></a><br>于是CNCF的NATS就进入了我们的视野，由于其本来就是基于golang实现，对于云平台来讲适配会更加友好；但是NATS缺乏消息持久化的支持，必须通过NATS Streaming才能够弥补这块的缺陷。</p>
+<p>本文重点不是介绍NATS，而是<a href="https://github.com/nats-io/nats-streaming-server" target="_blank" rel="noopener">NAT Streaming</a>；接下来，就来讲下我在NAT Streaming使用中的一些实践。</p>
+<h1 id="NATS-Streaming介绍"><a href="#NATS-Streaming介绍" class="headerlink" title="NATS Streaming介绍"></a>NATS Streaming介绍</h1><p>官方有这样一副图，大致意思是NATS Streaming Module都一定是需要attach到NATS上，将消息内容持久化到存储中，且并不单独对外提供访问接口的。</p>
+<p><img src="/uploads/nats-streaming-arch.png" width="80%" height="80%"></p>
+<p><strong>主要功能包括</strong></p>
+<ul>
+<li>保障可达 (At-Least-Once delivery)</li>
+<li>消息、事件的持久化 (persistence)</li>
+<li>消费者可按需重复消费消息 (replay by subject)</li>
+<li>生产者、消费者端均支持限速 (rate limit)</li>
+<li>提供持久化的订阅 (Durable subscriptions）</li>
+</ul>
+<h1 id="HA环境"><a href="#HA环境" class="headerlink" title="HA环境"></a>HA环境</h1><p>在这部分，我们先搭建一个由三个节点组成的集群，然后再简单了解一些常用的监控和调试方式。</p>
+<p>NATS Streaming自带内嵌NATS Server，但通过分析参数列表，我们发现其貌似无法使用内嵌的NATS Server建立NAST集群。为了实现NATS Streaming的高可用，我们需要建立两层集群。</p>
+<ul>
+<li><p><strong>NATS Server集群</strong><br>无法使用NAT Streaming内嵌的NATS，必须维护一套独立的NATS集群。</p>
+</li>
+<li><p><strong>NATS Streaming集群</strong><br>通过指定external NATS的形势来连接NATS，NATS Streaming集群只负责数据持久化，只要有一个外部NATS Server可用，就不会受到影响。</p>
+</li>
+</ul>
+<h2 id="集群启动"><a href="#集群启动" class="headerlink" title="集群启动"></a>集群启动</h2><p>将下列粘贴到一个文件(nats-boot.sh)中，然后接下来介绍几种方法来替换变量，然后分别在三台主机上运行生成的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### node-1 命令</span></span><br><span class="line"><span class="comment">###############</span></span><br><span class="line">docker run --restart=always -d --net=host --name=nats-node-1 nats -m 8222 -p 4222 -cluster nats://0.0.0.0:6222 -routes nats://<span class="variable">$&#123;NODE-2-IP&#125;</span>:6222,nats://<span class="variable">$&#123;NODE-3-IP&#125;</span>:6222</span><br><span class="line"></span><br><span class="line">docker run --restart=always  --name=nats-streaming-node-1 -p 9222:9222 -d nats-streaming -m 9222  --stan_trace=<span class="literal">true</span> --stan_debug=<span class="literal">true</span> --debug=<span class="literal">true</span> --trace=<span class="literal">true</span> -store file -dir datastore -clustered -cluster_id <span class="variable">$&#123;NATS-CLUSTER-ID&#125;</span> -cluster_node_id node-1 -cluster_peers node-1,node-2,node-3  -ns nats://<span class="variable">$&#123;NODE-1-IP&#125;</span>:6222,nats://<span class="variable">$&#123;NODE-2-IP&#125;</span>:6222,nats://<span class="variable">$&#123;NODE-3-IP&#125;</span>:6222</span><br><span class="line"></span><br><span class="line"><span class="comment">### node-2 命令</span></span><br><span class="line"><span class="comment">###############</span></span><br><span class="line">docker run --restart=always  -d --net=host --name=nats-node-2 nats -m 8222 -p 4222 -cluster nats://0.0.0.0:6222 -routes nats://<span class="variable">$&#123;NODE-1-IP&#125;</span>:6222,nats://<span class="variable">$&#123;NODE-3-IP&#125;</span>:6222</span><br><span class="line"></span><br><span class="line">docker run --restart=always  --name=nats-streaming-node-2 -p 9222:9222 -d nats-streaming -m 9222  --stan_trace=<span class="literal">true</span> --stan_debug=<span class="literal">true</span> --debug=<span class="literal">true</span> --trace=<span class="literal">true</span> -store file -dir datastore -clustered -cluster_id <span class="variable">$&#123;NATS-CLUSTER-ID&#125;</span> -cluster_node_id node-2 -cluster_peers node-1,node-2,node-3  -ns nats://<span class="variable">$&#123;NODE-1-IP&#125;</span>:6222,nats://<span class="variable">$&#123;NODE-2-IP&#125;</span>:6222,nats://<span class="variable">$&#123;NODE-3-IP&#125;</span>:6222</span><br><span class="line"></span><br><span class="line"><span class="comment">### node-3 命令</span></span><br><span class="line"><span class="comment">###############</span></span><br><span class="line">docker run --restart=always  -d --net=host --name=nats-node-3 nats -m 8222 -p 4222 -cluster nats://0.0.0.0:6222 -routes nats://<span class="variable">$&#123;NODE-1-IP&#125;</span>:6222,nats://<span class="variable">$&#123;NODE-2-IP&#125;</span>:6222</span><br><span class="line"></span><br><span class="line">docker run --restart=always --name=nats-streaming-node-3 -p 9222:9222 -d nats-streaming -m 9222   --stan_trace=<span class="literal">true</span> --stan_debug=<span class="literal">true</span> --debug=<span class="literal">true</span> --trace=<span class="literal">true</span> -store file -dir datastore -clustered -cluster_id <span class="variable">$&#123;NATS-CLUSTER-ID&#125;</span> -cluster_node_id node-3 -cluster_peers node-1,node-2,node-3  -ns nats://<span class="variable">$&#123;NODE-1-IP&#125;</span>:6222,nats://<span class="variable">$&#123;NODE-2-IP&#125;</span>:6222,nats://<span class="variable">$&#123;NODE-3-IP&#125;</span>:6222</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>通过环境变量设置</strong></p>
+<p>环境变量设置模板如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NATS-CLUSTER-ID=cluster-1</span><br><span class="line"></span><br><span class="line">NODE-1-IP=1.1.1.1</span><br><span class="line">NODE-2-IP=2.2.2.2</span><br><span class="line">NODE-3-IP=3.3.3.3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>直接在vim中替换变量</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim ./nats-boot.sh</span><br><span class="line"></span><br><span class="line">:%s/NATS-CLUSTER-ID/cluster-1/g</span><br><span class="line">:%s/NODE-1-IP/1.1.1.1/g</span><br><span class="line">:%s/NODE-2-IP/2.2.2.2/g</span><br><span class="line">:%s/NODE-3-IP/3.3.3.3/g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>命令行替换变量</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/NATS-CLUSTER-ID/cluster-1/g&apos; nats-boot.sh</span><br><span class="line">sed -i &apos;s/NODE-1-IP/1.1.1.1/g&apos; nats-boot.sh</span><br><span class="line">sed -i &apos;s/NODE-2-IP/2.2.2.2/g&apos; nats-boot.sh</span><br><span class="line">sed -i &apos;s/NODE-3-IP/3.3.3.3/g&apos; nats-boot.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="状态监控"><a href="#状态监控" class="headerlink" title="状态监控"></a>状态监控</h2><p>nats streaming实现了监控的对应接口，当然还不够完善；不过可以对接外部exporter来将监控信息收集到prometheus等。</p>
+<ul>
+<li><p>集群状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">curl localhost:9222/streaming/serverz</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"cluster_id"</span>: <span class="string">"<span class="variable">$&#123;NATS-CLUSTER-ID&#125;</span>"</span>,</span><br><span class="line">  <span class="string">"server_id"</span>: <span class="string">"2DTn1aiWKHXcrTWScNMYbB"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"0.11.2"</span>,</span><br><span class="line">  <span class="string">"go"</span>: <span class="string">"go1.11.1"</span>,</span><br><span class="line">  <span class="string">"state"</span>: <span class="string">"CLUSTERED"</span>,</span><br><span class="line">  <span class="string">"now"</span>: <span class="string">"2019-03-13T08:05:32.976885437Z"</span>,</span><br><span class="line">  <span class="string">"start_time"</span>: <span class="string">"2019-03-13T07:54:17.961989986Z"</span>,</span><br><span class="line">  <span class="string">"uptime"</span>: <span class="string">"11m15s"</span>,</span><br><span class="line">  <span class="string">"clients"</span>: 0,</span><br><span class="line">  <span class="string">"subscriptions"</span>: 0,</span><br><span class="line">  <span class="string">"channels"</span>: 0,</span><br><span class="line">  <span class="string">"total_msgs"</span>: 0,</span><br><span class="line">  <span class="string">"total_bytes"</span>: 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>存储使用情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">curl localhost:9222/streaming/storez</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"cluster_id"</span>: <span class="string">"<span class="variable">$&#123;NATS-CLUSTER-ID&#125;</span>"</span>,</span><br><span class="line">  <span class="string">"server_id"</span>: <span class="string">"2DTn1aiWKHXcrTWScNMYbB"</span>,</span><br><span class="line">  <span class="string">"now"</span>: <span class="string">"2019-03-13T08:08:49.634481176Z"</span>,</span><br><span class="line">  <span class="string">"type"</span>: <span class="string">"RAFT_FILE"</span>,</span><br><span class="line">  <span class="string">"limits"</span>: &#123;</span><br><span class="line">    <span class="string">"max_channels"</span>: 100,</span><br><span class="line">    <span class="string">"max_msgs"</span>: 1000000,</span><br><span class="line">    <span class="string">"max_bytes"</span>: 1024000000,</span><br><span class="line">    <span class="string">"max_age"</span>: 0,</span><br><span class="line">    <span class="string">"max_subscriptions"</span>: 1000,</span><br><span class="line">    <span class="string">"MaxInactivity"</span>: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"total_msgs"</span>: 0,</span><br><span class="line">  <span class="string">"total_bytes"</span>: 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>client列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl localhost:9222/streaming/clientsz</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"cluster_id"</span>: <span class="string">"<span class="variable">$&#123;NATS-CLUSTER-ID&#125;</span>"</span>,</span><br><span class="line">  <span class="string">"server_id"</span>: <span class="string">"2DTn1aiWKHXcrTWScNMYbB"</span>,</span><br><span class="line">  <span class="string">"now"</span>: <span class="string">"2019-03-13T08:10:38.048664063Z"</span>,</span><br><span class="line">  <span class="string">"offset"</span>: 0,</span><br><span class="line">  <span class="string">"limit"</span>: 1024,</span><br><span class="line">  <span class="string">"count"</span>: 0,</span><br><span class="line">  <span class="string">"total"</span>: 0,</span><br><span class="line">  <span class="string">"clients"</span>: []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>channel信息查询</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl localhost:9222/streaming/channelsz</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"cluster_id"</span>: <span class="string">"<span class="variable">$&#123;NATS-CLUSTER-ID&#125;</span>"</span>,</span><br><span class="line">  <span class="string">"server_id"</span>: <span class="string">"2DTn1aiWKHXcrTWScNMYbB"</span>,</span><br><span class="line">  <span class="string">"now"</span>: <span class="string">"2019-03-13T08:11:22.338425862Z"</span>,</span><br><span class="line">  <span class="string">"offset"</span>: 0,</span><br><span class="line">  <span class="string">"limit"</span>: 1024,</span><br><span class="line">  <span class="string">"count"</span>: 0,</span><br><span class="line">  <span class="string">"total"</span>: 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="NATS-Streming客户端"><a href="#NATS-Streming客户端" class="headerlink" title="NATS Streming客户端"></a>NATS Streming客户端</h1><p>官方文档见<a href="https://github.com/nats-io/go-nats-streaming" target="_blank" rel="noopener">nats-straming client golang version</a></p>
+<h2 id="Subscribe"><a href="#Subscribe" class="headerlink" title="Subscribe"></a>Subscribe</h2><ul>
+<li><strong>subscribe</strong><br>类似于广播，如果不使用用Queue Group，只要订阅了该topic的消费者均能够收取消息；</li>
+<li><strong>durable subscription</strong><br>通过client-id和durable name来唯一表示一个client。当该client网络中断后，nats会将错过的消息都记录下来，等待该client-id对应的client重新起来之后再发送消息过去继续消费。</li>
+</ul>
+<h2 id="Queue-Group-VS-Durable-Queue-Group"><a href="#Queue-Group-VS-Durable-Queue-Group" class="headerlink" title="Queue Group VS. Durable Queue Group"></a>Queue Group VS. Durable Queue Group</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>功能</th>
+<th>生命周期</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Queue Group</strong></td>
+<td>用来将一堆消费者归类，在这个组内的消费者，只有一个会收到消息，而非广播的。</td>
+<td>当queue group中最后一个消费者离开的时候（调用unscribe或者close），queue group会被销毁。</td>
+<td>假设最后一个member调用close退出queue group，queue group将被销毁。而在该member（相同client-id）重新上线之前，queue group所订阅topic（channel）的消息将被丢失。</td>
+</tr>
+<tr>
+<td><strong>Durable Queue Group</strong></td>
+<td>除了queue group的功能外，可以持久化消息，直到有新的消费者加入后继续消费。</td>
+<td>可以当queueu group中所有的消费者都离开的时候，依然存在；当最后一个消费者调用unscribe的时候销毁。</td>
+<td>假设最后一个member调用close退出queue group，queue group会被保留。而在该member（相同client-id）重新上线之前，queue group所订阅topic（channel）的消息将被在member起来之后，发送到member重新消费。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Client-Id维护"><a href="#Client-Id维护" class="headerlink" title="Client Id维护"></a>Client Id维护</h2><p>client-id相同的两个member无法同时连接到nats streaming，而如果member挂掉了，新上线的member可以继续使用之前的client-id（IP地址可以不一致）可以继续从durable queue group中消费宕机时漏掉的消息。这里具体分析一下nats streaming行为。</p>
+<p>已知使用durable queue group的last member未来得及执行unsubscribe和close操作就异常终止了；然后新的member（使用相同client-id）在另外一台主机上（IP不一致）启动，日志如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[1] 2019/03/17 10:15:14.464874 [DBG] STREAM: [Client:consumer-5] Suspended durable queue subscription, subject=nautilus-test, inbox=_INBOX.1ENluyqy0UX4IeohElmiGm, queue=mydurableName:oceanus, subid=9</span><br><span class="line">[1] 2019/03/17 10:15:14.464912 [DBG] STREAM: [Client:consumer-5] Closed (Inbox=_INBOX.1ENluyqy0UX4IeohElmhyO)</span><br><span class="line">[1] 2019/03/17 10:15:14.464925 [DBG] STREAM: [Client:consumer-5] Replaced old client (Inbox=_INBOX.Ah2vp3eh5BKTfcSVfq1Sv8)</span><br><span class="line">[1] 2019/03/17 10:15:14.679385 [DBG] STREAM: [Client:consumer-5] Resumed durable queue subscription, subject=nautilus-test, inbox=_INBOX.Ah2vp3eh5BKTfcSVfq1T4o, queue=mydurableName:oceanus, subid=9</span><br></pre></td></tr></table></figure>
+<p>先前的member异常终止，server无法感知，因此等待新的member起来之后，才去check老的member的状态。具体操作流程为：<code>向老的member对应client-id的Inbox发送消息，并等待反馈</code>（因为nats-streaming不直接与客户端通信），如果无法得到响应就开始执行：</p>
+<ol>
+<li>Suspended durable queue subscription</li>
+<li>Close旧member的connection</li>
+<li>由于两个member都使用相同的client-id，于是改变client-id映射的Inbox，即替换client-id对应的member</li>
+<li>Resumed durable queue subscription</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/03/17/NATS-Streaming实践/" title="NATS Streaming实践">http://ljchen.net/2019/03/17/NATS-Streaming实践/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/distributed-system/" rel="tag"># distributed-system</a>
+          
+            <a href="/tags/NATS/" rel="tag"># NATS</a>
+          
+            <a href="/tags/NATS-Streaming/" rel="tag"># NATS-Streaming</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/02/配置中心apollo入门/" rel="next" title="配置中心Apollo入门">
+                <i class="fa fa-chevron-left"></i> 配置中心Apollo入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/30/分布式定时任务/" rel="prev" title="分布式定时任务">
+                分布式定时任务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NATS-Streaming介绍"><span class="nav-number">1.</span> <span class="nav-text">NATS Streaming介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HA环境"><span class="nav-number">2.</span> <span class="nav-text">HA环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#集群启动"><span class="nav-number">2.1.</span> <span class="nav-text">集群启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#状态监控"><span class="nav-number">2.2.</span> <span class="nav-text">状态监控</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NATS-Streming客户端"><span class="nav-number">3.</span> <span class="nav-text">NATS Streming客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Subscribe"><span class="nav-number">3.1.</span> <span class="nav-text">Subscribe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Queue-Group-VS-Durable-Queue-Group"><span class="nav-number">3.2.</span> <span class="nav-text">Queue Group VS. Durable Queue Group</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-Id维护"><span class="nav-number">3.3.</span> <span class="nav-text">Client Id维护</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/03/17/NATS-Streaming实践/';
+          this.page.identifier = '2019/03/17/NATS-Streaming实践/';
+          this.page.title = 'NATS Streaming实践';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

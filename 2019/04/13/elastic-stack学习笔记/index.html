@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>Elasticsearch学习笔记 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/04/13/elastic-stack学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Elasticsearch学习笔记</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-13T09:09:18+08:00">2019-04-13</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/distributed-system/" itemprop="url" rel="index">
+                    <span itemprop="name">distributed-system</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/13/elastic-stack学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/13/elastic-stack学习笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">13 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>在容器云的日志收集和分析中，没有采用CNCF的fluentd方案，而是直接采用了elastic-stack的一整套解决方案。</p>
+<p>通过服务编排的时候写日志收集的CRD到K8S，在主机上通过daemonset的方式来运行fileBeat收集容器日志；fileBeat的output是kafka，通过消息中间件来做汇聚和压力削峰，接下来再是logstach和elasticsearch。这只是日志收集的流程，其实里面还涉及具体如何做系统的负载均衡，日志流的告警等，这里就不一一分析。</p>
+<p>本文重点聊下elasticsearch相关的一些知识点。</p>
+<a id="more"></a>
+<h1 id="ES安装"><a href="#ES安装" class="headerlink" title="ES安装"></a>ES安装</h1><p><strong>部署</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name=elasticsearch -p 9200:9200 -p 9300:9300 -e <span class="string">"discovery.type=single-node"</span> -e <span class="string">"ES_JAVA_OPTS=-Xms256m -Xmx256m"</span> -d elasticsearch:7.3.0</span><br></pre></td></tr></table></figure>
+<p><strong>插件命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">root@2c03a6312e66:/usr/share/elasticsearch<span class="comment"># elasticsearch-plugin --help</span></span><br><span class="line">A tool <span class="keyword">for</span> managing installed elasticsearch plugins</span><br><span class="line">Commands</span><br><span class="line">--------</span><br><span class="line">list - Lists installed elasticsearch plugins</span><br><span class="line">install - Install a plugin</span><br><span class="line">remove - removes a plugin from Elasticsearch</span><br><span class="line"></span><br><span class="line">Non-option arguments:</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line"></span><br><span class="line">Option         Description</span><br><span class="line">------         -----------</span><br><span class="line">-h, --<span class="built_in">help</span>     show <span class="built_in">help</span></span><br><span class="line">-s, --silent   show minimal output</span><br><span class="line">-v, --verbose  show verbose output</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装插件	</span></span><br><span class="line">elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.3.0/elasticsearch-analysis-ik-7.3.0.zip</span><br></pre></td></tr></table></figure>
+<p><strong>Kibana安装</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --link elasticsearch:elasticsearch --name kibana -p 5601:5601 kibana:7.3.0</span><br></pre></td></tr></table></figure>
+<h1 id="ES核心知识"><a href="#ES核心知识" class="headerlink" title="ES核心知识"></a>ES核心知识</h1><p>主要涉及对ES整体框架认识理解的几个方面。</p>
+<h2 id="集群管理"><a href="#集群管理" class="headerlink" title="集群管理"></a>集群管理</h2><h3 id="节点角色"><a href="#节点角色" class="headerlink" title="节点角色"></a>节点角色</h3><ul>
+<li><p>Master节点</p>
+<p>  Master节点控制Elasticsearch集群，并负责在集群范围内创建/删除索引，跟踪哪些节点是集群的一部分，并将分片分配给这些节点。主节点一次处理一个集群状态，并将状态广播到所有其他节点，这些节点需要响应并确认主节点的信息。</p>
+<p>  在elasticsearch.yml中，将<code>nodes.master</code>属性设置为true（默认），可以将节点配置为有资格成为主节点的节点。对于大型生产集群，建议拥有一个专用主​​节点来控制集群，并且不服务任何用户请求。</p>
+</li>
+<li><p>Data节点</p>
+<p>  数据节点用来保存数据和倒排索引。默认情况下，每个节点都配置为一个data节点，并且在elasticsearch.yml中将属性<code>node.data</code>设置为true。如果您想要一个专用的master节点，那么将<code>node.data</code>属性更改为false。</p>
+</li>
+<li><p>Client节点</p>
+<p>  如果将node.master和node.data设置为false，则将节点配置为客户端节点，并充当负载平衡器，将传入的请求路由到集群中的不同节点。若你连接的是作为客户端的节点，该节点称为协调节点(coordinating node)。协调节点将客户机请求路由到集群中对应分片所在的节点。对于读取请求，协调节点每次选择不同的分片来提供请求以平衡负载。</p>
+</li>
+</ul>
+<h3 id="跨集群搜索"><a href="#跨集群搜索" class="headerlink" title="跨集群搜索"></a>跨集群搜索</h3><p>相当于在多个ES集群之外，配置一个ES作为代理，这个代理节点不会加入到存储数据的ES集群中；它只是作为查询代理节点。</p>
+<p>配置的方式可以是直接修改yaml文件，或者通过HTTP的方式下发配置，指定remote ES cluster。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">PUT _cluster/settings</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"persistent"</span>: &#123;</span><br><span class="line">    <span class="string">"cluster"</span>: &#123;</span><br><span class="line">      <span class="string">"remote"</span>: &#123;</span><br><span class="line">        <span class="string">"cluster_one"</span>: &#123;</span><br><span class="line">          <span class="string">"seeds"</span>: [</span><br><span class="line">            <span class="string">"127.0.0.1:9300"</span></span><br><span class="line">          ]</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"cluster_two"</span>: &#123;</span><br><span class="line">          <span class="string">"seeds"</span>: [</span><br><span class="line">            <span class="string">"127.0.0.1:9301"</span></span><br><span class="line">          ]</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">"cluster_three"</span>: &#123;</span><br><span class="line">          <span class="string">"seeds"</span>: [</span><br><span class="line">            <span class="string">"127.0.0.1:9302"</span></span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-cross-cluster-search.html" target="_blank" rel="noopener">这里</a></p>
+<h3 id="故障检测"><a href="#故障检测" class="headerlink" title="故障检测"></a>故障检测</h3><p><code>zen discovery</code>模块</p>
+<ul>
+<li>Ping：执行该过程的节点，用来发现对方。</li>
+<li>Unicast：该模块包含一个主机名列表，用于控制要ping哪个节点。</li>
+</ul>
+<p>故障检测的过程是这样的: 主节点ping所有的节点来检查这些节点是否存活，而所有的节点回ping主节点来汇报他们是存活的。</p>
+<h3 id="discovery-zen-minimum-master-nodes"><a href="#discovery-zen-minimum-master-nodes" class="headerlink" title="discovery.zen.minimum_master_nodes"></a>discovery.zen.minimum_master_nodes</h3><p>推荐的值为: <code>(num_master_node / 2) + 1</code></p>
+<p>假设我们有一个集群，有3个master节点，当网络发生故障的时候，有可能其中一个节点不能和其他节点进行通信了。这个时候，当<code>discovery.zen.minimum_master_nodes</code>设置为<code>1</code>，就会分成两个小的独立集群，当网络好的时候，就会出现数据错误或者丢失数据的情况。当<code>discovery.zen.minimum_master_nodes</code>设置为<code>2</code>的时候，一个网络中有两个主资格节点，可以继续工作，另一部分，由于只有一个master节点，则不会形成一个独立的集群，这个时候当网络恢复的时候，节点又会从新加入集群。</p>
+<h2 id="shard-分片"><a href="#shard-分片" class="headerlink" title="shard (分片)"></a>shard (分片)</h2><p>每个索引包含多个shard，默认是5个，Shard是一个最小的Lucene索引单元。</p>
+<ol>
+<li>分片，ES是分布式搜索引擎，每个索引有一个或多个分片，索引的数据被分配到各个分片上，相当于一桶水用了N个杯子装。 </li>
+<li>分片有助于横向扩展，N个分片会被尽可能平均地（rebalance）分配在不同的节点上（例如你有2个节点，4个主分片，那么每个节点会分到2个分片，后来你增加了2个节点，那么你这4个节点上都会有1个分片，这个过程叫relocation，ES感知后自动完成)。 </li>
+<li>分片是独立的，对于一个Search Request的行为，每个分片都会执行这个Request。 </li>
+<li>每个分片都是一个Lucene Index，所以一个分片只能存放 Integer.MAX_VALUE - 128 = 2,147,483,519 个docs。</li>
+</ol>
+<p>当写入一个document的时候，ES通过对<code>docid</code>进行hash来确定将其放在哪个shard上面，然后在shard上面进行索引存储(可以通过指定<code>routing</code>字段来固定hash值，从而将document固定到某个分片上)。</p>
+<h2 id="replicas-副本"><a href="#replicas-副本" class="headerlink" title="replicas (副本)"></a>replicas (副本)</h2><p>replicas就是备份，ES采用的是<code>Push Replication</code>模式，当你往master主分片上面索引一个文档，该分片会复制该文档到分片副本中，这些分片也会索引这个文档。默认情况下一个索引创建5个分片一个备份，即 <code>5primary + 5replica = 10个分片</code></p>
+<ol>
+<li>主分片和备分片不会出现在同一个节点上（防止单点故障）。</li>
+<li>如果只有一个节点，那么5个replica都无法分配（unassigned），此时cluster status会变成Yellow。</li>
+<li>primary分片丢失，replica分片就会被顶上去成为新的主分片，同时根据这个新的主分片创建新的replica，集群数据安然无恙。</li>
+<li>索引写请求只能发生在主分片上，replica不能执行索引写请求（可以执行读请求）。</li>
+<li>对于一个索引，除非重建索引（reindex，需先close索引）否则不能调整分片的数目（主分片数, number_of_shards），但可以随时调整replica数(number_of_replicas)。</li>
+</ol>
+<h2 id="写数据"><a href="#写数据" class="headerlink" title="写数据"></a>写数据</h2><p>主要涉及ES为何能够做到实时查询的相关原理。</p>
+<h3 id="flush-refresh"><a href="#flush-refresh" class="headerlink" title="flush/refresh"></a>flush/refresh</h3><p>决定一个document在哪个shard上，最重要的一个值就是routing值，默认是_id，也可以手动指定。routing也可以在发送请求的时候，手动指定一个routing value，比如说：<code>put /index/type/id?routing=user_id</code></p>
+<p>当向elasticsearch发送创建document索引请求的时候，document数据会先进入到<code>index buffer</code>之后，与此同时会将操作记录在<code>translog</code>之中，当发生 <strong><code>refresh</code></strong> 时（数据从index buffer中进入filesystem cache的过程，时间很短，默认是1s一次，写入cache的数据其实是按照多个index segment文件的形势组织的）<code>translog</code>中的操作记录并不会被清除，而是当数据从filesystem cache中被写入磁盘之后才会将translog中清空。而从filesystem cache写入磁盘的过程就是 <strong><code>flush</code></strong>，该过程会写一个commit point，指明这次flush包含了哪些index segment。</p>
+<h3 id="translog"><a href="#translog" class="headerlink" title="translog"></a>translog</h3><ul>
+<li><p>translog的功能</p>
+<p>  保证在filesystem cache中的数据不会因为elasticsearch重启或是发生意外故障的时候丢失。<br>  当系统重启时会从translog中恢复之前记录的操作。<br>  当对elasticsearch进行CRUD操作的时候，会先到translog之中进行查找，因为tranlog之中保存的是最新的数据。<br>  translog的清除时间到期时进行flush操作之后（将数据从filesystem cache刷入disk之中）。<br>  flush操作的时候，会先保存buffer的数据到filesystem cache，然后将cache的数据refresh到disk，再清除translog的数据。</p>
+</li>
+<li><p>flush操作的时间点</p>
+<p>  es的各个shard会每个30分钟进行一次flush操作。<br>  当translog的数据达到某个上限的时候会进行一次flush操作。</p>
+<p>  [Note]:但是由于translog本身cache的缘故，如果此时关机，可能导致5秒钟的数据丢失。</p>
+</li>
+<li><p>translog和flush的一些配置项</p>
+<p>  index.translog.flush_threshold_ops:当发生多少次操作时进行一次flush。默认是 unlimited。<br>  index.translog.flush_threshold_size:当translog的大小达到此值时会进行一次flush操作。默认是512mb。<br>  index.translog.flush_threshold_period:在指定的时间间隔内如果没有进行flush操作，会进行一次强制flush操作。默认是30m。<br>  index.translog.interval:多少时间间隔内会检查一次translog，来进行一次flush操作。es会随机的在这个值到这个值的2倍大小之间进行一次操作，默认是5s。</p>
+</li>
+</ul>
+<h3 id="删除、更新数据"><a href="#删除、更新数据" class="headerlink" title="删除、更新数据"></a>删除、更新数据</h3><p>如果是删除操作，commit 的时候会生成一个 .del 文件，里面将某个 doc 标识为 deleted 状态，那么搜索的时候根据 .del 文件就知道这个 doc 是否被删除了。如果是更新操作，就是将原来的 doc 标识为 deleted 状态，然后新写入一条数据。</p>
+<p>buffer 每 refresh 一次，就会产生一个 index segment file（在OS cache中），所以默认情况下是 1 秒钟一个 segment file，这样下来 segment file 会越来越多。</p>
+<p>ES会定期执行 merge（也就是translog flush时候的commit point），每次 merge 的时候，会将多个 segment file 合并成一个。同时这里会将标识为 deleted 的 doc 给物理删除掉，然后将新的 segment file 写入磁盘。这里会写一个 commit point，标识所有新的 segment file，然后打开 segment file 供搜索使用，同时删除旧的 segment file。（该流程类似于etcd的compact和Hbase的region merge）</p>
+<h3 id="reindex"><a href="#reindex" class="headerlink" title="reindex"></a>reindex</h3><p>可以实现将远端数据index到本地，也可以将本地的index做修改字段等操作。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">POST _reindex</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"source"</span>: &#123;</span><br><span class="line">    <span class="attr">"remote"</span>: &#123;</span><br><span class="line">      "host": "http://otherhost:9200", // 远程es的ip和port列表</span><br><span class="line">      "socket_timeout": "1m",</span><br><span class="line">      "connect_timeout": "10s"  // 超时时间设置</span><br><span class="line">    &#125;,</span><br><span class="line">    "index": "my_index_name", // 源索引名称</span><br><span class="line">    "query": &#123;         // 满足条件的数据</span><br><span class="line">      "match": &#123;</span><br><span class="line">        "test": "data"</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  "dest": &#123;</span><br><span class="line">    "index": "dest_index_name"  // 目标索引名称</span><br><span class="line">  &#125;,</span><br><span class="line">  "script": &#123;                   // 修改信息</span><br><span class="line">    "source": "if (ctx._source.foo == 'bar') &#123;ctx._version++; ctx._source.remove('foo')&#125;",</span><br><span class="line">    "lang": "painless"</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><p>当进行查询时：</p>
+<ol>
+<li>如果提供了查询的DocID，ES通过hash就知道Doc存在哪个shard上面，然后再基于随机轮询算法，在primary shard以及其所有replica中随机选择一个，让读请求负载均衡。</li>
+<li>如果不提供DocID（比如搜索）, 请求先发到协调节点，协调节点会在该Index（indics）的shard所在的所有primary或replicas上执行搜索；每个shard将搜索结果（其实就是一些doc id）返回给协调节点。协调节点会对结果进行合并、排序、分页等操作，生成结果。然后根据结果中的doc id去各个node上拉取文档数据，然后返回给客户端。</li>
+</ol>
+<h3 id="查询方式"><a href="#查询方式" class="headerlink" title="查询方式"></a>查询方式</h3><p><strong>各类查询</strong></p>
+<ul>
+<li><p>match all</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"query"</span>: &#123;</span><br><span class="line">        <span class="string">"match_all"</span>: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>match</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"query"</span>: &#123; </span><br><span class="line">      <span class="string">"match"</span>: &#123; </span><br><span class="line">        <span class="string">"title"</span>: <span class="string">"my elasticsearch article"</span> </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>multi match</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /test_index/test_type/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"multi_match"</span>: &#123;</span><br><span class="line">      <span class="string">"query"</span>: <span class="string">"test"</span>,</span><br><span class="line">      <span class="string">"fields"</span>: [<span class="string">"test_field"</span>, <span class="string">"test_field1"</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>range query</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /company/employee/_search </span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"range"</span>: &#123;</span><br><span class="line">      <span class="string">"age"</span>: &#123;</span><br><span class="line">        <span class="string">"gte"</span>: 30</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>term query</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /test_index/test_type/_search </span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"term"</span>: &#123;</span><br><span class="line">      <span class="string">"test_field"</span>: <span class="string">"test hello"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>terms query</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123; </span><br><span class="line">    <span class="string">"terms"</span>: &#123; </span><br><span class="line">      <span class="string">"tag"</span>: [ <span class="string">"search"</span>, <span class="string">"full_text"</span>, <span class="string">"nosql"</span> ] </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>条件组合query</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">GET /website/article/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"bool"</span>: &#123;</span><br><span class="line">      <span class="string">"must"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"match"</span>: &#123;</span><br><span class="line">            <span class="string">"title"</span>: <span class="string">"elasticsearch"</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"should"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"match"</span>: &#123;</span><br><span class="line">            <span class="string">"content"</span>: <span class="string">"elasticsearch"</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"must_not"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"match"</span>: &#123;</span><br><span class="line">            <span class="string">"author_id"</span>: 111</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>scroll query</p>
+<ol>
+<li>使用scoll滚动搜索，可以先搜索一批数据，然后下次再搜索一批数据，以此类推，直到搜索出全部的数据来</li>
+<li>scroll搜索会在第一次搜索的时候，保存一个当时的视图快照，之后只会基于该旧的视图快照提供数据搜索，如果这个期间数据变更，是不会让用户看到的</li>
+<li>采用基于_doc进行排序的方式，性能较高</li>
+<li>每次发送scroll请求，我们还需要指定一个scoll参数，指定一个时间窗口，每次搜索请求只要在这个时间窗口内能完成就可以了</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GET /test_index/test_type/_search?scroll=1m</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"match_all"</span>: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"sort"</span>: [ <span class="string">"_doc"</span> ],</span><br><span class="line">  <span class="string">"size"</span>: 3</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当scroll返回ID之后，第二次使用该ID查询；</span></span><br><span class="line"></span><br><span class="line">GET /_search/scroll</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"scroll"</span>: <span class="string">"1m"</span>, </span><br><span class="line">    <span class="string">"scroll_id"</span> : <span class="string">"DnF1ZXJ5VGhlbkZldGNoBQAAAAAAACxeFjRvbnNUWVZaVGpHdklqOV9zcFd6MncAAAAAAAAsYBY0b25zVFlWWlRqR3ZJajlfc3BXejJ3AAAAAAAALF8WNG9uc1RZVlpUakd2SWo5X3NwV3oydwAAAAAAACxhFjRvbnNUWVZaVGpHdklqOV9zcFd6MncAAAAAAAAsYhY0b25zVFlWWlRqR3ZJajlfc3BXejJ3"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>排序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GET /company/employee/_search </span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"constant_score"</span>: &#123;</span><br><span class="line">      <span class="string">"filter"</span>: &#123;</span><br><span class="line">        <span class="string">"range"</span>: &#123;</span><br><span class="line">          <span class="string">"age"</span>: &#123;</span><br><span class="line">            <span class="string">"gte"</span>: 30</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"sort"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"join_date"</span>: &#123;</span><br><span class="line">        <span class="string">"order"</span>: <span class="string">"asc"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>filter/query区别</strong></p>
+<ul>
+<li><code>filter</code>，仅仅只是按照搜索条件过滤出需要的数据而已，不计算任何相关度分数，对相关度没有任何影响</li>
+<li><p><code>query</code>，会去计算每个document相对于搜索条件的相关度，并按照相关度进行排序</p>
+<p>一般来说，如果是在进行搜索，需要将最匹配搜索条件的数据先返回，那么用query；<br>如果只是要根据一些条件筛选出一部分数据，不关注其排序，那么用filter。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GET /company/employee/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"bool"</span>: &#123;</span><br><span class="line">      <span class="string">"must"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"match"</span>: &#123;</span><br><span class="line">            <span class="string">"join_date"</span>: <span class="string">"2019-01-01"</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"filter"</span>: &#123;</span><br><span class="line">        <span class="string">"range"</span>: &#123;</span><br><span class="line">          <span class="string">"age"</span>: &#123;</span><br><span class="line">            <span class="string">"gte"</span>: 30</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>multi-index/multi-type搜索</strong></p>
+<p>  /_search：所有索引，所有type下的所有数据都搜索出来<br>  /index1/_search：指定一个index，搜索其下所有type的数据<br>  /index1,index2/_search：同时搜索两个index下的数据<br>  /<em>1,</em>2/_search：按照通配符去匹配多个索引<br>  /index1/type1/_search：搜索一个index下指定的type的数据<br>  /index1/type1,type2/_search：可以搜索一个index下多个type的数据<br>  /index1,index2/type1,type2/_search：搜索多个index下的多个type的数据<br>  /_all/type1,type2/_search：_all，可以代表搜索所有index下的指定type的数据</p>
+<h3 id="mapping"><a href="#mapping" class="headerlink" title="mapping"></a>mapping</h3><p>mapping，就是index的type的元数据，每个type都有一个自己的mapping，决定了数据类型，建立倒排索引的行为，还有进行搜索的行为。</p>
+<p>ES默认是动态创建索引和索引类型的mapping的。这就相当于无需定义Schema，无需指定各个字段的索引规则就可以索引文件，很方便。但有时方便就代表着不灵活。比如，ES默认一个字段是要做分词的，但我们有时要搜索匹配整个字段却不行。如有统计工作要记录每个城市出现的次数。对于NAME字段，若记录“new york”文本，ES可能会把它拆分成“new”和“york”这两个词，分别计算这个两个单词的次数，而不是我们期望的“new york”。</p>
+<p>这时，就需要我们在创建索引时定义mapping。此外，es支持多字段结构，例如：我们希望两个字段中有相同的值，一个用于搜索，一个用户排序；或者一个用于分词器分析，一个用于空白字符。例如：编写mapping文件如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;	</span><br><span class="line">    <span class="attr">"index_type"</span>:&#123;  </span><br><span class="line">        <span class="attr">"properties"</span>:&#123;  </span><br><span class="line">            <span class="attr">"ID"</span>:&#123;  </span><br><span class="line">            <span class="attr">"type"</span>:<span class="string">"string"</span>,  </span><br><span class="line">            <span class="attr">"index"</span>:<span class="string">"not_analyzed"</span>   </span><br><span class="line">            &#125;,  			 </span><br><span class="line">            <span class="attr">"NAME"</span>:&#123;</span><br><span class="line">            <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">            <span class="attr">"fields"</span>:&#123;</span><br><span class="line">                <span class="attr">"NAME"</span>:&#123;</span><br><span class="line">                    <span class="attr">"type"</span>:<span class="string">"string"</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="attr">"raw"</span>:&#123;</span><br><span class="line">                    <span class="attr">"type"</span>:<span class="string">"string"</span>,</span><br><span class="line">                    <span class="attr">"index"</span>:<span class="string">"not_analyzed"</span>	</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;					</span><br><span class="line">            &#125; 		 	 		</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>就是说我们对于index_type这个索引类型，定义了它的mapping。重点是将NAME这个字段映射为两个，一个是需要做索引分析的NAME，另一个是不分析的raw，即不会拆分new york这种词组。这样我们在做搜索的时候，就可以对NAME.raw这个字段做term aggregation，获得所有城市出现的次数了。</p>
+<p><strong>核心的数据类型</strong></p>
+<ul>
+<li>string</li>
+<li>byte，short，integer，long</li>
+<li>float，double</li>
+<li>boolean</li>
+<li>date</li>
+</ul>
+<p><strong>dynamic mapping</strong></p>
+<ul>
+<li>true or false    –&gt;    boolean</li>
+<li>123        –&gt;    long</li>
+<li>123.45        –&gt;    double</li>
+<li>2017-01-01    –&gt;    date</li>
+<li>“hello world”    –&gt;    string/text</li>
+</ul>
+<p><strong>查看mapping</strong></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /index/_mapping/<span class="built_in">type</span></span><br></pre></td></tr></table></figure>
+<p><strong>总结</strong></p>
+<ul>
+<li>往es里面直接插入数据，es会自动建立索引，同时建立type以及对应的mapping</li>
+<li>mapping中就自动定义了每个field的数据类型</li>
+<li>不同的数据类型（比如说text和date），可能有的是exact value，有的是full text</li>
+<li>exact value，在建立倒排索引的时候，分词的时候，是将整个值一起作为一个关键词建立到倒排索引中的；full text，会经历各种各样的处理，分词，normaliztion（时态转换，同义词转换，大小写转换），才会建立到倒排索引中</li>
+<li>同时呢，exact value和full text类型的field就决定了，在一个搜索过来的时候，对exact value field或者是full text field进行搜索的行为也是不一样的，会跟建立倒排索引的行为保持一致；比如说exact value搜索的时候，就是直接按照整个值进行匹配，full text query string，也会进行分词和normalization再去倒排索引中去搜索</li>
+<li>可以用es的dynamic mapping，让其自动建立mapping，包括自动设置数据类型；也可以提前手动创建index和type的mapping，自己对各个field进行设置，包括数据类型，包括索引行为，包括分词器，等等</li>
+</ul>
+<h3 id="phrase"><a href="#phrase" class="headerlink" title="phrase"></a>phrase</h3><p>首先说，wildcard/regexp/prefix这三个的性能都不好！wildcard和regexp查询的工作方式和prefix查询完全一样。它们也需要遍历倒排索引中的词条列表来找到所有的匹配词条，然后逐个词条地收集对应的文档ID。它们和prefix查询的唯一区别在于它们能够支持更加复杂的模式。</p>
+<p>prefix，wildcard以及regexp查询基于词条进行操作。如果你在一个analyzed字段上使用了它们，它们会检查字段中的每个词条，而不是整个字段。比如，假设我们的title字段中含有”Quick brown fox”，它会产生词条quick，brown和fox。这个查询能够匹配：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"regexp"</span>: &#123; <span class="attr">"title"</span>: <span class="string">"br.*"</span> &#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>而不会匹配：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"regexp"</span>: &#123; <span class="attr">"title"</span>: <span class="string">"quick br*"</span> &#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果需要匹配字符串”quick brown fox”，可以采用phrase。<code>phrase</code>在ES中叫邻近匹配, <code>slop</code>值来用指定查询项之间可以分隔多远的距离。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST /bookdb_index/book/_search</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"query"</span>: &#123;</span><br><span class="line">        <span class="string">"multi_match"</span> : &#123;</span><br><span class="line">            <span class="string">"query"</span>: <span class="string">"quick brown fox"</span>,</span><br><span class="line">            <span class="string">"fields"</span>: [<span class="string">"title"</span>, <span class="string">"summary"</span>],</span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"phrase"</span>,</span><br><span class="line">            <span class="string">"slop"</span>: 1</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"_source"</span>: [ <span class="string">"title"</span>, <span class="string">"summary"</span>, <span class="string">"publish_date"</span> ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前面的查询的数据必须满足下面3个条件：</p>
+<ol>
+<li>quick, brown, fox 三个词必须同时出现</li>
+<li>brown 的位置必须比quick大1</li>
+<li>fox 的位置必须比quick大2</li>
+</ol>
+<p>有关ES查询相关的方法，可以参考<a href="https://n3xtchen.github.io/n3xtchen/elasticsearch/2017/07/05/elasticsearch-23-useful-query-example" target="_blank" rel="noopener">这篇文档</a>, 总结的比较好！</p>
+<h3 id="bulk-api"><a href="#bulk-api" class="headerlink" title="bulk api"></a>bulk api</h3><p>bulk的json数据结构如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;"action": &#123;"meta"&#125;&#125;\n</span><br><span class="line">&#123;"data"&#125;\n</span><br><span class="line">&#123;"action": &#123;"meta"&#125;&#125;\n</span><br><span class="line">&#123;"data"&#125;\n</span><br></pre></td></tr></table></figure></p>
+<p>bulk api的实例如下：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST /_bulk</span><br><span class="line">&#123; <span class="attr">"delete"</span>: &#123; <span class="attr">"_index"</span>: <span class="string">"test_index"</span>, <span class="attr">"_type"</span>: <span class="string">"test_type"</span>, <span class="attr">"_id"</span>: <span class="string">"3"</span> &#125;&#125; </span><br><span class="line">&#123; <span class="attr">"create"</span>: &#123; <span class="attr">"_index"</span>: <span class="string">"test_index"</span>, <span class="attr">"_type"</span>: <span class="string">"test_type"</span>, <span class="attr">"_id"</span>: <span class="string">"12"</span> &#125;&#125;</span><br><span class="line">&#123; <span class="attr">"test_field"</span>:    <span class="string">"test12"</span> &#125;</span><br><span class="line">&#123; <span class="attr">"index"</span>:  &#123; <span class="attr">"_index"</span>: <span class="string">"test_index"</span>, <span class="attr">"_type"</span>: <span class="string">"test_type"</span>, <span class="attr">"_id"</span>: <span class="string">"2"</span> &#125;&#125;</span><br><span class="line">&#123; <span class="attr">"test_field"</span>:    <span class="string">"replaced test2"</span> &#125;</span><br><span class="line">&#123; <span class="attr">"update"</span>: &#123; <span class="attr">"_index"</span>: <span class="string">"test_index"</span>, <span class="attr">"_type"</span>: <span class="string">"test_type"</span>, <span class="attr">"_id"</span>: <span class="string">"1"</span>, <span class="attr">"_retry_on_conflict"</span> : <span class="number">3</span>&#125; &#125;</span><br><span class="line">&#123; <span class="attr">"doc"</span> : &#123;<span class="attr">"test_field2"</span> : <span class="string">"bulk test1"</span>&#125; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>一个bulk api中可以带多种操作，如果采用数组的方式，需要java做json数组到数据结构的解析，会消耗掉大量的内存。使用上面的结构后，有以下好处。</p>
+<ol>
+<li>不用将其转换为json对象，不会出现内存中的相同数据的拷贝，直接按照换行符切割json</li>
+<li>对每两个一组的json，读取meta，进行document路由</li>
+<li>直接将对应的json发送到node上去</li>
+</ol>
+<h1 id="Logstash"><a href="#Logstash" class="headerlink" title="Logstash"></a>Logstash</h1><h2 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h2><ul>
+<li>可以运行多个pipeline，这个需要指定一个配置文件pipelines.yml，在这个文件中指定每一个pipeline所使用的具体的input，filter，ouput的配置文件；</li>
+<li>一般情况下，一个logstash只运行一个pipeline，可以指定pipeline的worker数为cpu cores数，但是这样容易出现对多个input的相互阻塞的问题；</li>
+<li>多个pipeline的分别拥有隔离的Persistent queues 和 dead letter queues，但是需要小心设置其workers，因为会出现资源竞争的问题；</li>
+</ul>
+<h2 id="高可用场景"><a href="#高可用场景" class="headerlink" title="高可用场景"></a>高可用场景</h2><ul>
+<li>直接使用beats对接到logstash，这样logstash只需要扩展节点，因为beats可以做客户端负载均衡；</li>
+<li>使用kafka，然后将多个logstash节点配置为consumer去消费同一个topic的group，这样kafka可做负载均衡；</li>
+<li>对于udp、tcp之类的力量，需要在logstash nodes前添加负载均衡设备</li>
+</ul>
+<h2 id="Plugins"><a href="#Plugins" class="headerlink" title="Plugins"></a>Plugins</h2><p>Logstash有按照条件发送邮件的output plugins，按照这个的逻辑，可以实现一个告警的output plugins，在被匹配的规则满足条件后，调用webhook或者是直接发送邮件，从而实现日志告警功能。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/04/13/elastic-stack学习笔记/" title="Elasticsearch学习笔记">http://ljchen.net/2019/04/13/elastic-stack学习笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/distributed-system/" rel="tag"># distributed-system</a>
+          
+            <a href="/tags/elasticsearch/" rel="tag"># elasticsearch</a>
+          
+            <a href="/tags/logstash/" rel="tag"># logstash</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/04/istio的sidecar注入/" rel="next" title="Istio的sidecar注入">
+                <i class="fa fa-chevron-left"></i> Istio的sidecar注入
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/27/hadoop原理/" rel="prev" title="Hadoop原理">
+                Hadoop原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ES安装"><span class="nav-number">1.</span> <span class="nav-text">ES安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ES核心知识"><span class="nav-number">2.</span> <span class="nav-text">ES核心知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#集群管理"><span class="nav-number">2.1.</span> <span class="nav-text">集群管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#节点角色"><span class="nav-number">2.1.1.</span> <span class="nav-text">节点角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨集群搜索"><span class="nav-number">2.1.2.</span> <span class="nav-text">跨集群搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#故障检测"><span class="nav-number">2.1.3.</span> <span class="nav-text">故障检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#discovery-zen-minimum-master-nodes"><span class="nav-number">2.1.4.</span> <span class="nav-text">discovery.zen.minimum_master_nodes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shard-分片"><span class="nav-number">2.2.</span> <span class="nav-text">shard (分片)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#replicas-副本"><span class="nav-number">2.3.</span> <span class="nav-text">replicas (副本)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写数据"><span class="nav-number">2.4.</span> <span class="nav-text">写数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flush-refresh"><span class="nav-number">2.4.1.</span> <span class="nav-text">flush/refresh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#translog"><span class="nav-number">2.4.2.</span> <span class="nav-text">translog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除、更新数据"><span class="nav-number">2.4.3.</span> <span class="nav-text">删除、更新数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reindex"><span class="nav-number">2.4.4.</span> <span class="nav-text">reindex</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-number">2.5.</span> <span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询方式"><span class="nav-number">2.5.1.</span> <span class="nav-text">查询方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mapping"><span class="nav-number">2.5.2.</span> <span class="nav-text">mapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#phrase"><span class="nav-number">2.5.3.</span> <span class="nav-text">phrase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bulk-api"><span class="nav-number">2.5.4.</span> <span class="nav-text">bulk api</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Logstash"><span class="nav-number">3.</span> <span class="nav-text">Logstash</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pipeline"><span class="nav-number">3.1.</span> <span class="nav-text">pipeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高可用场景"><span class="nav-number">3.2.</span> <span class="nav-text">高可用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plugins"><span class="nav-number">3.3.</span> <span class="nav-text">Plugins</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/04/13/elastic-stack学习笔记/';
+          this.page.identifier = '2019/04/13/elastic-stack学习笔记/';
+          this.page.title = 'Elasticsearch学习笔记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

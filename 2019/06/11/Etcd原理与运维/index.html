@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>Etcd原理与运维 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/06/11/Etcd原理与运维/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Etcd原理与运维</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-11T21:12:21+08:00">2019-06-11</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/distributed-system/" itemprop="url" rel="index">
+                    <span itemprop="name">distributed-system</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/11/Etcd原理与运维/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/06/11/Etcd原理与运维/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">9 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>基于K8s之上的声明式API编程可以说Etcd起到了至关重要的作用。一方面，API Server使用了etcd的特性从而提供了订阅，选举等功能。另一方面，k8s集群的所有配置信息也都集中存放于etcd中，etcd完好的情况下，可以随意的变动node节点，k8s最终会保障服务都按照预期来编排和对外提供服务。</p>
+<a id="more"></a>
+<p>从etcd自生的实现来讲，其使用了Raft协议来保障数据的一致性，底层使用bbolt k-v存储，同时使用WAL和snapshot等都是分布式系统研究的好素材。</p>
+<h1 id="Raft协议"><a href="#Raft协议" class="headerlink" title="Raft协议"></a>Raft协议</h1><p>说到分布式系统的一致性，都会想到raft协议。那raft协议之所以这么声明大昭，其到底有哪些精妙之处呢？我觉得其实很多协议（包括通讯协议）都是对生活中一些道理的抽象，我后续会举一个例子来讲述raft的选举。</p>
+<p>Raft协议主要包含两块：</p>
+<ul>
+<li><p><code>选举过程</code><br>主要涉及采用何种流程来确立集群中的江湖地位；</p>
+</li>
+<li><p><code>日志复制</code><br>主要涉及在确立好各个角色江湖地位的情况下，如何保障日志存储的一致性的问题。</p>
+</li>
+</ul>
+<h2 id="选举过程"><a href="#选举过程" class="headerlink" title="选举过程"></a>选举过程</h2><p>无论是哪一种排别，都要先讲讲江湖地位。这里一种有三种角色，分别为：</p>
+<p><img src="/uploads/raft-role.png" width="90%" height="90%"></p>
+<ul>
+<li><p><code>leader</code><br>对内，定期发送心跳报文，通告天下，维护自己的江湖地位；<br>对外，负责处理所有客户端的请求，当接收到客户端的写入请求时，会在本地追加一条相应的日志，然后将其封装成消息发送到集群中其他的Follower节点。</p>
+</li>
+<li><p><code>candidate</code><br>由Follower节点转换而来的，当Follower节点长时间没有收到Leader节点发送的心跳消息时，则该节点的选举计时器就会过期，同时会将自身状态转换成Candidate，发起新一轮选举。</p>
+</li>
+<li><p><code>follower</code><br>简单地响应来自Leader或者Candidate的请求; 也不处理Client的请求，而是将请求重定向给集群的Leader节点。</p>
+</li>
+</ul>
+<h3 id="学院派"><a href="#学院派" class="headerlink" title="学院派"></a>学院派</h3><p>总结起来就是：3/2/1, 即:”三个角色 / 两个定时器 / 一个任期”。</p>
+<p><img src="/uploads/raft-vote-1.png" width="90%" height="90%"><br><img src="/uploads/raft-vote-2.png" width="90%" height="90%"></p>
+<ol>
+<li>集群初始化时，所有节点都处于Follower状态, 当Follower一段时间(<code>选举计时器</code>超时)收不到Leader的心跳消息，就认为Leader出现故障导致其<code>任期</code>(Term)过期, Follower会转成Candidate；</li>
+<li>Candidate等<code>选举计时器</code>超时后，会先投自己一票，并向集群中其他节点发起选举请求，并带上自己的Term ID以及当前日志的Max Index;</li>
+<li>如果其他节点没有投出Term ID内的一票，就会比较Candidate的Max Index是否比自己小，如果比自己大或者相等，就会投票给Candidate；同时，会将自己的<code>选举计时器</code>重置；</li>
+<li>Candidate在获取到超过半数节点的选票后，升级为Leader；并按照<code>心跳计时器</code>向集群中其他节点发送心跳报文，并同步log entity等; follower收到心跳报文后，会重置<code>选举计时器</code>。</li>
+</ol>
+<p><strong>注意</strong>: 在第三步中，除了要确定term任期内未投过票之外，还要确定candidate的log index的原因是保障不会让日志记录缺失的成员成为leader，相当于冒泡排序法，找出log最完整的成员做leader。</p>
+<p>另外，为了保障不频繁出现重新选举，对两个定时器的设置需要满足：</p>
+<p>  <strong>广播时间 &lt; 选举超时时间 &lt; 平均故障间隔时间</strong></p>
+<h3 id="武林派"><a href="#武林派" class="headerlink" title="武林派"></a>武林派</h3><ol>
+<li>话说当年日月圣教由任我行教主执掌，但是出于对武学的痴迷，仍教主天天闭关修炼，不理教内事务。于是教内腐败严重，没有教主的打压，各种小势力乘机崛起，其中，最牛叉的当数东方不败；</li>
+<li>东方不败乘任教主闭关期间，怂恿半数的收下归顺自己，同时凭借自己的武功力压群雄，让教内所有人都不得不承认任我行的时期已过去，现在是东方不败的时代了；</li>
+<li>作为新的继任者，东方不败一方面整治教内腐败，打压各种小势力；另一方面积极处理对外事务，很快教内又恢复了生机；</li>
+<li>有一天任我行闭关归来，发现所有教众都已经诚服与东方不败；同时，功力也不如东方不败，于是也只好认栽！</li>
+</ol>
+<p>这个故事歪曲了《笑傲江湖》的原剧本，谁叫任我行姓任呢，书中他必须要重出江湖呀！但是Raft协议在这里却告诉了我们什么是现实，现实就是你必须低头，你的Term过了，长江后浪推前浪。</p>
+<h2 id="日志复制"><a href="#日志复制" class="headerlink" title="日志复制"></a>日志复制</h2><p>Leader除了向Follower发送心跳消息，还会处理客户端的请求，并将客户端的更新操作以消息(Append Entries消息)的形式发送到集群中所有的Follower。当Follower记录收到的这些消息之后，会向Leader返回相应的响应消息。 Leader在收到半数以上的 Follower的响应消息后，会对客户端的请求进行应答。</p>
+<p>Leader会维护<code>nextIndex[]</code>和<code>matchIndex[]</code>，这两个数组中记录的都是日志索引值</p>
+<p><img src="/uploads/raft-index.png" width="90%" height="90%"></p>
+<ul>
+<li><p>nextIndex[]<br>记录了需要发送给每个Follower的下一条日志的索引值;</p>
+</li>
+<li><p>matchIndex[]<br>表示记录了己经复制给每个Follower的最大的日志索引值。</p>
+</li>
+</ul>
+<h3 id="调整过程"><a href="#调整过程" class="headerlink" title="调整过程"></a>调整过程</h3><ol>
+<li>当一个新leader被选举出来时，它不知道每一个follower当前log的状态，因此会将每个的nextIndex值都设置为其日志的最大index（然后再逐步调整），同时将其matchIndex设置为0;</li>
+<li>Leader会向其他节点发送AppendEntries，若节点己经拥有了Leader的全部log（要求index和term都对应），它会返回追加成功的响应并等待后续的日志 ；若节点没有index对应的log，就会返回追加日志失败的响应；收到响应后，Leader节点会将nextIndex前移。</li>
+</ol>
+<p>我的理解是，在AppendEntries中只是带了index和term信息，而不带内容；在第二步确定了nextIndex的位置之后，leader才真正将缺失的log内容追加给follower。</p>
+<h1 id="Etcd"><a href="#Etcd" class="headerlink" title="Etcd"></a>Etcd</h1><p>主要介绍一些调试和性能方面可能有影响的知识点，以及运维常用的命令。</p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>可能影响到etcd性能的点。</p>
+<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><p>etcd在 BoltDB 中存储的 Key 是 reversion, Value 是 etcd 自定义的键值对组合。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rev=&#123;1 0) , key=key1, value=<span class="string">"value1"</span></span><br><span class="line">rev=&#123;1 1), key=key2, value=<span class="string">"value2"</span> </span><br><span class="line">rev=&#123;2 0) , key=key1, value=<span class="string">"updatel"</span> </span><br><span class="line">rev=&#123;2 1) , key=key2 , value= <span class="string">"update2"</span></span><br></pre></td></tr></table></figure>
+<p>reversion主要由两部分组成，第一部分是 main reversion，每次事务递增一；第二部分是sub reversion，同一个事务中的每次操作都会递增1，两者结合就可以保证Key唯一且递增。</p>
+<p>从backend store保存的数据格式我们可以看出，如果要从BoltDB中查询键值对，必须通过reversion进行查找。但客户端只知道具体的键值对中的Key值，并不清楚每个键值对对应的reversion信息，所以在v3版本存储的内存索引(kvIndex)中保存的就是Key与reversion之前的映射关系。</p>
+<p>客户端在查找指定键值对时，会先通过内存中维护的 B树索引(该B树索引中维护了原始Key值到keyIndex的映射关系)查找到对应的keyIndex实例，然后通过keyIndex查找到对应的revision信息(keyIndex内维护了多个版本的revision信息〉，最后通过revision映射到磁盘中的 BoltDB查找并返回真正的键值对数据。</p>
+<h3 id="快照"><a href="#快照" class="headerlink" title="快照"></a>快照</h3><p>随着节点的运行，会处理客户端和集群中其他节点发来的大量请求，相应的WAL日志量会不断增加，会产生大量的WAL日志文件，这就会导致资源浪费 。当节点宕机之后，如果要恢复其状态，则需要从头读取全部的WAL日志文件，这显然是非常耗时的。为了解决这些问题，etcd会定期创建快照并将其保存到本地磁盘中，在恢复节点状态时会先加载快照文件，使用该快照数据将节点恢复到对应的状态，之后从快照数据之后的相应位置开始读取WAL日志文件，最终将节点恢复到正确的状态。</p>
+<p>etcd的members目录下可以看到snap和wal两个目录，wal下主要存放Write ahead log的数据；snap下存放的就是从wal做的snap。另外，在snap下还有一个db文件，它就是bbolt的数据库文件。</p>
+<p><code>--snapshot-count</code>参数控制快照的频率，默认是<code>10000</code>，即每10000次变更会触发一次快照操作。如果内存使用率高并且磁盘使用率高，可以尝试调低这个参数。</p>
+<h3 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h3><p>启动参数中添加<code>--debug</code>即可打开debug模式，etcd会在<code>http://x.x.x.x:2379/debug</code>路径下输出debug信息。由于debug信息很多，会导致性能下降。</p>
+<p><code>/debug/pprof</code>为go语言runtime的endpoint，可以用于分析CPU、heap、mutex和goroutine利用率。</p>
+<h3 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h3><ul>
+<li>将etcd所使用的磁盘与系统盘分开</li>
+<li>data目录和wal目录分别挂载不同的磁盘</li>
+<li>有条件推荐使用SSD固态硬盘</li>
+<li>使用ionice调高etcd进程的IO优先级（这个针对etcd数据目录在系统盘的情况）  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ionice -c2 -n0 -p `pgrep etcd`</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="运维"><a href="#运维" class="headerlink" title="运维"></a>运维</h2><p>包含一些运维常用的命令和方法，以备随时拷贝。</p>
+<h3 id="添加新节点"><a href="#添加新节点" class="headerlink" title="添加新节点"></a>添加新节点</h3><p>增加一个新的节点分为两步：</p>
+<ol>
+<li>通过 etcdctl或对应的API注册新节点</li>
+<li>使用恰当的参数启动新节点</li>
+</ol>
+<p>假设我们要新加的节点取名为infra3, peerURLs是<a href="http://10.0.1.13:2380" target="_blank" rel="noopener">http://10.0.1.13:2380</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl member add infra3 http://10.0.1.13:2380</span><br><span class="line">added member 9bf1b35fc7761a23 to cluster</span><br><span class="line"></span><br><span class="line">ETCD_NAME=<span class="string">"infra3"</span></span><br><span class="line">ETCD_INITIAL_CLUSTER=<span class="string">"infra0=http://10.0.1.10:2380,infra1=http://10.0.1.11:2380,infra2=http://10.0.1.12:2380,infra3=http://10.0.1.13:2380"</span></span><br><span class="line">ETCD_INITIAL_CLUSTER_STATE=existing</span><br></pre></td></tr></table></figure>
+<p>etcdctl 在注册完新节点后，会返回一段提示，包含3个环境变量。然后在第二部启动新节点的时候，带上这3个环境变量即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> ETCD_NAME=<span class="string">"infra3"</span></span><br><span class="line">$ <span class="built_in">export</span> ETCD_INITIAL_CLUSTER=<span class="string">"infra0=http://10.0.1.10:2380,infra1=http://10.0.1.11:2380,infra2=http://10.0.1.12:2380,infra3=http://10.0.1.13:2380"</span></span><br><span class="line">$ <span class="built_in">export</span> ETCD_INITIAL_CLUSTER_STATE=existing</span><br><span class="line">$ etcd -listen-client-urls http://10.0.1.13:2379 -advertise-client-urls http://10.0.1.13:2379  -listen-peer-urls http://10.0.1.13:2380 -initial-advertise-peer-urls http://10.0.1.13:2380 -data-dir %data_dir%</span><br></pre></td></tr></table></figure>
+<p>这样，新节点就会运行起来并且加入到已有的集群中了。</p>
+<blockquote>
+<p>值得注意的是，如果原先的集群只有1个节点，在新节点成功启动之前，新集群并不能正确的形成。因为原先的单节点集群无法完成leader的选举。直到新节点启动完，和原先的节点建立连接以后，新集群才能正确形成。</p>
+</blockquote>
+<h3 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h3><p>备份数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">etcdctl backup --data-dir /var/lib/etcd -backup-dir /tmp/etcd_backup</span><br><span class="line">tar -zcxf backup.etcd.tar.gz /tmp/etcd_backu</span><br></pre></td></tr></table></figure>
+<p>使用<code>--force-new-cluster</code>参数启动Etcd服务。这个参数会重置集群ID和集群的所有成员信息，其中节点的监听地址会被重置为localhost:2379, 表示集群中只有一个节点。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf backup.etcd.tar.gz -C /var/lib/etcd</span><br><span class="line">etcd --data-dir=/var/lib/etcd --force-new-cluster ...</span><br></pre></td></tr></table></figure>
+<h3 id="快照恢复"><a href="#快照恢复" class="headerlink" title="快照恢复"></a>快照恢复</h3><p>节点数据快照</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ETCDCTL_API=3 etcdctl --endpoints <span class="variable">$ENDPOINT</span> snapshot save snapshotdb</span><br><span class="line"><span class="comment"># exit 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># verify the snapshot</span></span><br><span class="line">ETCDCTL_API=3 etcdctl --write-out=table snapshot status snapshotdb</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">|   HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |</span><br><span class="line">+----------+----------+------------+------------+</span><br><span class="line">| fe01cf57 |       10 |          7 | 2.1 MB     |</span><br><span class="line">+----------+----------+------------+------------+</span><br></pre></td></tr></table></figure>
+<p>需要在每一个节点上都做restore</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl snapshot restore snapshot.db \</span><br><span class="line">  --name m1 \</span><br><span class="line">  --initial-cluster m1=http:/host1:2380,m2=http://host2:2380,m3=http://host3:2380 \</span><br><span class="line">  --initial-cluster-token etcd-cluster-1 \</span><br><span class="line">  --initial-advertise-peer-urls http://host1:2380</span><br><span class="line">$ etcdctl snapshot restore snapshot.db \</span><br><span class="line">  --name m2 \</span><br><span class="line">  --initial-cluster m1=http:/host1:2380,m2=http://host2:2380,m3=http://host3:2380 \</span><br><span class="line">  --initial-cluster-token etcd-cluster-1 \</span><br><span class="line">  --initial-advertise-peer-urls http://host2:2380</span><br><span class="line">$ etcdctl snapshot restore snapshot.db \</span><br><span class="line">  --name m3 \</span><br><span class="line">  --initial-cluster m1=http:/host1:2380,m2=http://host2:2380,m3=http://host3:2380 \</span><br><span class="line">  --initial-cluster-token etcd-cluster-1 \</span><br><span class="line">  --initial-advertise-peer-urls http://host3:2380</span><br></pre></td></tr></table></figure>
+<h3 id="历史记录压缩"><a href="#历史记录压缩" class="headerlink" title="历史记录压缩"></a>历史记录压缩</h3><p>如果将etcd用作服务发现，每次服务注册和更新都可以看做一条新数据，日积月累，这些数据的量会导致etcd占用内存越来越大，直到etcd到达空间配额限制的时候，etcd的写入将会被静止，影响线上服务，定期删除历史记录就是避免这种情况。</p>
+<p>数据压缩并不是清理现有数据，只是对数据的历史版本进行清理，清理后数据的历史版本将不能访问，但不会影响现有最新数据的访问。</p>
+<ul>
+<li><p><code>–auto-compaction-retention</code><br>Auto compaction retention for mvcc key value store in hour. 0 means disable auto compaction.<br>default: 0</p>
+</li>
+<li><p><code>–auto-compaction-mode</code><br>Interpret ‘auto-compaction-retention’ one of: ‘periodic’, ‘revision’. ‘periodic’ for duration based retention, defaulting to hours if no time unit is provided (e.g. ‘5m’). ‘revision’ for revision number based retention.<br>default: periodic</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>v3.3之上的版本有这样一个规则</strong></p>
+<p>Periodic compactor keeps recording latest revisions for every compaction period when given period is <code>less than 1-hour</code>, or for every 1-hour when given compaction period is <code>greater than 1-hour</code> (e.g. 1-hour when –auto-compaction-mode=periodic –auto-compaction-retention=24h)</p>
+<p>也就是说，如果配置的值小于1小时，那么就严格按照这个时间来执行压缩；如果配置的值大于1小时，会每小时执行压缩，但是采样还是按照保留的版本窗口依然按照用户指定的时间周期来定。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcd --auto-compaction-retention=1  <span class="comment"># 只保留一个小时的历史数据</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>k8s api-server支持定期执行压缩操作，其参数里面有这样的配置：</p>
+<p>–etcd-compaction-interval duration     Default: 5m0s<br>  The interval of compaction requests. If 0, the compaction request from apiserver is disabled.</p>
+</blockquote>
+<h3 id="碎片整理"><a href="#碎片整理" class="headerlink" title="碎片整理"></a>碎片整理</h3><p>进行compaction操作之后，旧的revision被压缩，会产生内部的碎片，内部碎片是指空闲状态的，能被etcd使用但是仍然消耗存储空间的磁盘空间。去碎片化实际上是将存储空间还给文件系统。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">etcdctl defrag</span><br><span class="line"></span><br><span class="line"><span class="comment"># 带参数，整理集群所有节点</span></span><br><span class="line">$ etcdctl defrag --cluster</span><br><span class="line">Finished defragmenting etcd member[http://127.0.0.1:2379]</span><br><span class="line">Finished defragmenting etcd member[http://127.0.0.1:22379]</span><br><span class="line">Finished defragmenting etcd member[http://127.0.0.1:32379]</span><br></pre></td></tr></table></figure>
+<p>如果etcd没有运行，可以直接整理目录中db的碎片</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ etcdctl defrag --data-dir &lt;path-to-etcd-data-dir&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>Note</strong>：碎片整理和压缩都会阻塞对etcd的读写操作。</p>
+<h3 id="存取空间限制"><a href="#存取空间限制" class="headerlink" title="存取空间限制"></a>存取空间限制</h3><ul>
+<li><p>Request size limit</p>
+<p>  etcd is designed to handle small key value pairs typical for metadata. Larger requests will work, but may increase the latency of other requests. By default, the maximum size of any request is 1.5 MiB. This limit is configurable through <code>--max-request-bytes</code> flag for etcd server.</p>
+<p>  <code>--max-request-bytes</code>限制请求的大小，默认值是1572864，即<code>1.5M</code>。在某些场景可能会出现请求过大导致无法写入的情况，可以调大到10485760即10M。</p>
+</li>
+</ul>
+<ul>
+<li><p>Storage size limit</p>
+<p>  The default storage size limit is <code>2GB</code>, configurable with <code>--quota-backend-bytes</code> flag. 8GB is a suggested maximum size for normal environments and etcd warns at startup if the configured value exceeds it.</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置非常小的 16MB 配额</span></span><br><span class="line">$ etcd --quota-backend-bytes=$((16*1024*1024))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 消耗空间</span></span><br><span class="line">$ <span class="keyword">while</span> [ 1 ]; <span class="keyword">do</span> dd <span class="keyword">if</span>=/dev/urandom bs=1024 count=1024  | etcdctl put key  || <span class="built_in">break</span>; <span class="keyword">done</span></span><br><span class="line">...</span><br><span class="line">Error:  rpc error: code = 8 desc = etcdserver: mvcc: database space exceeded</span><br><span class="line"></span><br><span class="line"><span class="comment"># 确认配额空间被超过</span></span><br><span class="line">$ etcdctl --write-out=table endpoint status</span><br><span class="line">+----------------+------------------+-----------+---------+-----------+-----------+------------+</span><br><span class="line">|    ENDPOINT    |        ID        |  VERSION  | DB SIZE | IS LEADER | RAFT TERM | RAFT INDEX |</span><br><span class="line">+----------------+------------------+-----------+---------+-----------+-----------+------------+</span><br><span class="line">| 127.0.0.1:2379 | bf9071f4639c75cc | 2.3.0+git | 18 MB   | <span class="literal">true</span>      |         2 |       3332 |</span><br><span class="line">+----------------+------------------+-----------+---------+-----------+-----------+------------+</span><br><span class="line"></span><br><span class="line"><span class="comment"># 确认警告已发起</span></span><br><span class="line">$ etcdctl alarm list</span><br><span class="line">memberID:13803658152347727308 alarm:NOSPACE</span><br></pre></td></tr></table></figure>
+<p>如果遇到空间不足，可以这样操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前版本号</span></span><br><span class="line">$ rev=$(ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out=<span class="string">"json"</span> | egrep -o <span class="string">'"revision":[0-9]*'</span> | egrep -o <span class="string">'[0-9]*'</span>）</span><br><span class="line"><span class="comment"># 压缩所有旧版本</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl compact <span class="variable">$rev</span></span><br><span class="line"><span class="comment"># 去碎片化</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl defrag</span><br><span class="line"><span class="comment"># 取消警报</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl alarm disarm</span><br><span class="line"><span class="comment"># 测试通过</span></span><br><span class="line">$ ETCDCTL_API=3 etcdctl put key0 1234</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/06/11/Etcd原理与运维/" title="Etcd原理与运维">http://ljchen.net/2019/06/11/Etcd原理与运维/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/distributed-system/" rel="tag"># distributed-system</a>
+          
+            <a href="/tags/Etcd/" rel="tag"># Etcd</a>
+          
+            <a href="/tags/Raft/" rel="tag"># Raft</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/03/knative墙内安装/" rel="next" title="Knative墙内安装">
+                <i class="fa fa-chevron-left"></i> Knative墙内安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/13/K8s认证详解/" rel="prev" title="K8s认证详解">
+                K8s认证详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Raft协议"><span class="nav-number">1.</span> <span class="nav-text">Raft协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#选举过程"><span class="nav-number">1.1.</span> <span class="nav-text">选举过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#学院派"><span class="nav-number">1.1.1.</span> <span class="nav-text">学院派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#武林派"><span class="nav-number">1.1.2.</span> <span class="nav-text">武林派</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志复制"><span class="nav-number">1.2.</span> <span class="nav-text">日志复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调整过程"><span class="nav-number">1.2.1.</span> <span class="nav-text">调整过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Etcd"><span class="nav-number">2.</span> <span class="nav-text">Etcd</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.1.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#存储"><span class="nav-number">2.1.1.</span> <span class="nav-text">存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快照"><span class="nav-number">2.1.2.</span> <span class="nav-text">快照</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#debug"><span class="nav-number">2.1.3.</span> <span class="nav-text">debug</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调优"><span class="nav-number">2.1.4.</span> <span class="nav-text">调优</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维"><span class="nav-number">2.2.</span> <span class="nav-text">运维</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加新节点"><span class="nav-number">2.2.1.</span> <span class="nav-text">添加新节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#故障恢复"><span class="nav-number">2.2.2.</span> <span class="nav-text">故障恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快照恢复"><span class="nav-number">2.2.3.</span> <span class="nav-text">快照恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#历史记录压缩"><span class="nav-number">2.2.4.</span> <span class="nav-text">历史记录压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#碎片整理"><span class="nav-number">2.2.5.</span> <span class="nav-text">碎片整理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存取空间限制"><span class="nav-number">2.2.6.</span> <span class="nav-text">存取空间限制</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/06/11/Etcd原理与运维/';
+          this.page.identifier = '2019/06/11/Etcd原理与运维/';
+          this.page.title = 'Etcd原理与运维';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

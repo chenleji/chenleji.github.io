@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>Knative墙内安装 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/06/03/knative墙内安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Knative墙内安装</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-03T23:08:42+08:00">2019-06-03</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cloud-native/" itemprop="url" rel="index">
+                    <span itemprop="name">cloud-native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/03/knative墙内安装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/06/03/knative墙内安装/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">18 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="/uploads/serverless-joke.png" rel="gallery_ck8o9pn2k0037jroypkm075te" itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/uploads/serverless-joke.png" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>knative是一个大熔炉，将DevOps构建到服务的自动弹性伸缩，流量管控，事件驱动等都整合到一起。从很早期的版本开始我就一直有在关注，好在其文档还比较完备，可以基于文档一步步部署和尝鲜。</p>
+<a id="more"></a>
+<p>东西虽好，但安装却很麻烦！gcr.io一方面被墙，无法拉取镜像；另一方面gcr镜像名称还支持多级子目录，导致没法和docker hub简单做映射。在v0.4.0版本时，我曾一个个镜像在docker hub创建对应的repository。可是这货版本更新又很快，实在无法容忍；于是写了一个脚本，专门用于解决knative墙内安装的问题。</p>
+<p>当前<code>v0.7.0</code>已经验证通过！</p>
+<h1 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h1><p>其实原理比较简单，主要分两步：</p>
+<ul>
+<li><strong>在墙外执行第一个脚本</strong><br>先基于knative release的yaml文件，从中过滤出gcr中存放的images；将其下载到墙外主机，然后按照特定规则更改每一个镜像的tag为满足docker hub中镜像名称规则的new tag，再推送到docker hub；</li>
+<li><strong>在墙内执行第二个脚本</strong><br>按照第一个脚本中镜像old tag到new tag的转换规则，更新knative release的yaml文件中所有的镜像tag。然后使用更新后的yaml文件来部署knative。</li>
+</ul>
+<h1 id="安装istio"><a href="#安装istio" class="headerlink" title="安装istio"></a>安装istio</h1><p>先在k8s上安装istio，具体操作如下（如果你说你不会安装k8s，请移步<a href="http://ljchen.net/2018/10/23/%E5%9F%BA%E4%BA%8E%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F%E7%AB%99%E5%AE%89%E8%A3%85kubernetes/">这里</a>）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Download and unpack Istio</span></span><br><span class="line"><span class="built_in">export</span> ISTIO_VERSION=1.1.7</span><br><span class="line">curl -L https://git.io/getLatestIstio | sh -</span><br><span class="line"><span class="built_in">cd</span> istio-<span class="variable">$&#123;ISTIO_VERSION&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> install/kubernetes/helm/istio-init/files/crd*yaml; <span class="keyword">do</span> kubectl apply -f <span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF | kubectl apply -f -</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Namespace</span><br><span class="line">metadata:</span><br><span class="line">  name: istio-system</span><br><span class="line">  labels:</span><br><span class="line">    istio-injection: disabled</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">helm template --namespace=istio-system \</span><br><span class="line">  --<span class="built_in">set</span> prometheus.enabled=<span class="literal">false</span> \</span><br><span class="line">  --<span class="built_in">set</span> mixer.enabled=<span class="literal">false</span> \</span><br><span class="line">  --<span class="built_in">set</span> mixer.policy.enabled=<span class="literal">false</span> \</span><br><span class="line">  --<span class="built_in">set</span> mixer.telemetry.enabled=<span class="literal">false</span> \</span><br><span class="line">  `<span class="comment"># Pilot doesn't need a sidecar.` \</span></span><br><span class="line">  --<span class="built_in">set</span> pilot.sidecar=<span class="literal">false</span> \</span><br><span class="line">  --<span class="built_in">set</span> pilot.resources.requests.memory=128Mi \</span><br><span class="line">  `<span class="comment"># Disable galley (and things requiring galley).` \</span></span><br><span class="line">  --<span class="built_in">set</span> galley.enabled=<span class="literal">false</span> \</span><br><span class="line">  --<span class="built_in">set</span> global.useMCP=<span class="literal">false</span> \</span><br><span class="line">  `<span class="comment"># Disable security / policy.` \</span></span><br><span class="line">  --<span class="built_in">set</span> security.enabled=<span class="literal">false</span> \</span><br><span class="line">  --<span class="built_in">set</span> global.disablePolicyChecks=<span class="literal">true</span> \</span><br><span class="line">  `<span class="comment"># Disable sidecar injection.` \</span></span><br><span class="line">  --<span class="built_in">set</span> sidecarInjectorWebhook.enabled=<span class="literal">false</span> \</span><br><span class="line">  --<span class="built_in">set</span> global.proxy.autoInject=disabled \</span><br><span class="line">  --<span class="built_in">set</span> global.omitSidecarInjectorConfigMap=<span class="literal">true</span> \</span><br><span class="line">  `<span class="comment"># Set gateway pods to 1 to sidestep eventual consistency / readiness problems.` \</span></span><br><span class="line">  --<span class="built_in">set</span> gateways.istio-ingressgateway.autoscaleMin=1 \</span><br><span class="line">  --<span class="built_in">set</span> gateways.istio-ingressgateway.autoscaleMax=1 \</span><br><span class="line">  `<span class="comment"># Set pilot trace sampling to 100%` \</span></span><br><span class="line">  --<span class="built_in">set</span> pilot.traceSampling=100 \</span><br><span class="line">  install/kubernetes/helm/istio \</span><br><span class="line">  &gt; ./istio-lean.yaml</span><br><span class="line"></span><br><span class="line">kubectl apply -f istio-lean.yaml</span><br></pre></td></tr></table></figure>
+<h1 id="生成安装所需yaml"><a href="#生成安装所需yaml" class="headerlink" title="生成安装所需yaml"></a>生成安装所需yaml</h1><p>这里也就是前面提到的第二个脚本文件，里面的<code>REGISTRY_URL</code>变量是写的我在docker hub的仓库名称。你也可以直接使用该脚本来部署，镜像都是public的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; knative-image.sh</span><br><span class="line">KNATIVE_PATH=<span class="string">'knative'</span></span><br><span class="line">KNATIVE_VER=<span class="string">'v0.7.0'</span></span><br><span class="line">REGISTRY_URL=<span class="string">'ljchen'</span></span><br><span class="line"></span><br><span class="line">rm -rf <span class="variable">$KNATIVE_PATH</span></span><br><span class="line">mkdir <span class="variable">$KNATIVE_PATH</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># download yaml</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"download yaml files ..."</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$KNATIVE_PATH</span></span><br><span class="line"></span><br><span class="line">wget -q https://github.com/knative/serving/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/serving.yaml </span><br><span class="line">wget -q https://github.com/knative/build/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/build.yaml </span><br><span class="line">wget -q https://github.com/knative/eventing/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/release.yaml </span><br><span class="line">wget -q https://github.com/knative/eventing-sources/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/eventing-sources.yaml </span><br><span class="line">wget -q https://github.com/knative/serving/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/monitoring.yaml </span><br><span class="line">wget -q https://raw.githubusercontent.com/knative/serving/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/third_party/config/build/clusterrole.yaml</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># get images list</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"collect image to tmp file ..."</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$KNATIVE_PATH</span></span><br><span class="line">rm -rf image.tmp</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> `grep -RI <span class="string">" image: "</span> *.yaml | grep gcr.io`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	<span class="keyword">if</span> [[ <span class="variable">$&#123;line&#125;</span> =~ <span class="string">'gcr.io'</span> ]]</span><br><span class="line">	<span class="keyword">then</span></span><br><span class="line">		<span class="keyword">if</span> [[ <span class="variable">$&#123;line&#125;</span> =~ <span class="string">'gcr.io/knative-releases/github.com/knative'</span> ]]</span><br><span class="line">		<span class="keyword">then</span></span><br><span class="line">			sub_line1=<span class="variable">$&#123;line##gcr.io/knative-releases/github.com/knative/&#125;</span></span><br><span class="line">			sub_line2=<span class="variable">$&#123;sub_line1%%@sha*&#125;</span></span><br><span class="line">			container_name=knative_<span class="variable">$&#123;sub_line2//\//_&#125;</span></span><br><span class="line"></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$&#123;line#image:&#125;</span> <span class="variable">$&#123;REGISTRY_URL&#125;</span>/<span class="variable">$&#123;container_name&#125;</span>:<span class="variable">$&#123;KNATIVE_VER&#125;</span> &gt;&gt; image.tmp</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			sub_line1=<span class="variable">$&#123;line#image:&#125;</span></span><br><span class="line">			sub_line2=<span class="variable">$&#123;sub_line1#*/&#125;</span></span><br><span class="line">			sub_line3=<span class="variable">$&#123;sub_line2%%:*&#125;</span></span><br><span class="line">			container_name=knative_<span class="variable">$&#123;sub_line3//\//_&#125;</span></span><br><span class="line"></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$&#123;line#image:&#125;</span> <span class="variable">$&#123;REGISTRY_URL&#125;</span>/<span class="variable">$&#123;container_name&#125;</span>:<span class="variable">$&#123;KNATIVE_VER&#125;</span> &gt;&gt; image.tmp;</span><br><span class="line">		<span class="keyword">fi</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> `grep -RI <span class="string">" value: "</span> *.yaml | grep gcr.io`</span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">	<span class="keyword">if</span> [[ <span class="variable">$&#123;line&#125;</span> =~ <span class="string">'gcr.io'</span> ]]</span><br><span class="line">	<span class="keyword">then</span></span><br><span class="line">		<span class="keyword">if</span> [[ <span class="variable">$&#123;line&#125;</span> =~ <span class="string">'gcr.io/knative-releases/github.com/knative'</span> ]]</span><br><span class="line">		<span class="keyword">then</span> </span><br><span class="line">			sub_line1=<span class="variable">$&#123;line##gcr.io/knative-releases/github.com/knative/&#125;</span></span><br><span class="line">			sub_line2=<span class="variable">$&#123;sub_line1%%@sha*&#125;</span></span><br><span class="line">			container_name=knative_<span class="variable">$&#123;sub_line2//\//_&#125;</span></span><br><span class="line"></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$&#123;line#value:&#125;</span> <span class="variable">$&#123;REGISTRY_URL&#125;</span>/<span class="variable">$&#123;container_name&#125;</span>:<span class="variable">$&#123;KNATIVE_VER&#125;</span> &gt;&gt; image.tmp</span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			sub_line1=<span class="variable">$&#123;line#value:&#125;</span></span><br><span class="line">			sub_line2=<span class="variable">$&#123;sub_line1#*/&#125;</span></span><br><span class="line">			sub_line3=<span class="variable">$&#123;sub_line2%%:*&#125;</span></span><br><span class="line">			container_name=knative_<span class="variable">$&#123;sub_line3//\//_&#125;</span></span><br><span class="line"></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$&#123;line#value:&#125;</span> <span class="variable">$&#123;REGISTRY_URL&#125;</span>/<span class="variable">$&#123;container_name&#125;</span>:<span class="variable">$&#123;KNATIVE_VER&#125;</span> &gt;&gt; image.tmp;</span><br><span class="line">		<span class="keyword">fi</span> </span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># replace file image</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$KNATIVE_PATH</span></span><br><span class="line"></span><br><span class="line">counter=0</span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> *.yaml</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"开始处理文件 "</span> <span class="variable">$file</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> <span class="built_in">read</span> line</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">		origin_image=`<span class="built_in">echo</span> <span class="variable">$&#123;line&#125;</span> | awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line">		new_image=`<span class="built_in">echo</span> <span class="variable">$&#123;line&#125;</span> | awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line"></span><br><span class="line">	    tmp=<span class="variable">$&#123;origin_image//\//__&#125;</span></span><br><span class="line">	    origin_image=<span class="variable">$&#123;tmp//__/\\/&#125;</span></span><br><span class="line"></span><br><span class="line">	    tmp2=<span class="variable">$&#123;new_image//\//__&#125;</span></span><br><span class="line">	    new_image=<span class="variable">$&#123;tmp2//__/\\/&#125;</span></span><br><span class="line"></span><br><span class="line">	    sed -i <span class="string">"s/<span class="variable">$&#123;origin_image&#125;</span>/<span class="variable">$&#123;new_image&#125;</span>/g"</span> <span class="variable">$&#123;file&#125;</span>   </span><br><span class="line">	    <span class="comment">#上面这行，如果是MacOS/UNIX请替换为: sed -i " " "s/$&#123;origin_image&#125;/$&#123;new_image&#125;/g" $&#123;file&#125;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">done</span> &lt; image.tmp</span><br><span class="line">	counter=`expr <span class="variable">$&#123;counter&#125;</span> + 1`</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"共处理文件数："</span> <span class="variable">$&#123;counter&#125;</span></span><br><span class="line"></span><br><span class="line">rm -rf *.yaml.1</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># finish</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"completed..."</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">sh ./knative-image.sh</span><br></pre></td></tr></table></figure>
+<h1 id="部署knative"><a href="#部署knative" class="headerlink" title="部署knative"></a>部署knative</h1><p>这里就是用刚才生成的yaml文件来直接部署到knative到k8s了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> knative/</span><br><span class="line">kubectl apply -f *.yaml</span><br></pre></td></tr></table></figure>
+<h1 id="配套镜像生成脚本"><a href="#配套镜像生成脚本" class="headerlink" title="配套镜像生成脚本"></a>配套镜像生成脚本</h1><p>这里就是前面说的第一个脚本，如果你想自己再跑一边，请修改<code>REGISTRY_URL</code>的值为你的镜像仓库地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">KNATIVE_PATH=<span class="string">'knative'</span></span><br><span class="line">KNATIVE_VER=<span class="string">'v0.7.0'</span></span><br><span class="line">REGISTRY_URL=<span class="string">'ljchen'</span></span><br><span class="line"></span><br><span class="line">rm -rf <span class="variable">$KNATIVE_PATH</span></span><br><span class="line">mkdir <span class="variable">$KNATIVE_PATH</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># download yaml</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"download yaml files ..."</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$KNATIVE_PATH</span></span><br><span class="line"></span><br><span class="line">wget -q https://github.com/knative/serving/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/serving.yaml </span><br><span class="line">wget -q https://github.com/knative/build/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/build.yaml </span><br><span class="line">wget -q https://github.com/knative/eventing/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/release.yaml </span><br><span class="line">wget -q https://github.com/knative/eventing-sources/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/eventing-sources.yaml </span><br><span class="line">wget -q https://github.com/knative/serving/releases/download/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/monitoring.yaml </span><br><span class="line">wget -q https://raw.githubusercontent.com/knative/serving/<span class="variable">$&#123;KNATIVE_VER&#125;</span>/third_party/config/build/clusterrole.yaml</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># get images list</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"collect image to tmp file ..."</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$KNATIVE_PATH</span></span><br><span class="line">rm -rf image.tmp</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> `grep -RI <span class="string">" image: "</span> *.yaml | grep gcr.io`</span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">	<span class="keyword">if</span> [[ <span class="variable">$&#123;line&#125;</span> =~ <span class="string">'gcr.io'</span> ]]</span><br><span class="line">	<span class="keyword">then</span></span><br><span class="line">		<span class="keyword">if</span> [[ <span class="variable">$&#123;line&#125;</span> =~ <span class="string">'gcr.io/knative-releases/github.com/knative'</span> ]]</span><br><span class="line">		<span class="keyword">then</span> </span><br><span class="line">			sub_line1=<span class="variable">$&#123;line##gcr.io/knative-releases/github.com/knative/&#125;</span></span><br><span class="line">			sub_line2=<span class="variable">$&#123;sub_line1%%@sha*&#125;</span></span><br><span class="line">			container_name=knative_<span class="variable">$&#123;sub_line2//\//_&#125;</span></span><br><span class="line"></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$&#123;line#image:&#125;</span> <span class="variable">$&#123;REGISTRY_URL&#125;</span>/<span class="variable">$&#123;container_name&#125;</span>:<span class="variable">$&#123;KNATIVE_VER&#125;</span> &gt;&gt; image.tmp</span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			sub_line1=<span class="variable">$&#123;line#image:&#125;</span></span><br><span class="line">			sub_line2=<span class="variable">$&#123;sub_line1#*/&#125;</span></span><br><span class="line">			sub_line3=<span class="variable">$&#123;sub_line2%%:*&#125;</span></span><br><span class="line">			container_name=knative_<span class="variable">$&#123;sub_line3//\//_&#125;</span></span><br><span class="line"></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$&#123;line#image:&#125;</span> <span class="variable">$&#123;REGISTRY_URL&#125;</span>/<span class="variable">$&#123;container_name&#125;</span>:<span class="variable">$&#123;KNATIVE_VER&#125;</span> &gt;&gt; image.tmp;</span><br><span class="line">		<span class="keyword">fi</span> </span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> `grep -RI <span class="string">" value: "</span> *.yaml | grep gcr.io`</span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">	<span class="keyword">if</span> [[ <span class="variable">$&#123;line&#125;</span> =~ <span class="string">'gcr.io'</span> ]]</span><br><span class="line">	<span class="keyword">then</span></span><br><span class="line">		<span class="keyword">if</span> [[ <span class="variable">$&#123;line&#125;</span> =~ <span class="string">'gcr.io/knative-releases/github.com/knative'</span> ]]</span><br><span class="line">		<span class="keyword">then</span> </span><br><span class="line">			sub_line1=<span class="variable">$&#123;line##gcr.io/knative-releases/github.com/knative/&#125;</span></span><br><span class="line">			sub_line2=<span class="variable">$&#123;sub_line1%%@sha*&#125;</span></span><br><span class="line">			container_name=knative_<span class="variable">$&#123;sub_line2//\//_&#125;</span></span><br><span class="line"></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$&#123;line#value:&#125;</span> <span class="variable">$&#123;REGISTRY_URL&#125;</span>/<span class="variable">$&#123;container_name&#125;</span>:<span class="variable">$&#123;KNATIVE_VER&#125;</span> &gt;&gt; image.tmp</span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			sub_line1=<span class="variable">$&#123;line#value:&#125;</span></span><br><span class="line">			sub_line2=<span class="variable">$&#123;sub_line1#*/&#125;</span></span><br><span class="line">			sub_line3=<span class="variable">$&#123;sub_line2%%:*&#125;</span></span><br><span class="line">			container_name=knative_<span class="variable">$&#123;sub_line3//\//_&#125;</span></span><br><span class="line"></span><br><span class="line">			<span class="built_in">echo</span> <span class="variable">$&#123;line#value:&#125;</span> <span class="variable">$&#123;REGISTRY_URL&#125;</span>/<span class="variable">$&#123;container_name&#125;</span>:<span class="variable">$&#123;KNATIVE_VER&#125;</span> &gt;&gt; image.tmp;</span><br><span class="line">		<span class="keyword">fi</span> </span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># download image, tag, push</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$KNATIVE_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> line </span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">	origin_image=`<span class="built_in">echo</span> <span class="variable">$&#123;line&#125;</span> | awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line">	new_image=`<span class="built_in">echo</span> <span class="variable">$&#123;line&#125;</span> | awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"old:"</span> <span class="variable">$&#123;origin_image&#125;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"new:"</span> <span class="variable">$&#123;new_image&#125;</span></span><br><span class="line">	docker pull <span class="variable">$&#123;origin_image&#125;</span></span><br><span class="line">	docker tag <span class="variable">$&#123;origin_image&#125;</span> <span class="variable">$&#123;new_image&#125;</span></span><br><span class="line">	docker push <span class="variable">$&#123;new_image&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">done</span> &lt; image.tmp</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line"><span class="comment"># done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"completed..."</span></span><br></pre></td></tr></table></figure>
+<h1 id="gcr镜像映射表"><a href="#gcr镜像映射表" class="headerlink" title="gcr镜像映射表"></a>gcr镜像映射表</h1><p>下面排版不忍直视！尝试过表格等格式，发现更惨不忍睹。<br>hexo确实有点儿二；但是，内容的真实性更要紧，就忍忍吧~~</p>
+<h2 id="v0-6-0版本"><a href="#v0-6-0版本" class="headerlink" title="v0.6.0版本"></a>v0.6.0版本</h2><ol>
+<li>gcr.io/knative-releases/github.com/knative/build/cmd/creds-init@sha256:101f537b53b895b28b84ac3c74ede7d250845e24c51c26516873d8ccb23168ce<br>=&gt; ljchen/knative_build_cmd_creds-init:v0.6.0</li>
+</ol>
+<ol start="2">
+<li>gcr.io/knative-releases/github.com/knative/build/cmd/git-init@sha256:ce2c17308e9cb81992be153861c359a0c9e5f69c501a490633c8fe54ec992d53<br>=&gt; ljchen/knative_build_cmd_git-init:v0.6.0</li>
+</ol>
+<ol start="3">
+<li>gcr.io/cloud-builders/gcs-fetcher<br>=&gt; ljchen/knative_cloud-builders_gcs-fetcher:v0.6.0</li>
+</ol>
+<ol start="4">
+<li>gcr.io/knative-releases/github.com/knative/build/cmd/nop@sha256:50e2be042298f24800b9840a9aef831a5fe4d89d9a8edea5e0559cdedf32369d<br>=&gt; ljchen/knative_build_cmd_nop:v0.6.0</li>
+</ol>
+<ol start="5">
+<li>gcr.io/knative-releases/github.com/knative/build/cmd/controller@sha256:6a762848a46786cb481f5870787133e0d5e15615f8d54a5ba50d86b8315a58eb<br>=&gt; ljchen/knative_build_cmd_controller:v0.6.0</li>
+</ol>
+<ol start="6">
+<li>gcr.io/knative-releases/github.com/knative/build/cmd/webhook@sha256:8f0bbc50b63f368c9959acab87838c6986691c28d424847459f3526bf97f8a3e<br>=&gt; ljchen/knative_build_cmd_webhook:v0.6.0</li>
+</ol>
+<ol start="7">
+<li>gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/manager@sha256:99cf1f559f74ae97f271632697ed6e78a3fdd88a155632a57341b0dd6eab6581<br>=&gt; ljchen/knative_eventing-sources_cmd_manager:v0.6.0</li>
+</ol>
+<ol start="8">
+<li>k8s.gcr.io/elasticsearch:v5.6.4<br>=&gt; ljchen/knative_elasticsearch:v0.6.0</li>
+</ol>
+<ol start="9">
+<li>k8s.gcr.io/fluentd-elasticsearch:v2.0.4<br>=&gt; ljchen/knative_fluentd-elasticsearch:v0.6.0</li>
+</ol>
+<ol start="10">
+<li>k8s.gcr.io/addon-resizer:1.7<br>=&gt; ljchen/knative_addon-resizer:v0.6.0</li>
+</ol>
+<ol start="11">
+<li>gcr.io/knative-releases/github.com/knative/eventing/cmd/controller@sha256:85c010633944c06f4c16253108c2338dba271971b2b5f2d877b8247fa19ff5cb<br>=&gt; ljchen/knative_eventing_cmd_controller:v0.6.0</li>
+</ol>
+<ol start="12">
+<li>gcr.io/knative-releases/github.com/knative/eventing/cmd/sources_controller@sha256:aaa48f71a8db1b1dcf86c57d2dd72be1a65ed76d77f23a5abef4b2ad5c01c863<br>=&gt; ljchen/knative_eventing_cmd_sources_controller:v0.6.0</li>
+</ol>
+<ol start="13">
+<li>gcr.io/knative-releases/github.com/knative/eventing/cmd/webhook@sha256:34a7cac96f8c809a7ce8ea0a86445204bbc6ac897525b876f53babb325f50bdc<br>=&gt; ljchen/knative_eventing_cmd_webhook:v0.6.0</li>
+</ol>
+<ol start="14">
+<li>gcr.io/knative-releases/github.com/knative/eventing/cmd/in_memory/controller@sha256:496c19e81d9e7e40b3887c7c290304934f54f46c8a9186e800e314c014970c26<br>=&gt; ljchen/knative_eventing_cmd_in_memory_controller:v0.6.0</li>
+</ol>
+<ol start="15">
+<li>gcr.io/knative-releases/github.com/knative/eventing/cmd/in_memory/dispatcher@sha256:897f03ed16e0000944da9ee0fdc971c43c8a494ff771c4e64d0573caf357c013<br>=&gt; ljchen/knative_eventing_cmd_in_memory_dispatcher:v0.6.0</li>
+</ol>
+<ol start="16">
+<li>gcr.io/knative-releases/github.com/knative/serving/cmd/queue@sha256:1e40c99ff5977daa2d69873fff604c6d09651af1f9ff15aadf8849b3ee77ab45<br>=&gt; ljchen/knative_serving_cmd_queue:v0.6.0</li>
+</ol>
+<ol start="17">
+<li>gcr.io/knative-releases/github.com/knative/serving/cmd/activator@sha256:f553b6cb7599f2f71190ddc93024952e22f2f55e97a3f38519d4d622fc751651<br>=&gt; ljchen/knative_serving_cmd_activator:v0.6.0</li>
+</ol>
+<ol start="18">
+<li>gcr.io/knative-releases/github.com/knative/serving/cmd/autoscaler@sha256:3a466eaf05cd505338163322331ee8634c601204250fa639360ae3524756acc3<br>=&gt; ljchen/knative_serving_cmd_autoscaler:v0.6.0</li>
+</ol>
+<ol start="19">
+<li>gcr.io/knative-releases/github.com/knative/serving/cmd/controller@sha256:8f402eab0ada038d3de2ad753a40f9f441715d08058d890537146bb0aba11c8e<br>=&gt; ljchen/knative_serving_cmd_controller:v0.6.0</li>
+</ol>
+<ol start="20">
+<li>gcr.io/knative-releases/github.com/knative/serving/cmd/networking/certmanager@sha256:dc77db09a23103f64a554de4e01cfda7371cbb13bc0954c991bdc4141169257f<br>=&gt; ljchen/knative_serving_cmd_networking_certmanager:v0.6.0</li>
+</ol>
+<ol start="21">
+<li>gcr.io/knative-releases/github.com/knative/serving/cmd/networking/istio@sha256:55fe9eeacfc20d97d3cd4f80bfc8a9b95cff7b5c50121bda87f754da8f05e57b<br>=&gt; ljchen/knative_serving_cmd_networking_istio:v0.6.0</li>
+</ol>
+<ol start="22">
+<li>gcr.io/knative-releases/github.com/knative/serving/cmd/webhook@sha256:f0f98736bd4b55354f447f59183bf26b9be1ab01691b8b4aeee85caeb1166562<br>=&gt; ljchen/knative_serving_cmd_webhook:v0.6.0</li>
+</ol>
+<ol start="23">
+<li>gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/github_receive_adapter@sha256:b5d6e12d16d16c6c42ae3d4325a1ef3a8a129dfc97740aa28000c0867edfc4ff<br>=&gt; ljchen/knative_eventing-sources_cmd_github_receive_adapter:v0.6.0</li>
+</ol>
+<ol start="24">
+<li>gcr.io/knative-releases/github.com/knative/eventing/cmd/broker/ingress@sha256:a0acbe69420a67bef520e86aceaa237bf540c15882701c96245a6c4e06413bf6<br>=&gt; ljchen/knative_eventing_cmd_broker_ingress:v0.6.0</li>
+</ol>
+<ol start="25">
+<li>gcr.io/knative-releases/github.com/knative/eventing/cmd/broker/filter@sha256:b4da7ce7b12aff2355066ed3237aadcf35df3b1c78db83cc538e6cffa564f208<br>=&gt; ljchen/knative_eventing_cmd_broker_filter:v0.6.0</li>
+</ol>
+<ol start="26">
+<li>gcr.io/knative-releases/github.com/knative/eventing/cmd/cronjob_receive_adapter@sha256:6bbb724d5a4dbaaead890ea51d5f84eb9514974a2d06e26c8753db59010987fb<br>=&gt; ljchen/knative_eventing_cmd_cronjob_receive_adapter:v0.6.0</li>
+</ol>
+<ol start="27">
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/apiserver_receive_adapter@sha256:7349f83eebe85a3eed7cdc4d442a935deab1ba0c42f34294f219f4ef17b59fec<br>=&gt; ljchen/knative_eventing_cmd_apiserver_receive_adapter:v0.6.0</p>
+</li>
+<li><p>gcr.io/knative-samples/autoscale-go:0.1<br>=&gt; ljchen/knative_knative-samples_autoscale-go:v0.6.0</p>
+</li>
+</ol>
+<h2 id="v0-7-0版本"><a href="#v0-7-0版本" class="headerlink" title="v0.7.0版本"></a>v0.7.0版本</h2><ol>
+<li><p>gcr.io/knative-releases/github.com/knative/build/cmd/creds-init@sha256:1a984c032a2606f8491f4a19a85209dcc1ae2cfd494c3dafe8a74269379ad2c8<br>=&gt; ljchen/knative_build_cmd_creds-init:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/build/cmd/git-init@sha256:06505d8c621e9337d0dd1bc13ed4545a33e857fbb6374740cc6337d2ba55796d<br>=&gt; ljchen/knative_build_cmd_git-init:v0.7.0</p>
+</li>
+<li><p>gcr.io/cloud-builders/gcs-fetcher<br>=&gt; ljchen/knative_cloud-builders_gcs-fetcher:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/build/cmd/nop@sha256:8aca9c97ede9a550ac3536d00c5d7acaae5e3a4fe514f4329ec261d935eddabb<br>=&gt; ljchen/knative_build_cmd_nop:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/build/cmd/controller@sha256:5adb5ba0647a7b1af1d90848bf72a75fa84efeb89e1d688465a2105c1cce1dc2<br>=&gt; ljchen/knative_build_cmd_controller:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/build/cmd/webhook@sha256:35b1b5f72642e9c1ee71809fec309a019111beebf805f9ddddf154a97ad23975<br>=&gt; ljchen/knative_build_cmd_webhook:v0.7.0</p>
+</li>
+<li><p>k8s.gcr.io/elasticsearch:v5.6.4<br>=&gt; ljchen/knative_elasticsearch:v0.7.0</p>
+</li>
+<li><p>k8s.gcr.io/fluentd-elasticsearch:v2.0.4<br>=&gt; ljchen/knative_fluentd-elasticsearch:v0.7.0</p>
+</li>
+<li><p>k8s.gcr.io/addon-resizer:1.7<br>=&gt; ljchen/knative_addon-resizer:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/controller@sha256:57f273774efb017bbf06729af802514db2f3ab070b51730dba9330903aa34163<br>=&gt; ljchen/knative_eventing_cmd_controller:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/sources_controller@sha256:31ec2b4a1d1d9b81cd1eed6632b8a1c540b510b584e58c14ebc1c000330fe32c<br>=&gt; ljchen/knative_eventing_cmd_sources_controller:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/webhook@sha256:3b5de8074f00469c393910fd0fbac70cec10838a858c94ad755af1b6bd6712fd<br>=&gt; ljchen/knative_eventing_cmd_webhook:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/webhook@sha256:3b5de8074f00469c393910fd0fbac70cec10838a858c94ad755af1b6bd6712fd<br>=&gt; ljchen/knative_eventing_cmd_webhook:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/in_memory/channel_controller@sha256:292b2dddf074ce355f5793f3d4893ad0863152e0783f32c05e7ae50328b1e2e6<br>=&gt; ljchen/knative_eventing_cmd_in_memory_channel_controller:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/in_memory/channel_dispatcher@sha256:0c95cafd668283cb045fa4941922ff7365f8e6caef623a9c5a68452be1404b5e<br>=&gt; ljchen/knative_eventing_cmd_in_memory_channel_dispatcher:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/in_memory/controller@sha256:dfd7b2852c9bc2e391b04193a50a4f635db0e7a4bbd79a20c61199e6880394fe<br>=&gt; ljchen/knative_eventing_cmd_in_memory_controller:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/in_memory/dispatcher@sha256:345888cb32ce69a45165e02fc87ebfde903fd1d9dfe059892289d66b779e6bee<br>=&gt; ljchen/knative_eventing_cmd_in_memory_dispatcher:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/serving/cmd/queue@sha256:e007c0a78c541600466f88954deee65c517246a23345bfba45a7f212d09b8f3b<br>=&gt; ljchen/knative_serving_cmd_queue:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/serving/cmd/activator@sha256:57fe5f1a8b1d12f29fe9e3a904b00c7219e5ce5825d94f33339db929e92257db<br>=&gt; ljchen/knative_serving_cmd_activator:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/serving/cmd/autoscaler@sha256:2c2370df2751741348e1cc456f31425cb2455c377ddb45d3f6c17e743fd63d78<br>=&gt; ljchen/knative_serving_cmd_autoscaler:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/serving/cmd/controller@sha256:016c95f2d94be89683d1ddb7ea959667fd2d899087a4145a31d26b5d6f0bb38f<br>=&gt; ljchen/knative_serving_cmd_controller:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/serving/cmd/networking/certmanager@sha256:c757629165393f778d5c0e8b611c9c4857b24f0c748d985d3a080d0161a85248<br>=&gt; ljchen/knative_serving_cmd_networking_certmanager:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/serving/cmd/networking/istio@sha256:bb4407e4714511cd9429e86536c283265629a2c11c80633d91c0f798c494a16f<br>=&gt; ljchen/knative_serving_cmd_networking_istio:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/serving/cmd/webhook@sha256:d9918d40492e0b20b48576ff6182e2ab896e50dfd2313cb471419be98f821b9c<br>=&gt; ljchen/knative_serving_cmd_webhook:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/broker/ingress@sha256:33d41dc38208bf9752b38e5c90149da4d5af74a67f317b7da8cb3c458fbd0fff<br>=&gt; ljchen/knative_eventing_cmd_broker_ingress:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/broker/filter@sha256:5a4eb60a605e189516a36a01c7fd39001d5766b2e6bb80c69744e15515282360<br>=&gt; ljchen/knative_eventing_cmd_broker_filter:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/cronjob_receive_adapter@sha256:634fbf0348f9f10d09c8110c505173aed91ce747bb2b87605e6e1bb10dce270b<br>=&gt; ljchen/knative_eventing_cmd_cronjob_receive_adapter:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing/cmd/apiserver_receive_adapter@sha256:f18cdbc3c3077ece8505a4f4c49055e6c1c577e9fa42446f0f81193e48aa1d60<br>=&gt; ljchen/knative_eventing_cmd_apiserver_receive_adapter:v0.7.0</p>
+</li>
+<li><p>gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/event_display@sha256:37ace92b63fc516ad4c8331b6b3b2d84e4ab2d8ba898e387c0b6f68f0e3081c4<br>=&gt;ljchen/knative_eventing-sources_cmd_event_display:v0.7.0</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/06/03/knative墙内安装/" title="Knative墙内安装">http://ljchen.net/2019/06/03/knative墙内安装/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/k8s/" rel="tag"># k8s</a>
+          
+            <a href="/tags/cloud-native/" rel="tag"># cloud-native</a>
+          
+            <a href="/tags/service-mesh/" rel="tag"># service-mesh</a>
+          
+            <a href="/tags/knative/" rel="tag"># knative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/02/基于consul服务发现的istio/" rel="next" title="基于Consul服务发现的istio">
+                <i class="fa fa-chevron-left"></i> 基于Consul服务发现的istio
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/11/Etcd原理与运维/" rel="prev" title="Etcd原理与运维">
+                Etcd原理与运维 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本原理"><span class="nav-number">1.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装istio"><span class="nav-number">2.</span> <span class="nav-text">安装istio</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成安装所需yaml"><span class="nav-number">3.</span> <span class="nav-text">生成安装所需yaml</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#部署knative"><span class="nav-number">4.</span> <span class="nav-text">部署knative</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配套镜像生成脚本"><span class="nav-number">5.</span> <span class="nav-text">配套镜像生成脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcr镜像映射表"><span class="nav-number">6.</span> <span class="nav-text">gcr镜像映射表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#v0-6-0版本"><span class="nav-number">6.1.</span> <span class="nav-text">v0.6.0版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#v0-7-0版本"><span class="nav-number">6.2.</span> <span class="nav-text">v0.7.0版本</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/06/03/knative墙内安装/';
+          this.page.identifier = '2019/06/03/knative墙内安装/';
+          this.page.title = 'Knative墙内安装';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

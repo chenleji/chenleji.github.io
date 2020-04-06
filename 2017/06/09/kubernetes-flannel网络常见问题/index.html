@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>Kubernetes Flannel网络常见问题 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2017/06/09/kubernetes-flannel网络常见问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Kubernetes Flannel网络常见问题</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-09T22:50:53+08:00">2017-06-09</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/09/kubernetes-flannel网络常见问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/09/kubernetes-flannel网络常见问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>Flannel是将多个不同子网（基于主机Node）通过被Flannel维护的Overlay网络拼接成为一张大网来实现互联的，通过官方的一张网络拓扑图我们可以对其基本原理一目了然：</p>
+<a id="more"></a>
+<p><img src="/uploads/flannel-arch.png" width="90%" height="90%"></p>
+<p>值得探讨的是，flannel的这个overlay网络支持多种后端实现，除上图中的UDP，还有VXLAN和host-gw等。此外，flannel支持通过两种模式来维护隧道端点上FDB的信息，其中一种是通过连接Etcd来实现，另外一种是直接对接K8S，通过K8S添加删除Node来触发更新。</p>
+<h1 id="部署常见问题"><a href="#部署常见问题" class="headerlink" title="部署常见问题"></a>部署常见问题</h1><h2 id="Node状态显示为“NotReady”"><a href="#Node状态显示为“NotReady”" class="headerlink" title="Node状态显示为“NotReady”"></a>Node状态显示为“NotReady”</h2><p>我的K8S环境使用kubeadm来容器化运行K8S的各个组件（除kubelet直接运行在裸机上外），当我使用kubeadm join命令加入新的Minion Node到K8S集群中后，通过kubectl get node会发现所有的node都还是not ready状态，这是因为还没有配置好flannel网络。</p>
+<h2 id="使用kube-flannel-yml无法创建DaemonSet"><a href="#使用kube-flannel-yml无法创建DaemonSet" class="headerlink" title="使用kube-flannel.yml无法创建DaemonSet"></a>使用kube-flannel.yml无法创建DaemonSet</h2><p>我使用的是K8S的1.6.4的版本，然后按照官方的说明，使用kube-flannel.yml来创建flannel deamon set，结果始终报错。正确的姿势是先使用kube-flannel-rbac.yml来创建flannel的ClusterRole并授权。该yml的主要作用是创建名叫flannel的ClusterRole，然后将该ClusterRole与ServiceAccount(flannel)绑定。接下来，当我们使用kube-flannel.yml来创建flannel daemon set的时候，该daemon set明确指定其Pod的ServiceAccount为flannel，于是通过它启动起来的Pod就具有了flannel ClusterRole中指定的权限。</p>
+<h2 id="flannel-Pod状态为Running，网络不通"><a href="#flannel-Pod状态为Running，网络不通" class="headerlink" title="flannel Pod状态为Running，网络不通"></a>flannel Pod状态为Running，网络不通</h2><p>我之前在我的Mac Pro上跑了三个VM，为了能够访问公网拉取镜像，我为每个VM分配了一张网卡使用NAT模式，其分配到的IP地址可能重启后发生变化。另外，为了我本机方便管理，我为每台VM又分配了一张网卡使用Host-Only网络模式，每个网卡都有一个固定的IP地址方便SSH。然后，奇怪的事情就这样发生了…</p>
+<p>原因在与在kube-flannel.yml中，kube-flannel容器的command被指定为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">command</span>: [ <span class="string">"/opt/bin/flanneld"</span>, <span class="string">"--ip-masq"</span>, <span class="string">"--kube-subnet-mgr"</span>]</span><br></pre></td></tr></table></figure>
+<p>可见，其并没有指定使用哪一张网卡作为flanneld对外通信的物理网卡，于是，可能由于机器上面路由配置的差异，导致三台机器并没有一致通过Host-Only网络模式的网卡来打通Overlay网络。遇到这种情况，如果几台机器的配置一致，可以手动修改kube-flannel.yml文件中kube-flannel的command的值，添加参数–iface=ethX,这里的ethX就为我们希望flanneld通信使用的网卡名称。</p>
+<h2 id="flannel启动异常，显示install-cni错误"><a href="#flannel启动异常，显示install-cni错误" class="headerlink" title="flannel启动异常，显示install-cni错误"></a>flannel启动异常，显示install-cni错误</h2><p>这个现象比较坑，遇到这种情况的第一反应就是去查看install-cni容器到底做了什么。我们打开kube-flannel.yml可以看到，该容器的command字段只有简单的一行Shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">command</span>: [ <span class="string">"/bin/sh"</span>, <span class="string">"-c"</span>, <span class="string">"set -e -x; cp -f /etc/kube-flannel/cni-conf.json /etc/cni/net.d/10-flannel.conf; while true; do sleep 3600; done"</span> ]</span><br></pre></td></tr></table></figure>
+<p>也就是将镜像中做好的cni-conf.json拷贝到cni的netconf目录下。由于容器的/etc/cni/net.d是挂载主机的对应的目录，所以该操作主要目的是为CNI准备flannel环境，便于启动容器的时候正确从netconf目录中加载到flannel，从而使用flannel网络。</p>
+<p>我发现进入主机的netconf目录中能够看到10-flannel.conf：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#ls /etc/cni/net.d/10-flannel.conf</span></span><br><span class="line">/etc/cni/net.d/10-flannel.conf</span><br><span class="line"><span class="comment"># cat /etc/cni/net.d/10-flannel.conf</span></span><br><span class="line">cat: /etc/cni/net.d/10-flannel.conf: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>无法打出其内容，而且文件显示为红色，说明其内容并没有正确从容器中拷贝过来。</p>
+<p>之前我怀疑该异常是因为kubelet所带的文件系统参数为systemd，而docker的文件系统参数为cgroupfs所致，结果发现并非如此。当前能够绕开该异常的workaround为手动进入到主机的netconf目录，创建10-flannel.conf目录，并写入以下数据：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="attr">"name"</span>: <span class="string">"cbr0"</span>,</span><br><span class="line"><span class="attr">"type"</span>: <span class="string">"flannel"</span>,</span><br><span class="line"><span class="attr">"delegate"</span>: &#123;</span><br><span class="line">    <span class="attr">"isDefaultGateway"</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="flannel网络启动正常，能够创建pod，但是网络不通"><a href="#flannel网络启动正常，能够创建pod，但是网络不通" class="headerlink" title="flannel网络启动正常，能够创建pod，但是网络不通"></a>flannel网络启动正常，能够创建pod，但是网络不通</h2><p>出现该现象一般会想到debug，而debug的思路当然是基于官方的那张网络拓扑图。比如在我的机器上，通过参看网卡IP地址有如下信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">6: flannel.1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1450 qdisc noqueue state UNKNOWN</span><br><span class="line">    link/ether 22:a0:ce:3c:bf:1f brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.244.1.0/32 scope global flannel.1</span><br><span class="line">    valid_lft forever preferred_lft forever</span><br><span class="line">    inet 10.244.2.0/32 scope global flannel.1</span><br><span class="line">    valid_lft forever preferred_lft forever</span><br><span class="line">7:cni0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1450 qdisc noqueue state DOWN qlen 1000</span><br><span class="line">    link/ether 0a:58:0a:f4:01:01 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.244.1.1/24 scope global cni0</span><br><span class="line">    valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::4cb6:7fff:fedb:2106/64 scope link</span><br><span class="line">    valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+<p>很明显，cni0为10.244.1.1/24网段，说明该主机应该位于10.244.1.0/16子网内；但是我们看flannel.1网卡，确有两个IP地址，分别为于两个不同的”/16”子网。所以，可以肯定的是，我们一定是在该太主机上部署了多次kubeadm，而kubeadm reset并不会清理flannel创建的flannel.1和cni0接口，这就导致环境上遗留下了上一次部署分配到的IP地址。这些IP地址会导致IP地址冲突，子网混乱，网络通信异常。</p>
+<p>解决的方法就是每次执行kubeadm reset的时候，手动执行以下命令来清楚对应的残余网卡信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip link del cni0</span><br><span class="line">ip link del flannel.1</span><br></pre></td></tr></table></figure>
+<h1 id="K8S如何使用Flannel网络"><a href="#K8S如何使用Flannel网络" class="headerlink" title="K8S如何使用Flannel网络"></a>K8S如何使用Flannel网络</h1><h2 id="Flannel打通Overlay网络"><a href="#Flannel打通Overlay网络" class="headerlink" title="Flannel打通Overlay网络"></a>Flannel打通Overlay网络</h2><p>当使用kubeadm来部署k8s，网络组件(如flannel)是通过Add-ons的方式来部署的。我们使用这个yml文件来部署的flannel网络。<br>我截除了关键的一段内容(containers spec):</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">containers:</span></span><br><span class="line"><span class="attr">     - name:</span> <span class="string">kube-flannel</span></span><br><span class="line"><span class="attr">       image:</span> <span class="string">quay.io/coreos/flannel:v0.7.1-amd64</span></span><br><span class="line"><span class="attr">       command:</span> <span class="string">[</span> <span class="string">"/opt/bin/flanneld"</span><span class="string">,</span> <span class="string">"--ip-masq"</span><span class="string">,</span> <span class="string">"--kube-subnet-mgr"</span> <span class="string">]</span></span><br><span class="line"><span class="attr">       securityContext:</span></span><br><span class="line"><span class="attr">         privileged:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">       env:</span></span><br><span class="line"><span class="attr">       - name:</span> <span class="string">POD_NAME</span></span><br><span class="line"><span class="attr">         valueFrom:</span></span><br><span class="line"><span class="attr">            fieldRef:</span></span><br><span class="line"><span class="attr">             fieldPath:</span> <span class="string">metadata.name</span></span><br><span class="line"><span class="attr">       - name:</span> <span class="string">POD_NAMESPACE</span></span><br><span class="line"><span class="attr">         valueFrom:</span></span><br><span class="line"><span class="attr">           fieldRef:</span></span><br><span class="line"><span class="attr">             fieldPath:</span> <span class="string">metadata.namespace</span></span><br><span class="line"><span class="attr">       volumeMounts:</span></span><br><span class="line"><span class="attr">       - name:</span> <span class="string">run</span></span><br><span class="line"><span class="attr">         mountPath:</span> <span class="string">/run</span></span><br><span class="line"><span class="attr">       - name:</span> <span class="string">flannel-cfg</span></span><br><span class="line"><span class="attr">         mountPath:</span> <span class="string">/etc/kube-flannel/</span></span><br><span class="line"><span class="attr">     - name:</span> <span class="string">install-cni</span></span><br><span class="line"><span class="attr">       image:</span> <span class="string">quay.io/coreos/flannel:v0.7.1-amd64</span></span><br><span class="line"><span class="attr">       command:</span> <span class="string">[</span> <span class="string">"/bin/sh"</span><span class="string">,</span> <span class="string">"-c"</span><span class="string">,</span> <span class="string">"set -e -x; cp -f /etc/kube-flannel/cni-conf.json /etc/cni/net.d/10-flannel.conf; while true; do sleep 3600; done"</span> <span class="string">]</span></span><br><span class="line"><span class="attr">       volumeMounts:</span></span><br><span class="line"><span class="attr">       - name:</span> <span class="string">cni</span></span><br><span class="line"><span class="attr">         mountPath:</span> <span class="string">/etc/cni/net.d</span></span><br><span class="line"><span class="attr">       - name:</span> <span class="string">flannel-cfg</span></span><br><span class="line"><span class="attr">         mountPath:</span> <span class="string">/etc/kube-flannel/</span></span><br></pre></td></tr></table></figure>
+<p>通过分析该yaml文件可以知道：该pod内有两个container，分别为install-cni和 kube-flannel。</p>
+<ul>
+<li><p>install-cni </p>
+<p>  主要负责将config-map中适用于该flannel的CNI netconf配置拷贝到主机的CNI netconf 路径下，从而使得K8S在创建pod的时候可以遵照标准的CNI流程挂载网卡。</p>
+</li>
+<li><p>kube-flannel </p>
+<p>  主要启动flanneld，该command中为flanneld的启动指定了两个参数: –ip-masq, –kube-subnet-mgr。第一个参数–ip-masq代表需要为其配置SNAT；第二个参数–kube-subnet-mgr代表其使用kube类型的subnet-manager。该类型有别于使用etcd的local-subnet-mgr类型，使用kube类型后，flannel上各Node的IP子网分配均基于K8S Node的spec.podCIDR属性。可以参考下图的方式来查看（该示例中，k8s为node-1节点分配的podCIDR为:10.244.8.0/24）</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#kubectl edit node node-1</span></span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Node</span><br><span class="line">...</span><br><span class="line">name: dev-1</span><br><span class="line">resourceVersion: <span class="string">"2452057"</span></span><br><span class="line">selfLink: /api/v1/nodesdev-1</span><br><span class="line">uid: 31f6e4c3-57b6-11e7-a0a5-00163e122a49</span><br><span class="line">spec:</span><br><span class="line">externalID: dev-1</span><br><span class="line">podCIDR: 10.244.8.0/24</span><br></pre></td></tr></table></figure>
+<p>  另外，flannel的subnet-manager通过监测K8S的node变化来维护了一张路由表，这张表里面描述了要到达某个Pod子网需要先到达哪个EndPoint。</p>
+</li>
+</ul>
+<h2 id="CNI挂载容器到隧道端点"><a href="#CNI挂载容器到隧道端点" class="headerlink" title="CNI挂载容器到隧道端点"></a>CNI挂载容器到隧道端点</h2><p>如果说flannel为Pod打通了一张跨node的大网，那么CNI就是将各个终端Pod挂载到这张大网上的安装工人。在刚部署好flannel网络并未在该Node上启动任何Pod时，通过ip link我们只能够看到flannel.1这张网卡，却无法看到cni0。难道是flannel网络运行异常吗？我们接下来就来分析flannel的CNI实现原理，就知道答案了。通过传统方式来部署flannel都需要通过脚本来修改dockerd的参数，从而使得通过docker创建的容器能够挂载到指定的网桥上。但是flannel的CNI实现并没有采用这种方式。通过分析CNI代码，我们可以了解flannel CNI的流程：</p>
+<p>读取netconf配置文件，并加载/run/flannel/subnet.env环境变量信息。基于加载的信息，生成适用于其delegate的ipam和CNI bridge的netconf文件；其中指定ipam使用host-local，CNI bridge type为bridge。调用deletgate（CNI bridge type）对应的二进制文件来挂载容器到网桥上。</p>
+<p>这里的环境变量文件/run/flannel/subnet.env是由flanneld生成的，里面包含了该主机所能够使用的IP子网网段，具体内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /run/flannel/subnet.env</span></span><br><span class="line">FLANNEL_NETWORK=10.244.0.0/16</span><br><span class="line">FLANNEL_SUBNET=10.244.8.1/24</span><br><span class="line">FLANNEL_MTU=1450</span><br><span class="line">FLANNEL_IPMASQ=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>这些数据生成ipam的配置文件的依据，另外，flannel CNI插件的代码中，默认指定delegate为bridge：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> !hasKey(n.Delegate, <span class="string">"type"</span>) &#123;</span><br><span class="line">    n.Delegate[<span class="string">"type"</span>] = <span class="string">"bridge"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以，当flannel CNI插件调用delegate，本质上就是调用bridge CNI插件来将容器挂载到网桥上。分析bridge CNI 插件的过程我们可以看到其指定了默认网桥名称为cni0：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> defaultBrName = <span class="string">"cni0"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">loadNetConf</span><span class="params">(bytes []<span class="keyword">byte</span>)</span> <span class="params">(*NetConf, error)</span></span> &#123;</span><br><span class="line">    n := &amp;NetConf&#123;</span><br><span class="line">        BrName: defaultBrName,</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> n, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因此，现在我们可以将整个流程连起来了：flannel CNI插件首先读取netconf配置和subnet.env信息，生成适用于bridge CNI插件的netconf文件和ipam（host-local）配置，并设置其delegate为bridge CNI插件。然后调用走bridge CNI插件挂载容器到bridge的流程。由于各个Pod的IP地址分配是基于host-local的Ipam，因此整个流程完全是分布式的，不会对API-Server造成太大的负担。</p>
+<p>至此，flannel分析就大致结束了，希望对您有帮助！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2017/06/09/kubernetes-flannel网络常见问题/" title="Kubernetes Flannel网络常见问题">http://ljchen.net/2017/06/09/kubernetes-flannel网络常见问题/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
+          
+            <a href="/tags/flannel/" rel="tag"># flannel</a>
+          
+            <a href="/tags/cni/" rel="tag"># cni</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/04/某股份制商业银行定制化PaaS介绍/" rel="next" title="某股份制商业银行定制化PaaS介绍">
+                <i class="fa fa-chevron-left"></i> 某股份制商业银行定制化PaaS介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/03/K8S-External-NFS-Storage-简析/" rel="prev" title="K8S External-NFS-Storage 简析">
+                K8S External-NFS-Storage 简析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#部署常见问题"><span class="nav-number">1.</span> <span class="nav-text">部署常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Node状态显示为“NotReady”"><span class="nav-number">1.1.</span> <span class="nav-text">Node状态显示为“NotReady”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用kube-flannel-yml无法创建DaemonSet"><span class="nav-number">1.2.</span> <span class="nav-text">使用kube-flannel.yml无法创建DaemonSet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#flannel-Pod状态为Running，网络不通"><span class="nav-number">1.3.</span> <span class="nav-text">flannel Pod状态为Running，网络不通</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#flannel启动异常，显示install-cni错误"><span class="nav-number">1.4.</span> <span class="nav-text">flannel启动异常，显示install-cni错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#flannel网络启动正常，能够创建pod，但是网络不通"><span class="nav-number">1.5.</span> <span class="nav-text">flannel网络启动正常，能够创建pod，但是网络不通</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#K8S如何使用Flannel网络"><span class="nav-number">2.</span> <span class="nav-text">K8S如何使用Flannel网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flannel打通Overlay网络"><span class="nav-number">2.1.</span> <span class="nav-text">Flannel打通Overlay网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CNI挂载容器到隧道端点"><span class="nav-number">2.2.</span> <span class="nav-text">CNI挂载容器到隧道端点</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2017/06/09/kubernetes-flannel网络常见问题/';
+          this.page.identifier = '2017/06/09/kubernetes-flannel网络常见问题/';
+          this.page.title = 'Kubernetes Flannel网络常见问题';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

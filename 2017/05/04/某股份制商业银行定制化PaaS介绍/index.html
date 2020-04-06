@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>某股份制商业银行定制化PaaS介绍 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2017/05/04/某股份制商业银行定制化PaaS介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">某股份制商业银行定制化PaaS介绍</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-04T20:11:34+08:00">2017-05-04</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/others/" itemprop="url" rel="index">
+                    <span itemprop="name">others</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/04/某股份制商业银行定制化PaaS介绍/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/05/04/某股份制商业银行定制化PaaS介绍/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>某股份制商业银行的PaaS平台是由Wise2C与Rancher合作，基于Rancher做的定制化开发。基于业务场景和银行业的特殊需求，同时为了兼顾能够实现对以后Rancher版本的平滑升级，我们在Rancher之上做了一层逻辑抽象。</p>
+<a id="more"></a>
+<h1 id="软件架构与部署方案"><a href="#软件架构与部署方案" class="headerlink" title="软件架构与部署方案"></a>软件架构与部署方案</h1><p>整体软件架构如下图所示</p>
+<p><img src="/uploads/paas-bank-arch.png" width="70%" height="70%"></p>
+<p>顶层的DCOS作为统一的管理平台，可以通过PaaS以及IaaS提供的API实现对云平台的集中管控。左侧蓝色部分是原生Rancher，DCOS与红色定制化部分通过API来访问Rancher。由于未对Rancher做任何改动，可以做到对Rancher版本大于1.2的平滑升级。</p>
+<p>红色部分为定制化逻辑抽象部分，归纳起来可以按照功能职责大致分为以下微服务（后面会详细介绍）：</p>
+<ol>
+<li>鉴权认证</li>
+<li>资源管理</li>
+<li>应用编排</li>
+<li>弹性伸缩</li>
+<li>日志收集</li>
+<li>监控告警</li>
+<li>镜像仓库</li>
+</ol>
+<p>这些微服务在部署时按照Rancher将infrastructure stack部署到环境中的思路，使用一个独立的Rancher环境来部署这些微服务，部署拓扑结构如下图所示：</p>
+<p><img src="/uploads/paas-bank-deploy.png" width="60%" height="60%"></p>
+<p>图中每一个虚线框对应Rancher中的一个环境；“扩展ENV”这个环境直接使用Rancher server的主机作为Agent，上面运行定制化的微服务。其他环境分别对应到某个租户的特定网络，单个网络内部流量不使用Rancher原生的overlay，而采用Wise2C实现的扁平化网络，网络之间流量由外部防火墙控制。</p>
+<h1 id="角色与权限模型"><a href="#角色与权限模型" class="headerlink" title="角色与权限模型"></a>角色与权限模型</h1><p>PaaS平台的角色与权限模型沿用了Rancher的一部分概念，又引入了自己的内容。主要差异在于两方面：</p>
+<ol>
+<li>PaaS平台引入了对镜像仓库的管理，这在Rancher中是没有的；即角色的权限，除包含操作Rancher外，还能够操作镜像仓库。镜像仓库与PaaS的权限模型是一致的；</li>
+<li>另外，客户引入了租户的概念，这点与Rancher中不同，租户是可以跨越多个Rancher的环境的；</li>
+</ol>
+<h2 id="Rancher权限模型"><a href="#Rancher权限模型" class="headerlink" title="Rancher权限模型"></a>Rancher权限模型</h2><ul>
+<li><p>平台管理员<br>  拥有整个Rancher平台的所有权限；</p>
+</li>
+<li><p>环境用户</p>
+<ol>
+<li>Owner<br> 拥有环境的所有权限；</li>
+<li>Member<br> 拥有除对环境内部用户授权外的所有权限；</li>
+<li>Restricted User<br> 拥有环境内部除对用户授权以及操作基础资源外的所有权限；</li>
+<li>Read Only<br> 拥有环境内部资源的只读权限；</li>
+</ol>
+</li>
+</ul>
+<h2 id="PaaS平台权限模型"><a href="#PaaS平台权限模型" class="headerlink" title="PaaS平台权限模型"></a>PaaS平台权限模型</h2><ul>
+<li><p>平台管理员<br>  等同于Rancher的平台管理员权限再加上对镜像仓库管理的所有权限；</p>
+</li>
+<li><p>租户内部角色</p>
+<ol>
+<li>租户管理员<br> 拥有管理租户资源以及对租户内部用户进行授权的所有权限；<br> 再加上对镜像仓库管理的所有权限</li>
+<li>高级成员<br> 在PaaS平台内拥有对租户内用户授权以及操作基础资源外的所有权限；<br> 在镜像仓库内，拥有对镜像仓库设置镜像同步规则、创建、删除镜像仓库Namespace、改变镜像状态等权限；</li>
+<li>受限成员<br> 在PaaS平台内拥有对租户内用户授权以及操作基础资源外的所有权限；<br> 在镜像仓库所属Namespace内，拥有上传、下载镜像的权限；</li>
+<li>Read Only<br> 在PaaS平台内，拥有查看租户类资源的权限；<br> 在镜像仓库所属Namespace内，拥有查看镜像仓库资源的权限；</li>
+</ol>
+</li>
+</ul>
+<p>具体映射关系如下图所示：</p>
+<p><img src="/uploads/paas-bank-users.png" width="60%" height="60%"></p>
+<p>鉴权部分的软件设计如下所示:</p>
+<p><img src="/uploads/paas-bank-apigw.png" width="30%" height="30%"></p>
+<p>所有对PaaS访问的API请求均经由API proxy做鉴权控制之后代理到系统内部具体的微服务上。PaaS不直接参与租户的增删查改，API proxy通过与PaaS外部的Keystone通信来获取用户角色以及租户信息。</p>
+<h1 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h1><h2 id="网络部分"><a href="#网络部分" class="headerlink" title="网络部分"></a>网络部分</h2><ol>
+<li>由于金融行业对网络安全性方面的要求比较苛刻，而Rancher所能够提供的均是基于某个环境内部的overlay网络。Overlay必然会导致很多报文无法被安全设备透明的过滤，这是行业内无法接受的；因此，必须采用扁平网络。</li>
+<li>处于安全的考虑，会出现同一个stack内部的多个service需要分别部署到不同的网络分区的需求，采用当前Rancher的managed网络显然无法满足需求；因此，必须支持多网络。</li>
+</ol>
+<p>对于扁平网络的支持，我在之前的文章 <a href="http://ljchen.net/2016/12/13/%E5%9C%A8Rancher-1-2%E4%B8%AD%E5%AE%9E%E7%8E%B0%E5%9F%BA%E4%BA%8ECNI%E7%9A%84%E6%89%81%E5%B9%B3%E7%BD%91%E7%BB%9C/">在Rancher 1.2中实现基于CNI的扁平网络</a> 中有详细的介绍，主要是使用ebtable直接在linux bridge上对流量做控制，从而避免使用overlay；这样，外部安全设备能够透明的看到各个容器之间的流量。</p>
+<p>对于多网络的支持，我们是通过在Rancher之上实现一层抽象逻辑来实现的。整个模型演变为一个网络映射为Rancher的一个环境（环境内部运行一个扁平网络）。这部分主要涉及对平台中所有网络的管理，以及维护租户与网络之间的映射关系。</p>
+<p>下面举一个例子来描述该流程：</p>
+<p><img src="/uploads/paas-bank-network.png" width="50%" height="50%"></p>
+<ol>
+<li>平台管理员在PaaS上创建一个网络，指定网络的参数（子网掩码、网关、所属安全域、所属隔离域等），这些数据会保存到数据库；</li>
+<li>平台管理员根据需要为租户分配第一个网络；此时，抽象层需要真正在Rancher上创建出网络所对应的环境；以及创建监控、日志、以及定制化系统所需的system级别的应用堆栈；</li>
+<li>当平台管理员为租户分配第二个以上的网络时，抽象层还需要将该Rancher环境与租户其他网络对应的Rancher环境之间建立env link关系，否则跨Rancher环境的应用堆栈各service之间无法使用Rancher DNS进行互访。</li>
+</ol>
+<h2 id="存储部分"><a href="#存储部分" class="headerlink" title="存储部分"></a>存储部分</h2><p>客户PaaS在存储部分最终选定NFS作为其存储方案，前期也有讨论过使用ceph等，这部分我在之前的文章<a href="http://ljchen.net/2016/11/30/%E6%8E%A2%E8%AE%A8%E5%AE%B9%E5%99%A8%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%9D%97%E5%AD%98%E5%82%A8/">探讨容器中使用块存储</a> 中也有专门分析过为什么不选用那种方案。</p>
+<p>由于单个租户可以拥有多个网络（也就是多个Rancher环境），而在Rancher中Rancher-NFS driver所创建volume是基于环境层面的。为了能够将该volume映射到租户层面，我们在抽象层中做了这层映射操作。</p>
+<p>具体流程如下：</p>
+<ol>
+<li>平台管理员在PaaS中指定参数创建出一个NFS server；同网络一样，此时只是将数据保存到数据库；</li>
+<li>平台管理员为租户分配NFS server，此时抽象层真正操作租户网络所对应的多个Rancher环境，在逐个环境内添加用于提供Rancher-NFS driver的system stack；</li>
+<li>假设租户内用户创建、删除、更新volume；同上，抽象层需要在逐个租户网络对应的Rancher环境内操作volume；</li>
+</ol>
+<p>之所以要这样抽象的原因在于客户存在跨网络部署应用栈的需求，因此，存储必须基于租户的粒度，实现跨Rancher环境共享。除此之外，对NFS server的管理方面，客户方面也有自己特殊的要求：</p>
+<p>物理存储是按照性能分等级的，同一个租户应该可以同时拥有金牌、银牌、铜牌的NFS server。基于业务的级别，可以为不同级别的微服务指定使用不同等级的NFS server。</p>
+<p>因此，与当前Rancher对存储的使用方式不同体现在：同一个租户可以关联多个NFS server，租户内用户在创建volume的时候，可以指定NFS server。</p>
+<h1 id="应用编排"><a href="#应用编排" class="headerlink" title="应用编排"></a>应用编排</h1><p>在应用编排方面，基于金融行业的特殊安全需求，客户要求应用堆栈能够基于微服务的安全等级来跨网络部署同一个应用堆栈，即应用堆栈中的多个微服务可能跨域多个不同网络。</p>
+<ol>
+<li>为了实现跨网络部署微服务，除了对基础资源（网络和存储）模型进行抽象之外，整个应用堆栈的部署流程也需要做相应的调整；</li>
+<li>另外，对应用堆栈的描述不再使用rancher的catalog，而是基于一套开源的Tosca模板标准；这样做的目的是方便与OpenStack以及其他平台贯通，方面以后使用同一个模板来描述整个IaaS和PaaS的编排情况；</li>
+<li>对应用堆栈以及内部微服务的更新，要求提供统一的接口，均通过下发新的Tosca模板更新应用栈的方式来实现。</li>
+</ol>
+<p>在解决应用堆栈的跨网络（Rancher环境）部署以及基于Tosca的编排方面，我们在抽象层中操作流程如下：</p>
+<ol>
+<li>接受用户输入的Tosca模板，然后交由translator模块做模板语法的check以及翻译，最终输出能够分别部署到各个Rancher环境的rancher-compose文件以及其他附加信息；</li>
+<li>orchestration模块需要对translator的返回信息进行资源层面的检查，比如是否该租户拥有应用堆栈部署所需的网络（Rancher环境）等；</li>
+<li>基于translator的返回信息，按照各个网络之间微服务的依赖关系，决定各个rancher-compose的部署先后顺序，然后开始往网络中（Rancher环境中）部署没有存在依赖的rancher-compose；</li>
+<li>基于Rancher环境中应用堆栈的部署情况，按照依赖顺序，逐个部署后续的rancher-compose；</li>
+<li>在确保当前应用堆栈在所有Rancher环境中的rancher-compose都部署完成后，将该应用栈的弹性伸缩规则下发到弹性伸缩模块。</li>
+</ol>
+<p><img src="/uploads/paas-bank-app-compose.png" width="50%" height="50%"></p>
+<p>该部分的主要难点在于translator按照Tosca语法对于应用栈的定义，以及对存在依赖关系的多个子栈部署顺序的控制。下图是基于Tosca标准建模的一个应用栈模板，该应用栈中有三个微服务：frontend、app和backend。</p>
+<p><img src="/uploads/paas-bank-tosca.png" width="70%" height="70%"></p>
+<h1 id="弹性伸缩"><a href="#弹性伸缩" class="headerlink" title="弹性伸缩"></a>弹性伸缩</h1><p>自动弹性伸缩是客户基于其业务场景而定制化的需求，大致如下：</p>
+<ol>
+<li>首先弹性伸缩的策略是基于时间段的，即按照一天为周期，可以设置在一天的某个时间段内采用哪一种弹性伸缩策略；</li>
+<li>弹性伸缩的策略包括三种：<br> a) 基于微服务下所有容器的CPU利用率的平均值；<br> b) 基于微服务下所有容器的内存使用率的平均值；<br> c) 基于时间段，只要进入该时间区间，直接将容器数量伸或缩为某个最大或者最小值；在从该时间区间离去时，恢复容器数；</li>
+<li>支持对某个微服务的弹性伸缩策略使能和去使能；</li>
+</ol>
+<p>在对CPU和内存的监测时，又有如下规则：</p>
+<ol>
+<li>可设置监控指标的上下阈值； </li>
+<li>可设定时长，持续超过指定时长，容器数量增加或减少； </li>
+<li>可设定触发伸缩行为时，单次容器数量增减值；</li>
+<li>可设定弹性伸缩可调节的容器数最大值和最小值；</li>
+<li>可配置弹性伸缩动作之后再触发的时间间隔； </li>
+</ol>
+<p>对弹性伸缩功能的实现根据策略的类型不同大致分为两种：</p>
+<ol>
+<li>基于时间的策略，该策略主要是对当前时间与策略时间区间做匹配，一旦发现进入到基于时间的策略的时间区间就基于微服务的索引，找到并更改目标微服务的容器数量；</li>
+<li>基于内存和CPU利用率的策略本身并不监测CPU和内存信息，而是依赖于监控模块。在应用编排侧添加或更新了某个微服务的弹性伸缩策略后，弹性伸缩模块会将对这个微服务的弹性伸缩策略转换为监控告警策略下发到监控模块；同时，监听来自监控告警模块的告警信息。当收到告警时，弹性伸缩就从自己维护的映射表中找到是具体触发该告警的微服务，然后基于一系列规则来决定是否伸缩微服务的容器数量以及一次调整多少个。</li>
+</ol>
+<p><img src="/uploads/paas-bank-autoscale.png" width="50%" height="50%"></p>
+<p>由于弹性伸缩策略被设定于各个时间区间内，必然需要维护众多的定时器。一旦规则被设定后，就相当于为微服务定义好了一个周期为24小时，基于时间的状态机。当微服务数量较多时，如何保障既管理好这些状态机、定时器，又能不消耗掉太多的系统资源是软件设计的难点。</p>
+<p>另外，由于各个运行实例都运行着独立的状态机，如何做好弹性伸缩的高可用（冗余）又能够保障冗余部分的数据同步，也是值得深入思考的问题。</p>
+<h1 id="日志收集"><a href="#日志收集" class="headerlink" title="日志收集"></a>日志收集</h1><p>客户PaaS对日志的收集主要按照日志的来源可分为三种类型：</p>
+<ol>
+<li>主机日志收集；</li>
+<li>容器日志收集；</li>
+<li>应用日志收集；</li>
+</ol>
+<p><img src="/uploads/paas-bank-log.png" width="50%" height="50%"></p>
+<p>对于主机和容器的日志收集相对比较简单，主要通过对指定目录的文件内容进行收集，然后将收集到的日志信息进行格式化后统一发送到kafka集群；</p>
+<p>对于应用的日志收集相对较复杂，既要不对业务容器产生侵入又要保障能够收集到及时的日志。我们是通过在Tosca模板中定义某个微服务的log_files来指定应用日志在容器中的路径以及扩展名的。</p>
+<p>当容器被调度到某台主机上时，该主机上的日志收集模块就会基于容器标签得知该容器内的应用日志目录，通过分析容器的详情可以获取到该容器内日志目录所映射到主机上的路径，从而将对容器内应用日志的收集，转换为对主机上特定文件内容的收集。具体的收集方式是采用logstash，通过程序自动修改logstach的配置文件来添加日志来源。</p>
+<p>将所有日志收集到kafka之后，客户再采用第三方的日志分析工具来对日志做特定的过滤、分析、搜索和多维度的展现。</p>
+<h1 id="监控告警"><a href="#监控告警" class="headerlink" title="监控告警"></a>监控告警</h1><p>客户的监控需求大致如下：</p>
+<ol>
+<li>租户宿主机集群的资源使用情况和运行状况，具体包括：<br> a) 租户集群的容器宿主机数量和总体资源使用情况<br> b) 租户集群中不同网络区域、等保区域等细分范围的容器宿主机数量和资源使用情况<br> c) 集群总体容器数量、容器在集群各容器宿主机节点的运行和分布情况<br> d) 每个容器宿主机节点的资源使用情况、运行容器列表</li>
+<li>应用（包含Stack和Service）监控数据，监控数据包括应用容器列表（容器IP、所在宿主机）、应用运行情况（健康情况、资源占用）等</li>
+<li>每个容器所使用CPU、内存、网络、存储、标签、端口号等信息进行监控，提供Restful API</li>
+</ol>
+<p>事件等信息写入事件审计数据库；同时支持配置事件告警规则，当激活事件告警功能后，根据事先设定的告警规则，从事件审计数据库中读取和过滤信息，转换成syslog格式，再将告警信息通过消息队列发送到PaaS平台外部。</p>
+<p><img src="/uploads/paas-bank-monitor.png" width="50%" height="50%"></p>
+<p>该部分的实现主要使用bosun平台, 容器方面从cAdvisor中采集监控数据，主机方面是直接读取主机实时信息，对Rancher的审计日志，主要通过读取Rancher的数据库来实现。所有的监控数据汇集到bosun之后，通过对bosun做一层封装，一方面用于按照自定义的格式设置告警规则、另一方面实现bosun对接Active MQ将监控信息发送到消息队列，从而对接第三方监控大数据平台。</p>
+<h1 id="镜像仓库"><a href="#镜像仓库" class="headerlink" title="镜像仓库"></a>镜像仓库</h1><p>镜像仓库分为测试仓库和生成仓库，这两个仓库均实现了与PaaS平台的权限模型对接，实现单点登录以及统一的鉴权控制。</p>
+<p>另外值得提的是，客户对镜像从测试仓库到生产仓库的同步的流程划分为手动和自动，具体如下：</p>
+<ol>
+<li>镜像在被提交到测试仓库后，默认为“开发中”状态；</li>
+<li>开发完镜像后，受限用户通过外部协同管理平台来通知高级用户将镜像从测试仓库同步到生产仓库；</li>
+<li>高级用户登录测试仓库后，可以修改镜像同步规则；在正式同步之前，高级用户可以修改镜像的“待同步”状态为“开发中”； </li>
+<li>如果在生产仓库中已存在对应的Namespace，且高级用户勾选了自动同步，测试仓库会在同步周期超时时同步镜像并将“待同步”镜像状态改为“同步中”。如果同步成功，状态自动更新为“已同步”；否则为“待同步”；</li>
+<li>如果在生产仓库中已存在对应的Namespace，且高级用户勾选了手动同步，需要高级用户在测试仓库中手动点击“同步”按钮来同步镜像到生产仓库；如果同步成功，状态自动更新为“已同步”；否则为“待同步”。</li>
+</ol>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><p>PaaS项目一期已经实现了绝大部分的功能，已经够满足PaaS平台的日常所需，但是作为一套PaaS平台，在以下方面还可以继续拓展：</p>
+<ol>
+<li>未在PaaS平台中引入配置管理，对于微服务配置的更新还依赖于手动修改配置文件，这对于运维来讲是比较繁琐且容易引入故障的操作。</li>
+<li>没有引入自动蓝绿部署，对服务的升级还是依赖于手动修改LB配置来实现，不能够实现全自动不中断业务切换业务的平滑升级和回滚。</li>
+<li>没有Ingress高级路由控制，无法实现基于特定条件的流量或者用户请求进行区别对待以及灰度发布。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2017/05/04/某股份制商业银行定制化PaaS介绍/" title="某股份制商业银行定制化PaaS介绍">http://ljchen.net/2017/05/04/某股份制商业银行定制化PaaS介绍/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/rancher/" rel="tag"># rancher</a>
+          
+            <a href="/tags/paas/" rel="tag"># paas</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/13/在Rancher-1-2中实现基于CNI的扁平网络/" rel="next" title="在Rancher 1.2中实现基于CNI的扁平网络">
+                <i class="fa fa-chevron-left"></i> 在Rancher 1.2中实现基于CNI的扁平网络
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/09/kubernetes-flannel网络常见问题/" rel="prev" title="Kubernetes Flannel网络常见问题">
+                Kubernetes Flannel网络常见问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#软件架构与部署方案"><span class="nav-number">1.</span> <span class="nav-text">软件架构与部署方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#角色与权限模型"><span class="nav-number">2.</span> <span class="nav-text">角色与权限模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Rancher权限模型"><span class="nav-number">2.1.</span> <span class="nav-text">Rancher权限模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PaaS平台权限模型"><span class="nav-number">2.2.</span> <span class="nav-text">PaaS平台权限模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#资源管理"><span class="nav-number">3.</span> <span class="nav-text">资源管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络部分"><span class="nav-number">3.1.</span> <span class="nav-text">网络部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储部分"><span class="nav-number">3.2.</span> <span class="nav-text">存储部分</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#应用编排"><span class="nav-number">4.</span> <span class="nav-text">应用编排</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#弹性伸缩"><span class="nav-number">5.</span> <span class="nav-text">弹性伸缩</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志收集"><span class="nav-number">6.</span> <span class="nav-text">日志收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#监控告警"><span class="nav-number">7.</span> <span class="nav-text">监控告警</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#镜像仓库"><span class="nav-number">8.</span> <span class="nav-text">镜像仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补充"><span class="nav-number">9.</span> <span class="nav-text">补充</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2017/05/04/某股份制商业银行定制化PaaS介绍/';
+          this.page.identifier = '2017/05/04/某股份制商业银行定制化PaaS介绍/';
+          this.page.title = '某股份制商业银行定制化PaaS介绍';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

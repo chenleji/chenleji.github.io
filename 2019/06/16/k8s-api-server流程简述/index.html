@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>K8s Api-Server流程简述 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/06/16/k8s-api-server流程简述/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">K8s Api-Server流程简述</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-16T09:06:16+08:00">2019-06-16</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/16/k8s-api-server流程简述/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/06/16/k8s-api-server流程简述/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">9 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>最近开发环境的k8s出现过一次读取不出来configmap，并导致api-server OOM重启的现象，供应商说是因为configmap条目太多，导致api-server大量decode etcd的数据为yaml所致。在原生k8s上反复重试过多次，均无法复现该现象，所以又看了一遍api-server大致的代码逻辑，这里简单记录一下。</p>
+<a id="more"></a>
+<h1 id="核心业务逻辑"><a href="#核心业务逻辑" class="headerlink" title="核心业务逻辑"></a>核心业务逻辑</h1><p>在看代码之前，基于对k8s架构的理解，我猜测：api-server应该就是对etcd的一层代理。其中需要实现了对各种资源的路由、准入控制、限速、资源的格式转换以及各种操作的接口封装等功能。具体代码逻辑又实现了些什么呢？下面来简单介绍。</p>
+<p>其实和猜测的差不多，从入口之后，api-server就调用<code>CreateServerChain</code>来创建了一系列的服务，包括：</p>
+<ul>
+<li><p><strong>KubeApiServer</strong><br>也就是为k8s定义的抽象资源（比如workload，service，configmap等）提供服务；</p>
+</li>
+<li><p><strong>ApiExtensionsServer</strong><br>主要负责CRD相关的服务；</p>
+</li>
+<li><p><strong>AggregatorServer</strong><br>这个不太熟，但是顾名思义，应该就是服务api aggregator的。</p>
+</li>
+</ul>
+<h2 id="代码框架"><a href="#代码框架" class="headerlink" title="代码框架"></a>代码框架</h2><p>先上一张大图，也是为了之后看图就能够快速定位代码逻辑。</p>
+<p><img src="/uploads/api-server-arch.png" width="100%" height="100%"></p>
+<p>前面说的那三种server，其实就在大图中左上角部分，下面在 #总入口 中要重点讲下router这部分的逻辑。</p>
+<h2 id="总入口"><a href="#总入口" class="headerlink" title="总入口"></a>总入口</h2><p>接下来，我们找熟悉的<code>KubeApiServer</code>分析。函数<code>CreateKubeAPIServer</code>调用了<code>kubeAPIServerConfig.Complete().New</code>。通过该函数，基本看出了端倪，api-server是通过webserver的形势对外提供api服务的；该函数首先准备了一堆的资源组，然后将这些<code>RESTStorageProvider</code>安装到了Master，这里可以理解为准备router信息（较抽象）。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c completedConfig)</span> <span class="title">New</span><span class="params">(delegationTarget genericapiserver.DelegationTarget)</span> <span class="params">(*Master, error)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 准备所有的资源组</span></span><br><span class="line">	restStorageProviders := []RESTStorageProvider&#123;</span><br><span class="line">		auditregistrationrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		authenticationrest.RESTStorageProvider&#123;Authenticator: c.GenericConfig.Authentication.Authenticator, APIAudiences: c.GenericConfig.Authentication.APIAudiences&#125;,</span><br><span class="line">		authorizationrest.RESTStorageProvider&#123;Authorizer: c.GenericConfig.Authorization.Authorizer, RuleResolver: c.GenericConfig.RuleResolver&#125;,</span><br><span class="line">		autoscalingrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		batchrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		certificatesrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		coordinationrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		extensionsrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		networkingrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		noderest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		policyrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		rbacrest.RESTStorageProvider&#123;Authorizer: c.GenericConfig.Authorization.Authorizer&#125;,</span><br><span class="line">		schedulingrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		settingsrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		storagerest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		appsrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		admissionregistrationrest.RESTStorageProvider&#123;&#125;,</span><br><span class="line">		eventsrest.RESTStorageProvider&#123;TTL: c.ExtraConfig.EventTTL&#125;,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 第二个重点, 安装资源handler了</span></span><br><span class="line">	m.InstallAPIs(c.ExtraConfig.APIResourceConfigSource, c.GenericConfig.RESTOptionsGetter, restStorageProviders...)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上只是粗枝大叶的入门，如果要对资源router的挂载搞透彻，我们还需要理解进一步理解这里的资源，以及InstallAPIs的流程。</p>
+<h2 id="资源组织"><a href="#资源组织" class="headerlink" title="资源组织"></a>资源组织</h2><p>k8s api的定义中，对rest-api操作的对象都按照资源组，版本的形势做了组织。要查看所有支持的资源组和版本信息可以执行以下操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">~ $ kc get apiservices</span><br><span class="line">NAME                                   SERVICE   AVAILABLE   AGE</span><br><span class="line">v1.                                    Local     True        3d11h</span><br><span class="line">v1.apps                                Local     True        3d11h</span><br><span class="line">v1beta1.apps                           Local     True        3d11h</span><br><span class="line">v1beta2.apps                           Local     True        3d11h</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>下面会涉及到两个概念：<code>资源组</code>和<code>资源</code>。</p>
+<h1 id="资源组"><a href="#资源组" class="headerlink" title="资源组"></a>资源组</h1><p>这里，我们就使用 <code>appsrest.RESTStorageProvider{}</code> 这个最成熟、大家最熟悉的资源组（apps）来分析。</p>
+<p>首先看下图目录结构，位于k8s项目<code>pkg/registry/</code>目录下的这些子目录都是k8s支持的资源组类型。这里的apps就是其中之一，apps下面又包含了常见的deployment等workloads。</p>
+<p><img src="/uploads/api-server-rest.png" width="100%" height="100%"></p>
+<p>每一个资源组目录下都包含了一个<code>rest</code>目录，里面放的不是子资源，而是该资源组的<code>RESTStorageProvider</code>接口实现。该接口的<code>NewRESTStorage</code>方法将资源组下的所有资源的storage都以版本信息作key填充到<code>apiGroupInfo.VersionedResourcesStorageMap</code>字典中。前面提到的<code>m.InstallAPIs</code>就是遍历字典，将所有资源组下的资源逐一安装到master router中。</p>
+<h2 id="顶层storage"><a href="#顶层storage" class="headerlink" title="顶层storage"></a>顶层storage</h2><p>到此，我们已经清楚，每添加一个资源组，在api-server里面都需要把它加入到<code>apiGroupInfo.VersionedResourcesStorageMap</code>中，这样才会被安装到router里面。顶层的storage就是干这个事情的。</p>
+<p>来看rest目录中storage_apps.go里面资源组的版本和子资源是如何组织的代码。下面可以看到，对于apps这个资源组，针对v1beta1这个版本，添加了deployments这个资源，而这个组织好的结构就是一个storage。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 该函数将各个版本的storage填充到字典中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p RESTStorageProvider)</span> <span class="title">NewRESTStorage</span><span class="params">(apiResourceConfigSource serverstorage.APIResourceConfigSource, restOptionsGetter generic.RESTOptionsGetter)</span> <span class="params">(genericapiserver.APIGroupInfo, <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">    ...</span><br><span class="line">	<span class="keyword">if</span> apiResourceConfigSource.VersionEnabled(appsapiv1beta1.SchemeGroupVersion) &#123;</span><br><span class="line">		apiGroupInfo.VersionedResourcesStorageMap[appsapiv1beta1.SchemeGroupVersion.Version] = p.v1beta1Storage(apiResourceConfigSource, restOptionsGetter)</span><br><span class="line">	&#125;</span><br><span class="line">    ...</span><br><span class="line">	<span class="keyword">return</span> apiGroupInfo, <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 该函数在准备单个版本所有的子资源</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p RESTStorageProvider)</span> <span class="title">v1beta1Storage</span><span class="params">(apiResourceConfigSource serverstorage.APIResourceConfigSource, restOptionsGetter generic.RESTOptionsGetter)</span> <span class="title">map</span>[<span class="title">string</span>]<span class="title">rest</span>.<span class="title">Storage</span></span> &#123;</span><br><span class="line">	storage := <span class="keyword">map</span>[<span class="keyword">string</span>]rest.Storage&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//这里要再看NewStorage的代码，注意它的参数，这在后面会提到</span></span><br><span class="line">	deploymentStorage := deploymentstore.NewStorage(restOptionsGetter)</span><br><span class="line">	storage[<span class="string">"deployments"</span>] = deploymentStorage.Deployment</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> storage</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来，我们将进入到deployment资源相关的子目录分析。</p>
+<h1 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h1><p>通过目录结构图可以知道，每一个资源下都包含了storage和strategy目录。</p>
+<p><img src="/uploads/api-server-strategy.png" width="100%" height="100%"></p>
+<h2 id="storage"><a href="#storage" class="headerlink" title="storage"></a>storage</h2><p>其中storage中定义了<code>NewREST</code>，还通过REST对外统一提供操作资源的一些操作接口（如New/Get/Update等）；这里将NewStorage和DeploymentStorage都一并附上。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> DeploymentStorage <span class="keyword">struct</span> &#123;</span><br><span class="line">	Deployment *REST         <span class="comment">// 这些类型都是包含了 *genericregistry.Store</span></span><br><span class="line">	Status     *StatusREST   <span class="comment">// 这些类型都是包含了 *genericregistry.Store</span></span><br><span class="line">	Scale      *ScaleREST    <span class="comment">// 这些类型都是包含了 *genericregistry.Store</span></span><br><span class="line">	Rollback   *RollbackREST <span class="comment">// 这些类型都是包含了 *genericregistry.Store</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewStorage</span><span class="params">(optsGetter generic.RESTOptionsGetter)</span> <span class="title">DeploymentStorage</span></span> &#123;</span><br><span class="line">	<span class="comment">// 这里调用了 NewREST，参数还是前面 NewStorage 的参数一如既往的往下传</span></span><br><span class="line">	deploymentRest, deploymentStatusRest, deploymentRollbackRest := NewREST(optsGetter)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> DeploymentStorage&#123;</span><br><span class="line">		Deployment: deploymentRest,</span><br><span class="line">		Status:     deploymentStatusRest,</span><br><span class="line">		Scale:      &amp;ScaleREST&#123;store: deploymentRest.Store&#125;,</span><br><span class="line">		Rollback:   deploymentRollbackRest,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在NewREST返回了三个REST，每一个REST里面都包含了 <code>*genericregistry.Store</code>， 该store类型重点实现下面三个方法：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewREST</span><span class="params">(optsGetter generic.RESTOptionsGetter)</span> <span class="params">(*REST, *StatusREST, *RollbackREST)</span></span> &#123;</span><br><span class="line">	store := &amp;genericregistry.Store&#123;</span><br><span class="line">		NewFunc:                  <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">runtime</span>.<span class="title">Object</span></span> &#123; <span class="keyword">return</span> &amp;apps.Deployment&#123;&#125; &#125;,</span><br><span class="line">		NewListFunc:              <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">runtime</span>.<span class="title">Object</span></span> &#123; <span class="keyword">return</span> &amp;apps.DeploymentList&#123;&#125; &#125;,</span><br><span class="line">		DefaultQualifiedResource: apps.Resource(<span class="string">"deployments"</span>),</span><br><span class="line"></span><br><span class="line">		CreateStrategy: deployment.Strategy,  <span class="comment">// 重点</span></span><br><span class="line">		UpdateStrategy: deployment.Strategy,  <span class="comment">// 重点</span></span><br><span class="line">		DeleteStrategy: deployment.Strategy,  <span class="comment">// 重点</span></span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="strategy"><a href="#strategy" class="headerlink" title="strategy"></a>strategy</h2><p>接下来就将注意力转移到<code>deployment.Stategy</code>上来了。<code>deploymentStrategy</code>里面主要实现了对资源做增删改前后的各种校验和准备工作，这里就不再详细的讲述。</p>
+<h2 id="etcd-cache"><a href="#etcd-cache" class="headerlink" title="etcd/cache"></a>etcd/cache</h2><p>前面讲<code>NewREST</code>的时候，提到了其参数，其实该参数的最终值是这样赋值得到的：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">genericConfig.RESTOptionsGetter = &amp;genericoptions.SimpleRestOptionsFactory&#123;Options: etcdOptions&#125;</span><br></pre></td></tr></table></figure>
+<p>获取该值的时候，通过调用该factory的<code>GetRESTOptions</code>方法.</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *SimpleRestOptionsFactory)</span> <span class="title">GetRESTOptions</span><span class="params">(resource schema.GroupResource)</span> <span class="params">(generic.RESTOptions, error)</span></span> &#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="comment">// 重要</span></span><br><span class="line">	<span class="keyword">if</span> f.Options.EnableWatchCache &#123;</span><br><span class="line">		sizes, err := ParseWatchCacheSizes(f.Options.WatchCacheSizes)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> generic.RESTOptions&#123;&#125;, err</span><br><span class="line">		&#125;</span><br><span class="line">		cacheSize, ok := sizes[resource]</span><br><span class="line">		<span class="keyword">if</span> !ok &#123;</span><br><span class="line">			cacheSize = f.Options.DefaultWatchCacheSize</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 重要</span></span><br><span class="line">		ret.Decorator = genericregistry.StorageWithCacher(cacheSize)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ret, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里第一个要点是使用了一个api-server的参数，确定是否需要使用watchCache，这里一并把api-server与cache有关的两个参数都列出来。</p>
+<blockquote>
+<p><strong>–watch-cache     Default: true</strong><br>    Enable watch caching in the apiserver</p>
+<p><strong>–watch-cache-sizes stringSlice</strong><br>    Watch cache size settings for some resources (pods, nodes, etc.), comma separated. The individual setting format: resource[.group]#size, where resource is lowercase plural (no version), group is omitted for resources of apiVersion v1 (the legacy core API) and included for others, and size is a number. It takes effect when watch-cache is enabled. Some resources (replicationcontrollers, endpoints, nodes, pods, services, apiservices.apiregistration.k8s.io) have system defaults set by heuristics, others default to default-watch-cache-size</p>
+</blockquote>
+<p>第二个要点是真正的初始化一个storageWithCacher的decorator，也就是在这个函数里面，初始化了backstorage之上的一层cache。该函数显示调用<code>generic.NewRawStorage</code>来new出一个backupstore，然后再基于此封装一层cache。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewRawStorage</span><span class="params">(config *storagebackend.Config)</span> <span class="params">(storage.Interface, factory.DestroyFunc)</span></span> &#123;</span><br><span class="line">	s, d, err := factory.Create(*config)</span><br><span class="line">    ...</span><br><span class="line">	<span class="keyword">return</span> s, d</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的factory其实就是在backstore里面对etcd2和etcd3的一层抽象，默认是使用etcd3。另外，对于etcd3，除了封装kv操作之外，这里还引入了自动定时compact etcd已删除version数据的操作，当前默认是5分钟一次。这里就不再一一粘贴，可以去查一下代码的实现。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Create</span><span class="params">(c storagebackend.Config)</span> <span class="params">(storage.Interface, DestroyFunc, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">switch</span> c.Type &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">"etcd2"</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, <span class="literal">nil</span>, fmt.Errorf(<span class="string">"%v is no longer a supported storage backend"</span>, c.Type)</span><br><span class="line">	<span class="keyword">case</span> storagebackend.StorageTypeUnset, storagebackend.StorageTypeETCD3:</span><br><span class="line">		<span class="keyword">return</span> newETCD3Storage(c)</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, <span class="literal">nil</span>, fmt.Errorf(<span class="string">"unknown storage type: %s"</span>, c.Type)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="安装路由"><a href="#安装路由" class="headerlink" title="安装路由"></a>安装路由</h1><p>讲完资源组和资源的内容，我们再来看安装router的时候都做了什么。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *Master)</span> <span class="title">InstallAPIs</span><span class="params">(apiResourceConfigSource serverstorage.APIResourceConfigSource, restOptionsGetter generic.RESTOptionsGetter, restStorageProviders ...RESTStorageProvider)</span></span> &#123;</span><br><span class="line">	apiGroupsInfo := []*genericapiserver.APIGroupInfo&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, restStorageBuilder := <span class="keyword">range</span> restStorageProviders &#123;</span><br><span class="line">		groupName := restStorageBuilder.GroupName()</span><br><span class="line">		...</span><br><span class="line">		<span class="comment">// 注意这里调用了 NewRESTStorage</span></span><br><span class="line">		apiGroupInfo, enabled := restStorageBuilder.NewRESTStorage(apiResourceConfigSource, restOptionsGetter)</span><br><span class="line">		<span class="keyword">if</span> !enabled &#123;</span><br><span class="line">			klog.Warningf(<span class="string">"Problem initializing API group %q, skipping."</span>, groupName)</span><br><span class="line">			<span class="keyword">continue</span></span><br><span class="line">		&#125;</span><br><span class="line">		...</span><br><span class="line">		apiGroupsInfo = <span class="built_in">append</span>(apiGroupsInfo, &amp;apiGroupInfo)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里又进一层函数，到里层去安装router</span></span><br><span class="line">	<span class="keyword">if</span> err := m.GenericAPIServer.InstallAPIGroups(apiGroupsInfo...); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		klog.Fatalf(<span class="string">"Error in registering group versions: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该函数里面调用的 <code>NewRESTStorage</code> 有没有似曾相识？对，就是我们在资源组的<code>RESTStorageProvider</code>里面实现的方法。看到这里，才将各资源组的实现与安装router结合起来。绕了一大圈，其实是为了干这事！</p>
+<p>真正将api资源安装到router的代码，看<code>m.GenericAPIServer.InstallAPIGroups</code>。</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *GenericAPIServer)</span> <span class="title">InstallAPIGroups</span><span class="params">(apiGroupInfos ...*APIGroupInfo)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">for</span> _, apiGroupInfo := <span class="keyword">range</span> apiGroupInfos &#123;</span><br><span class="line">		<span class="comment">// 看这里</span></span><br><span class="line">		<span class="keyword">if</span> err := s.installAPIResources(APIGroupPrefix, apiGroupInfo, openAPIModels); err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> fmt.Errorf(<span class="string">"unable to install api resources: %v"</span>, err)</span><br><span class="line">		&#125;</span><br><span class="line">		...</span><br><span class="line">		<span class="comment">// 看这里</span></span><br><span class="line">		s.Handler.GoRestfulContainer.Add(discovery.NewAPIGroupHandler(s.Serializer, apiGroup).WebService())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到此，api-server的基本代码流程就简单过了一遍。当然，这只是其中一个面，带着不同的问题去看代码，梳理的线索不一样，应该有不同的收获。先就写到这里吧，有时间再看看梳理下其他方面。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/06/16/k8s-api-server流程简述/" title="K8s Api-Server流程简述">http://ljchen.net/2019/06/16/k8s-api-server流程简述/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/k8s/" rel="tag"># k8s</a>
+          
+            <a href="/tags/opensource/" rel="tag"># opensource</a>
+          
+            <a href="/tags/CKA/" rel="tag"># CKA</a>
+          
+            <a href="/tags/api-server/" rel="tag"># api-server</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/14/K8s-client代码自动生成/" rel="next" title="K8s Client代码自动生成">
+                <i class="fa fa-chevron-left"></i> K8s Client代码自动生成
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/19/knative-build实现/" rel="prev" title="Knative Build实现">
+                Knative Build实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#核心业务逻辑"><span class="nav-number">1.</span> <span class="nav-text">核心业务逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码框架"><span class="nav-number">1.1.</span> <span class="nav-text">代码框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总入口"><span class="nav-number">1.2.</span> <span class="nav-text">总入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资源组织"><span class="nav-number">1.3.</span> <span class="nav-text">资源组织</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#资源组"><span class="nav-number">2.</span> <span class="nav-text">资源组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#顶层storage"><span class="nav-number">2.1.</span> <span class="nav-text">顶层storage</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#资源"><span class="nav-number">3.</span> <span class="nav-text">资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#storage"><span class="nav-number">3.1.</span> <span class="nav-text">storage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#strategy"><span class="nav-number">3.2.</span> <span class="nav-text">strategy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etcd-cache"><span class="nav-number">3.3.</span> <span class="nav-text">etcd/cache</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装路由"><span class="nav-number">4.</span> <span class="nav-text">安装路由</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/06/16/k8s-api-server流程简述/';
+          this.page.identifier = '2019/06/16/k8s-api-server流程简述/';
+          this.page.title = 'K8s Api-Server流程简述';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

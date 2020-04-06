@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>kubeedge之EdgeSite | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/07/22/kubeedge之EdgeSite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">kubeedge之EdgeSite</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-22T21:05:54+08:00">2019-07-22</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/edge-compute/" itemprop="url" rel="index">
+                    <span itemprop="name">edge-compute</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/22/kubeedge之EdgeSite/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/22/kubeedge之EdgeSite/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">5 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>kubeedge默认在云端部署edgeController和deviceController，然后通过websocket/quic隧道连接云端和边缘端，通过云端一个中心来统一调度应用到特定edge node上运行。但是，就像Rancher K3S的应用场景，有些时候边缘端也希望运行一套完整的k8s集群。K3S的方案只是提供了一套精简的k8s集群，而kubeedge的edgesite模式，除了运行k8s集群之外，还提供了对IOT设备的适配和支持。<br><a id="more"></a></p>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p><img src="/uploads/kubeedge-edgesite-arch.png" width="90%" height="90%"></p>
+<p>如上图所示，edgesite与传统的部署模式的差异在于edgeController与edged等之前边缘端的组件部署在一起；另外，k8s master虽然与下边的组件组没有画在一起，但是它们也被部署在边缘端。所以，没有了cloudHub和edgeHub之间基于隧道的通信。</p>
+<p>这里可以看到，k8s master，也就是上面部分几乎是原生的k8s，不需要做任何改动；而下面部署就是kubeedge除cloudHub和edgeHub之外的所有组件。那代码能够直接复用？这在最后原理部分再来分析。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><p>这种架构，特别适合于已部署了一个k8s server端，在本地开发调试kubeedge组件的情况。在代码中加一些调试信息，本地快速编译，然后执行查看，方便快速理解代码逻辑。这里，我就要演示一把如何在本地运行kubeedge来对接到远端的k8s集群。</p>
+<h2 id="云端"><a href="#云端" class="headerlink" title="云端"></a>云端</h2><p>我依然是使用在aliyun-vm上部署好的k3s集群，唯一需要注意的是，我在启动命令行中指定了参数，让api-server暴露了insecure-port 8080（这样本地就不需要指定各种证书信息了，当然为了安全，你也可以严格使用证书），具体如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">~ $ cat /etc/systemd/system/k3s.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Lightweight Kubernetes</span><br><span class="line">Documentation=https://k3s.io</span><br><span class="line">After=network-online.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">...</span><br><span class="line">ExecStart=/usr/<span class="built_in">local</span>/bin/k3s \</span><br><span class="line">    server \</span><br><span class="line">    --kube-apiserver-arg insecure-bind-address=0.0.0.0 \  <span class="comment"># 指定监听地址</span></span><br><span class="line">    --kube-apiserver-arg insecure-port=8080               <span class="comment"># 指定insecure-port</span></span><br></pre></td></tr></table></figure>
+<p>等待k3s启动之后，通过下面的node.yaml文件在k3s上<code>kubectl apply -f node.yaml</code>添加节点，注意节点的名称，后续edge端的配置文件需要设置为该名字。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Node</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">edge-site</span></span><br><span class="line">    <span class="string">node-role.kubernetes.io/edge:</span> <span class="string">""</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">edge-site</span></span><br></pre></td></tr></table></figure>
+<h2 id="边缘端"><a href="#边缘端" class="headerlink" title="边缘端"></a>边缘端</h2><p>也就是我的本地笔记本，在kubeedge源码包中，有<code>edgesite</code>目录。需要进入到<code>cmd</code>目录中编译代码（这需要golang环境，这块不再介绍）、准备配置文件，并执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">~ $ ls</span><br><span class="line">Makefile  README.md cmd       conf</span><br><span class="line"></span><br><span class="line">~ $ <span class="built_in">cd</span> cmd</span><br><span class="line"><span class="comment"># 如果是golang 1.12版本，需要手动关闭go mod模式，因为该项目是基于go vendor的</span></span><br><span class="line">~ $ GO111MODULE=off go build  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 从上级目录复制conf目录中的配置文件到cmd目录中，并修改配置</span></span><br><span class="line">~ $ cp -rf ../conf ./</span><br><span class="line">~ $ ls conf</span><br><span class="line">edgeSite.yaml logging.yaml  modules.yaml</span><br></pre></td></tr></table></figure>
+<p>这里只需要修改edgeSite.yaml, 具体配置修改如下:<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mqtt:</span></span><br><span class="line"><span class="attr">    server:</span> <span class="attr">tcp://127.0.0.1:1883</span> <span class="comment"># external mqtt broker url.</span></span><br><span class="line"><span class="attr">    internal-server:</span> <span class="attr">tcp://127.0.0.1:1884</span> <span class="comment"># internal mqtt broker url.</span></span><br><span class="line"><span class="attr">    mode:</span> <span class="number">0</span> <span class="comment"># 0: internal mqtt broker enable only. 1: internal and external mqtt broker enable. 2: external mqtt broker enable only.</span></span><br><span class="line"><span class="attr">    qos:</span> <span class="number">0</span> <span class="comment"># 0: QOSAtMostOnce, 1: QOSAtLeastOnce, 2: QOSExactlyOnce.</span></span><br><span class="line"><span class="attr">    retain:</span> <span class="literal">false</span> <span class="comment"># if the flag set true, server will store the message and can be delivered to future subscribers.</span></span><br><span class="line"><span class="attr">    session-queue-size:</span> <span class="number">100</span> <span class="comment"># A size of how many sessions will be handled. default to 100.</span></span><br><span class="line"></span><br><span class="line"><span class="attr">controller:</span></span><br><span class="line"><span class="attr">    kube:</span></span><br><span class="line"><span class="attr">       master:</span> <span class="attr">http://$&#123;k3s-api-server&#125;:8080</span>  <span class="comment"># 这里是k3s的insecure-port的访问URL</span></span><br><span class="line"><span class="attr">       namespace:</span> <span class="string">"default"</span></span><br><span class="line"><span class="attr">       content_type:</span> <span class="string">"application/vnd.kubernetes.protobuf"</span></span><br><span class="line"><span class="attr">       qps:</span> <span class="number">5</span></span><br><span class="line"><span class="attr">       burst:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">       node_update_frequency:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">       node-id:</span> <span class="string">edge-site</span></span><br><span class="line"><span class="attr">       node-name:</span> <span class="string">edge-site</span>  <span class="comment"># 该名称为预先在k8s上创建的node名称</span></span><br><span class="line"><span class="attr">    context:</span></span><br><span class="line"><span class="attr">       send-module:</span> <span class="string">metaManager</span></span><br><span class="line"><span class="attr">       receive-module:</span> <span class="string">controller</span></span><br><span class="line"><span class="attr">       response-module:</span> <span class="string">metaManager</span></span><br><span class="line"></span><br><span class="line"><span class="attr">edged:</span></span><br><span class="line"><span class="attr">    register-node-namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">    hostname-override:</span> <span class="string">edge-site</span></span><br><span class="line"><span class="attr">    interface-name:</span> <span class="string">eth0</span></span><br><span class="line"><span class="attr">    node-status-update-frequency:</span> <span class="number">10</span> <span class="comment"># second</span></span><br><span class="line"><span class="attr">    device-plugin-enabled:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">    gpu-plugin-enabled:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">    image-gc-high-threshold:</span> <span class="number">80</span> <span class="comment"># percent</span></span><br><span class="line"><span class="attr">    image-gc-low-threshold:</span> <span class="number">40</span> <span class="comment"># percent</span></span><br><span class="line"><span class="attr">    maximum-dead-containers-per-container:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">    docker-address:</span> <span class="attr">unix:///var/run/docker.sock</span></span><br><span class="line"><span class="attr">    runtime-type:</span> <span class="string">docker</span></span><br><span class="line"><span class="attr">    version:</span> <span class="number">2.0</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">metamanager:</span></span><br><span class="line"><span class="attr">    context-send-group:</span> <span class="string">controller</span></span><br><span class="line"><span class="attr">    context-send-module:</span> <span class="string">controller</span></span><br><span class="line"><span class="attr">    edgesite:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<p>然后就在<code>cmd</code>目录下直接运行生成的cmd二进制文件了（记得要使用sudo，因为需要创建pods目录）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~ $ sudo ./cmd</span><br></pre></td></tr></table></figure>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>前面有讲到，从kubeedge的云边模式，切换到纯边缘部署，代码方面是否可以复用？答案是肯定的，这块kubeedge设计的非常好。要理解这块的原理，需要理解beehive的消息转发。</p>
+<h2 id="模块与消息"><a href="#模块与消息" class="headerlink" title="模块与消息"></a>模块与消息</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">模块</th>
+<th style="text-align:left">module name</th>
+<th style="text-align:left">group name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">deviceTwin</td>
+<td style="text-align:left">twin</td>
+<td style="text-align:left">twin</td>
+</tr>
+<tr>
+<td style="text-align:left">edged</td>
+<td style="text-align:left">edged</td>
+<td style="text-align:left">edged</td>
+</tr>
+<tr>
+<td style="text-align:left">cloudHub</td>
+<td style="text-align:left">cloudhub</td>
+<td style="text-align:left">cloudhub</td>
+</tr>
+<tr>
+<td style="text-align:left">edgeHub</td>
+<td style="text-align:left">websocket</td>
+<td style="text-align:left">hub</td>
+</tr>
+<tr>
+<td style="text-align:left">eventbus</td>
+<td style="text-align:left">eventbus</td>
+<td style="text-align:left">bus</td>
+</tr>
+<tr>
+<td style="text-align:left">servicebus</td>
+<td style="text-align:left">servicebus</td>
+<td style="text-align:left">bus</td>
+</tr>
+<tr>
+<td style="text-align:left">metaManager</td>
+<td style="text-align:left">metaManager</td>
+<td style="text-align:left">meta</td>
+</tr>
+<tr>
+<td style="text-align:left">edgeController</td>
+<td style="text-align:left">controller</td>
+<td style="text-align:left">controller</td>
+</tr>
+<tr>
+<td style="text-align:left">deviceController</td>
+<td style="text-align:left">devicecontroller</td>
+<td style="text-align:left">controller</td>
+</tr>
+</tbody>
+</table>
+<p>模块之间通信的每一个消息都有如下关键组成：</p>
+<ul>
+<li>消息头信息<ol>
+<li>消息ID</li>
+<li>消息父ID（请求的返回消息也有同样的该ID）</li>
+<li>时间戳（消息创建时间）</li>
+<li>同步消息标识</li>
+</ol>
+</li>
+<li>消息路由信息<ol>
+<li>消息来源模块</li>
+<li>消息目的广播组</li>
+<li>操作</li>
+<li>操作资源名称</li>
+</ol>
+</li>
+</ul>
+<p>在之前的架构中，metaManager的消息发送到controller需要经过edgeHub再到cloudHub，然后才能够送到controller。而当前在edgesite中直接取消掉了edgeHub和cloudHub，也就意味着，controller现在是直接将消息送到metaManager。</p>
+<p>我们在来看一段controller读取配置文件时候的代码:</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span>(</span><br><span class="line">    DefaultContextSendModuleName     = <span class="string">"cloudhub"</span></span><br><span class="line">	DefaultContextReceiveModuleName  = <span class="string">"controller"</span></span><br><span class="line">	DefaultContextResponseModuleName = <span class="string">"cloudhub"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> smn, err := config.CONFIG.GetValue(<span class="string">"controller.context.send-module"</span>).ToString(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		ContextSendModule = constants.DefaultContextSendModuleName <span class="comment">// cloudhub</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		ContextSendModule = smn</span><br><span class="line">	&#125;</span><br><span class="line">	log.LOGGER.Infof(<span class="string">" send module name: %s"</span>, ContextSendModule)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> rmn, err := config.CONFIG.GetValue(<span class="string">"controller.context.receive-module"</span>).ToString(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		ContextReceiveModule = constants.DefaultContextReceiveModuleName <span class="comment">// controller</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		ContextReceiveModule = rmn</span><br><span class="line">	&#125;</span><br><span class="line">	log.LOGGER.Infof(<span class="string">"receive module name: %s"</span>, ContextReceiveModule)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> rmn, err := config.CONFIG.GetValue(<span class="string">"controller.context.response-module"</span>).ToString(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		ContextResponseModule = constants.DefaultContextResponseModuleName <span class="comment">// cloudhub</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		ContextResponseModule = rmn</span><br><span class="line">	&#125;</span><br><span class="line">	log.LOGGER.Infof(<span class="string">"response module name: %s"</span>, ContextResponseModule)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>云边模式的情况下使用默认配置，也就是controller发送消息以及发送响应都是往cloudHub发送，而接收都是订阅模块名为controller的消息。在edgesite模式下，配置文件有所变化，我截取<code>edgeSite.yaml</code>的关键部分：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">controller:</span></span><br><span class="line"><span class="attr">    kube:</span></span><br><span class="line">       <span class="string">......</span></span><br><span class="line"><span class="attr">    context:</span></span><br><span class="line"><span class="attr">       send-module:</span> <span class="string">metaManager</span>     <span class="comment"># controller消息不再中转，直接发送到metaManager</span></span><br><span class="line"><span class="attr">       receive-module:</span> <span class="string">controller</span>   <span class="comment"># 订阅controller模块消息</span></span><br><span class="line"><span class="attr">       response-module:</span> <span class="string">metaManager</span> <span class="comment"># response消息也一样</span></span><br><span class="line"><span class="attr">metamanager:</span></span><br><span class="line"><span class="attr">    context-send-group:</span> <span class="string">controller</span>  <span class="comment"># 边缘端消息发送到controller group</span></span><br><span class="line"><span class="attr">    context-send-module:</span> <span class="string">controller</span> <span class="comment"># 边缘端消息发送到controller module</span></span><br></pre></td></tr></table></figure>
+<p>至此，我们当值了解了edgesite的大概架构设计，适用场景，以及其代码的巧妙设计。当然，kubeedge还有更多目标，比如对serverless以及serviceMesh的支持等，待后续再慢慢分解。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/07/22/kubeedge之EdgeSite/" title="kubeedge之EdgeSite">http://ljchen.net/2019/07/22/kubeedge之EdgeSite/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/opensource/" rel="tag"># opensource</a>
+          
+            <a href="/tags/kubeedge/" rel="tag"># kubeedge</a>
+          
+            <a href="/tags/edgesite/" rel="tag"># edgesite</a>
+          
+            <a href="/tags/edge-compute/" rel="tag"># edge-compute</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/21/kubeedge实现原理/" rel="next" title="Kubeedge实现原理">
+                <i class="fa fa-chevron-left"></i> Kubeedge实现原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/24/CRD-operator要点/" rel="prev" title="CRD Operator要点">
+                CRD Operator要点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#架构"><span class="nav-number">1.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验"><span class="nav-number">2.</span> <span class="nav-text">实验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#云端"><span class="nav-number">2.1.</span> <span class="nav-text">云端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#边缘端"><span class="nav-number">2.2.</span> <span class="nav-text">边缘端</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原理"><span class="nav-number">3.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#模块与消息"><span class="nav-number">3.1.</span> <span class="nav-text">模块与消息</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/07/22/kubeedge之EdgeSite/';
+          this.page.identifier = '2019/07/22/kubeedge之EdgeSite/';
+          this.page.title = 'kubeedge之EdgeSite';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

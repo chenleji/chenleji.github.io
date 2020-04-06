@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>Docker Cpu资源隔离 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2018/06/24/docker-cpu资源隔离/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Docker Cpu资源隔离</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T18:29:25+08:00">2018-06-24</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/container/" itemprop="url" rel="index">
+                    <span itemprop="name">container</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/24/docker-cpu资源隔离/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/24/docker-cpu资源隔离/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">11 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>docker提供对CPU资源的限制，主要基于cgroup的cpuset来实现；到v1.13版本后，主要演化成以下几个参数。</p>
+<ul>
+<li>–cpus 指定容器所需的cpu核数；其实现方式只是指定的对应cpu核心数相对的资源总量，容器可能会在多个核心上运行，可能涉及到上下文切换的消耗；</li>
+<li>–cpu-shares 指定多个容器抢占有限的资源时能够分配到cpu资源的权重；需要搭配着其他两个命令一起使用，单纯使用该命令，或在没有资源抢占的情况下使用该命令没有意义；</li>
+<li>–cpuset-cpus 指定容器绑定到具体哪些cpu核上运行；资源隔离相对较好，但也可能存在多个容器同时被绑定到同一个核上的情况。<a id="more"></a>
+宿主机上有4core：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /proc/cpuinfo | grep processor | wc -l</span></span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<h1 id="–cpu-shares参数"><a href="#–cpu-shares参数" class="headerlink" title="–cpu-shares参数"></a>–cpu-shares参数</h1><p>该选项用来设置CPU权重，它的默认值为1024。我们可以把它设置为1表示很低的权重，但是设置为0将表示使用默认值1024。它提供对抢占资源时，cpu的分配份额。</p>
+<p>在只有一个进程使用资源时，cpu-shares没有意义，资源直接被容器消耗完。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run --rm --cpu-shares=512 -it progrium/stress -c 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># top</span></span><br><span class="line">top - 19:23:51 up  2:25,  7 users,  load average: 1.60, 1.46, 0.95</span><br><span class="line">Tasks: 181 total,   6 running, 175 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu0  :  98.0/1.7   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||]</span><br><span class="line">%Cpu1  :  97.7/2.0   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||]</span><br><span class="line">%Cpu2  :  95.3/4.0    99[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ]</span><br><span class="line">%Cpu3  :  98.0/1.4    99[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ]</span><br><span class="line">KiB Mem :  8009496 total,  4529720 free,   777820 used,  2701956 buff/cache</span><br><span class="line">KiB Swap:        0 total,        0 free,        0 used.  6832780 avail Mem</span><br></pre></td></tr></table></figure>
+<h1 id="–cpus参数"><a href="#–cpus参数" class="headerlink" title="–cpus参数"></a>–cpus参数</h1><p>指定容器使用的cpu数，在资源够分配时，它对资源使用总量的限制较准确；当资源不够出现超卖时，其无法保障能够获取到对应的CPU资源数。</p>
+<h2 id="资源足够时"><a href="#资源足够时" class="headerlink" title="资源足够时"></a>资源足够时</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run --rm --cpus=1 -it progrium/stress -c 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># top</span></span><br><span class="line">top - 19:15:52 up  2:17,  7 users,  load average: 0.08, 0.18, 0.45</span><br><span class="line">Tasks: 179 total,   5 running, 174 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu0  :  24.0/1.7    26[||||||||||||||||||||||||||                                                                          ]</span><br><span class="line">%Cpu1  :  23.9/2.0    26[||||||||||||||||||||||||||                                                                          ]</span><br><span class="line">%Cpu2  :  24.3/1.7    26[||||||||||||||||||||||||||                                                                          ]</span><br><span class="line">%Cpu3  :  23.4/1.4    25[||||||||||||||||||||||||                                                                            ]</span><br><span class="line">KiB Mem :  8009496 total,  4532328 free,   776500 used,  2700668 buff/cache</span><br><span class="line">KiB Swap:        0 total,        0 free,        0 used.  6834536 avail Mem</span><br></pre></td></tr></table></figure>
+<p>结果显示，此时指定cpus的结果，相当于分配了1个core给stress运行。</p>
+<h2 id="超卖资源时"><a href="#超卖资源时" class="headerlink" title="超卖资源时"></a>超卖资源时</h2><h3 id="无–cpu-shares"><a href="#无–cpu-shares" class="headerlink" title="无–cpu-shares"></a>无–cpu-shares</h3><p>以下命令相当于指定了6 core CPU，此时超过了我们宿主机的cpu core总数4。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run --rm --cpus=4 -it progrium/stress -c 4</span></span><br><span class="line"><span class="comment"># docker run --rm --cpus=2 -it progrium/stress -c 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># top</span></span><br><span class="line">top - 19:31:26 up  2:33,  7 users,  load average: 1.70, 1.42, 1.14</span><br><span class="line">Tasks: 188 total,   9 running, 179 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu0  :  98.3/1.3   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ]</span><br><span class="line">%Cpu1  :  97.3/2.0    99[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ]</span><br><span class="line">%Cpu2  :  96.6/3.0   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||]</span><br><span class="line">%Cpu3  :  98.6/1.0   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||]</span><br><span class="line">KiB Mem :  8009496 total,  4515312 free,   790772 used,  2703412 buff/cache</span><br><span class="line">KiB Swap:        0 total,        0 free,        0 used.  6819260 avail Mem</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line"> 7615 root      20   0    7304     92      0 R  63.5  0.0   0:03.34 stress</span><br><span class="line"> 7613 root      20   0    7304     92      0 R  51.5  0.0   0:02.55 stress</span><br><span class="line"> 7616 root      20   0    7304     92      0 R  48.8  0.0   0:02.48 stress</span><br><span class="line">7614 root      20   0    7304     92      0 R  42.2  0.0   0:02.14 stress</span><br><span class="line"></span><br><span class="line"> 7558 root      20   0    7304    100      0 R  48.5  0.0   0:03.32 stress</span><br><span class="line"> 7557 root      20   0    7304    100      0 R  47.5  0.0   0:03.26 stress</span><br><span class="line"> 7560 root      20   0    7304    100      0 R  43.2  0.0   0:03.01 stress</span><br><span class="line"> 7559 root      20   0    7304    100      0 R  42.5  0.0   0:03.02 stress</span><br></pre></td></tr></table></figure>
+<h3 id="有–cpu-shares（貌似效果也不好）"><a href="#有–cpu-shares（貌似效果也不好）" class="headerlink" title="有–cpu-shares（貌似效果也不好）"></a>有–cpu-shares（貌似效果也不好）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run --rm --cpus=2 --cpu-shares=512 -it progrium/stress -c 4</span></span><br><span class="line"><span class="comment"># docker run --rm --cpus=4 --cpu-shares=1024 -it progrium/stress -c 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># top</span></span><br><span class="line">top - 19:34:12 up  2:35,  7 users,  load average: 2.81, 1.66, 1.27</span><br><span class="line">Tasks: 185 total,   9 running, 176 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu0  :  97.3/2.3   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ]</span><br><span class="line">%Cpu1  :  97.7/2.0   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||]</span><br><span class="line">%Cpu2  :  96.3/3.7   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||]</span><br><span class="line">%Cpu3  :  98.3/1.3   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| ]</span><br><span class="line">KiB Mem :  8009496 total,  4518760 free,   787184 used,  2703552 buff/cache</span><br><span class="line">KiB Swap:        0 total,        0 free,        0 used.  6822896 avail Mem</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line"> 8689 root      20   0    7304     96      0 R  84.4  0.0   0:08.85 stress</span><br><span class="line"> 8687 root      20   0    7304     96      0 R  70.4  0.0   0:08.37 stress</span><br><span class="line"> 8686 root      20   0    7304     96      0 R  57.5  0.0   0:08.04 stress</span><br><span class="line"> 8688 root      20   0    7304     96      0 R  51.5  0.0   0:07.77 stress</span><br><span class="line"></span><br><span class="line"> 8744 root      20   0    7304    100      0 R  42.2  0.0   0:03.20 stress</span><br><span class="line"> 8745 root      20   0    7304    100      0 R  29.6  0.0   0:02.49 stress</span><br><span class="line"> 8747 root      20   0    7304    100      0 R  27.9  0.0   0:02.54 stress</span><br><span class="line"> 8746 root      20   0    7304    100      0 R  26.2  0.0   0:02.35 stress</span><br></pre></td></tr></table></figure>
+<h1 id="–cpuset-cpus参数"><a href="#–cpuset-cpus参数" class="headerlink" title="–cpuset-cpus参数"></a>–cpuset-cpus参数</h1><p>该参数用来绑定容器使用的CPU core，对资源的限制较精确，但是需要外部维护绑定关系。当有多个容器都绑定到同一个core上时，需要借助–cpu-shares来分配份额。</p>
+<h2 id="资源抢占时"><a href="#资源抢占时" class="headerlink" title="资源抢占时"></a>资源抢占时</h2><p>当不指定份额时，会平均分配资源：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run --rm --cpuset-cpus=0  -it progrium/stress -c 1</span></span><br><span class="line"><span class="comment"># docker run --rm --cpuset-cpus=0  -it progrium/stress -c 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># top</span></span><br><span class="line">top - 19:40:01 up  2:41,  6 users,  load average: 1.86, 1.67, 1.37</span><br><span class="line">Tasks: 181 total,   3 running, 178 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu0  : 100.0/0.0   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||]</span><br><span class="line">%Cpu1  :   1.0/1.4     2[||                                                                                                  ]</span><br><span class="line">%Cpu2  :   1.4/1.7     3[|||                                                                                                 ]</span><br><span class="line">%Cpu3  :   0.3/1.0     1[|                                                                                                   ]</span><br><span class="line">KiB Mem :  8009496 total,  4516292 free,   788620 used,  2704584 buff/cache</span><br><span class="line">KiB Swap:        0 total,        0 free,        0 used.  6821116 avail Mem</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line">11210 root      20   0    7304     92      0 R  49.8  0.0   0:12.24 stress</span><br><span class="line">11329 root      20   0    7304     96      0 R  49.8  0.0   0:05.64 stress</span><br></pre></td></tr></table></figure>
+<h3 id="有–cpu-shares"><a href="#有–cpu-shares" class="headerlink" title="有–cpu-shares"></a>有–cpu-shares</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run --rm --cpuset-cpus=0 --cpu-shares=512 -it progrium/stress -c 1</span></span><br><span class="line"><span class="comment"># docker run --rm --cpuset-cpus=0 --cpu-shares=1024 -it progrium/stress -c 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># top</span></span><br><span class="line">top - 19:38:25 up  2:40,  7 users,  load average: 2.89, 1.69, 1.34</span><br><span class="line">Tasks: 182 total,   3 running, 179 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu0  :  99.5/0.0   100[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||]</span><br><span class="line">%Cpu1  :   0.7/1.7     2[|||                                                                                                 ]</span><br><span class="line">%Cpu2  :   1.0/1.4     2[||                                                                                                  ]</span><br><span class="line">%Cpu3  :   0.7/1.4     2[||                                                                                                  ]</span><br><span class="line">KiB Mem :  8009496 total,  4519984 free,   784588 used,  2704924 buff/cache</span><br><span class="line">KiB Swap:        0 total,        0 free,        0 used.  6824732 avail Mem</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line">10555 root      20   0    7304     96      0 R  66.8  0.0   0:06.90 stress</span><br><span class="line">10618 root      20   0    7304     96      0 R  33.2  0.0   0:02.32 stress</span><br></pre></td></tr></table></figure>
+<h1 id="–cpu-period-amp-–cpu-quota"><a href="#–cpu-period-amp-–cpu-quota" class="headerlink" title="–cpu-period &amp; –cpu-quota"></a>–cpu-period &amp; –cpu-quota</h1><p>docker提供–cpu-period、–cpu-quota两个参数控制容器可以分配到的CPU时钟周期。</p>
+<p>  <code>--cpu-period</code> 用来指定容器对CPU的使用要在多长时间内做一次重新分配;<br>  <code>--cpu-quota</code> 用来指定在这个周期内，最多可以有多少时间用来跑这个容器。跟–cpu-shares不同的是这种配置是指定一个绝对值，而且没有弹性在里面，容器对CPU资源的使用绝对不会超过配置的值。</p>
+<blockquote>
+<p>–cpu-period和–cpu-quota的单位为微秒（μs）。–cpu-period的最小值为1000微秒，最大值为1秒（10^6 μs），默认值为0.1秒（100000 μs）。–cpu-quota的值默认为-1，表示不做控制。</p>
+<p>举个例子，如果容器进程需要每1秒使用单个CPU的0.2秒时间，可以将–cpu-period设置为1000000（即1秒），–cpu-quota设置为200000（0.2秒）。当然，在多核情况下，如果允许容器进程需要完全占用两个CPU，则可以将–cpu-period设置为100000（即0.1秒），–cpu-quota设置为200000（0.2秒）。</p>
+</blockquote>
+<h1 id="K8S-代码实现"><a href="#K8S-代码实现" class="headerlink" title="K8S 代码实现"></a>K8S 代码实现</h1><p><strong>request 被转化为 —cpu-share 参数</strong></p>
+<ul>
+<li>如果request=0 &amp;&amp; limit !=0, —cpu-shares=limit;</li>
+<li>如果 request != 0, —cpu-shares=request.</li>
+</ul>
+<p><strong>limit 被转化为 –cpu-quota 参数</strong></p>
+<ul>
+<li>–cpu-preiod被强制设置为100毫秒；</li>
+<li>–cpu-quota = Limit * 100毫秒，但是最小为1毫秒.</li>
+</ul>
+<p>在kubelet创建container的时候，<code>kuberuntime_container.go</code>中的类kubeGenericRuntimeManager会调用<code>generateContainerConfig</code>来生成创建container的配置文件（从k8s yaml中指定对resources的配置转化而来）。</p>
+<p>绝大多数的参数在不同操作系统之间都是一样的，但是对资源的限制这块，Linux和Windows有自己不同的参数。因此该类会继续调用 <code>applyPlatformSpecificContainerConfig</code>方法, 最终到 <code>generateLinuxContainerConfig</code>来为linux系统转化参数，具体如下：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// applyPlatformSpecificContainerConfig applies platform specific configurations to runtimeapi.ContainerConfig.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *kubeGenericRuntimeManager)</span> <span class="title">applyPlatformSpecificContainerConfig</span><span class="params">(config *runtimeapi.ContainerConfig, container *v1.Container, pod *v1.Pod, uid *<span class="keyword">int64</span>, username <span class="keyword">string</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	config.Linux = m.generateLinuxContainerConfig(container, pod, uid, username)</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// generateLinuxContainerConfig generates linux container config for kubelet runtime v1.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *kubeGenericRuntimeManager)</span> <span class="title">generateLinuxContainerConfig</span><span class="params">(container *v1.Container, pod *v1.Pod, uid *<span class="keyword">int64</span>, username <span class="keyword">string</span>)</span> *<span class="title">runtimeapi</span>.<span class="title">LinuxContainerConfig</span></span> &#123;</span><br><span class="line">	lc := &amp;runtimeapi.LinuxContainerConfig&#123;</span><br><span class="line">		Resources:       &amp;runtimeapi.LinuxContainerResources&#123;&#125;,</span><br><span class="line">		SecurityContext: m.determineEffectiveSecurityContext(pod, container, uid, username),</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// set linux container resources</span></span><br><span class="line">	<span class="keyword">var</span> cpuShares <span class="keyword">int64</span></span><br><span class="line">	cpuRequest := container.Resources.Requests.Cpu()</span><br><span class="line">	cpuLimit := container.Resources.Limits.Cpu()</span><br><span class="line">	memoryLimit := container.Resources.Limits.Memory().Value()</span><br><span class="line">	oomScoreAdj := <span class="keyword">int64</span>(qos.GetContainerOOMScoreAdjust(pod, container,</span><br><span class="line">		<span class="keyword">int64</span>(m.machineInfo.MemoryCapacity)))</span><br><span class="line">	<span class="comment">// If request is not specified, but limit is, we want request to default to limit.</span></span><br><span class="line">	<span class="comment">// API server does this for new containers, but we repeat this logic in Kubelet</span></span><br><span class="line">	<span class="comment">// for containers running on existing Kubernetes clusters.</span></span><br><span class="line">	<span class="keyword">if</span> cpuRequest.IsZero() &amp;&amp; !cpuLimit.IsZero() &#123;</span><br><span class="line">		cpuShares = milliCPUToShares(cpuLimit.MilliValue())</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// if cpuRequest.Amount is nil, then milliCPUToShares will return the minimal number</span></span><br><span class="line">		<span class="comment">// of CPU shares.</span></span><br><span class="line">		cpuShares = milliCPUToShares(cpuRequest.MilliValue())</span><br><span class="line">	&#125;</span><br><span class="line">	lc.Resources.CpuShares = cpuShares</span><br><span class="line">	<span class="keyword">if</span> memoryLimit != <span class="number">0</span> &#123;</span><br><span class="line">		lc.Resources.MemoryLimitInBytes = memoryLimit</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Set OOM score of the container based on qos policy. Processes in lower-priority pods should</span></span><br><span class="line">	<span class="comment">// be killed first if the system runs out of memory.</span></span><br><span class="line">	lc.Resources.OomScoreAdj = oomScoreAdj</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> m.cpuCFSQuota &#123;</span><br><span class="line">		<span class="comment">// if cpuLimit.Amount is nil, then the appropriate default value is returned</span></span><br><span class="line">		<span class="comment">// to allow full usage of cpu resource.</span></span><br><span class="line">		cpuQuota, cpuPeriod := milliCPUToQuota(cpuLimit.MilliValue())</span><br><span class="line">		lc.Resources.CpuQuota = cpuQuota</span><br><span class="line">		lc.Resources.CpuPeriod = cpuPeriod</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> lc</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2018/06/24/docker-cpu资源隔离/" title="Docker Cpu资源隔离">http://ljchen.net/2018/06/24/docker-cpu资源隔离/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/container/" rel="tag"># container</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/24/macvlan与ipvlan解析/" rel="next" title="Macvlan与ipvlan解析">
+                <i class="fa fa-chevron-left"></i> Macvlan与ipvlan解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/29/distributed-system leader-election实践/" rel="prev" title="分布式系统Leader-Election实践">
+                分布式系统Leader-Election实践 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#–cpu-shares参数"><span class="nav-number">2.</span> <span class="nav-text">–cpu-shares参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#–cpus参数"><span class="nav-number">3.</span> <span class="nav-text">–cpus参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#资源足够时"><span class="nav-number">3.1.</span> <span class="nav-text">资源足够时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#超卖资源时"><span class="nav-number">3.2.</span> <span class="nav-text">超卖资源时</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无–cpu-shares"><span class="nav-number">3.2.1.</span> <span class="nav-text">无–cpu-shares</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有–cpu-shares（貌似效果也不好）"><span class="nav-number">3.2.2.</span> <span class="nav-text">有–cpu-shares（貌似效果也不好）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#–cpuset-cpus参数"><span class="nav-number">4.</span> <span class="nav-text">–cpuset-cpus参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#资源抢占时"><span class="nav-number">4.1.</span> <span class="nav-text">资源抢占时</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有–cpu-shares"><span class="nav-number">4.1.1.</span> <span class="nav-text">有–cpu-shares</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#–cpu-period-amp-–cpu-quota"><span class="nav-number">5.</span> <span class="nav-text">–cpu-period &amp; –cpu-quota</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#K8S-代码实现"><span class="nav-number">6.</span> <span class="nav-text">K8S 代码实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2018/06/24/docker-cpu资源隔离/';
+          this.page.identifier = '2018/06/24/docker-cpu资源隔离/';
+          this.page.title = 'Docker Cpu资源隔离';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

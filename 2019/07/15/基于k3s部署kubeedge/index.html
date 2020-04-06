@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>基于K3s部署kubeedge | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/07/15/基于k3s部署kubeedge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">基于K3s部署kubeedge</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-15T21:11:18+08:00">2019-07-15</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/edge-compute/" itemprop="url" rel="index">
+                    <span itemprop="name">edge-compute</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/15/基于k3s部署kubeedge/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/15/基于k3s部署kubeedge/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">9 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>在边缘计算云原生领域，Rancher开源的k3s侧重于在边缘运行完整的k8s集群，而华为开源的kubeedge则是在边缘运行可以脱机的k8s节点。刚好手上有aliyun和腾讯云上各一台配置比较差的虚拟机，平时用来跑下基本的k8s服务，做个调试验证用的，一跑应用就卡死，内存严重不足。这场景似乎与边缘计算资源局限的窘境很类似；于是，大胆的想像在其中一台机器上跑k3s，同时用其作为kubeedge的k8s server侧；在另外一台上跑kubeedge的edge节点，组成一个集群。<br><a id="more"></a></p>
+<h1 id="K3S"><a href="#K3S" class="headerlink" title="K3S"></a>K3S</h1><p>k3s就不介绍了，具体可以参考其<a href="https://k3s.io" target="_blank" rel="noopener">首页</a>; 另外，这里是项目的<a href="https://github.com/rancher/k3s/blob/master/README.md" target="_blank" rel="noopener">Readme信息</a>。可以关注一下其架构图，图上将server和agent分开，我们今天部署的方式是将server和仅有的一个agent部署到同一个服务器上。</p>
+<p><img src="/uploads/k3s-arch.png" width="90%" height="90%"></p>
+<h2 id="Linux如何翻墙"><a href="#Linux如何翻墙" class="headerlink" title="Linux如何翻墙"></a>Linux如何翻墙</h2><p>为啥突然讲到linux翻墙？是因为这几天我发现在阿里和腾讯云的服务器上下载github的资源特别慢，几次通过脚本安装k3s都提示超时，实在是崩溃了！于是在linux上设置了ss client，然后速度飕飕的….</p>
+<p>我是使用shadowsocks，这里默认你已经有墙外的shadowsocks服务器。主要告诉你如何在linux上配置ss的client，解决下载镜像以及一些限制资源较慢的问题。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装ss</span></span><br><span class="line">pip install shadowsocks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置配置文件</span></span><br><span class="line">cat /etc/shadowsocks.json</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"server"</span>:<span class="string">"x.x.x.x"</span>, <span class="comment"># 替换为你的ss server</span></span><br><span class="line">  <span class="string">"server_port"</span>:0,    <span class="comment"># 替换为你的ss server port</span></span><br><span class="line">  <span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="string">"local_port"</span>:10800,</span><br><span class="line">  <span class="string">"password"</span>:<span class="string">"password"</span>, <span class="comment"># 密码</span></span><br><span class="line">  <span class="string">"timeout"</span>:300,</span><br><span class="line">  <span class="string">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">  <span class="string">"workers"</span>: 5</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">sslocal -c /etc/shadowsocks.json -d start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置代理</span></span><br><span class="line"><span class="built_in">export</span> http_proxy=socks5://127.0.0.1:10800</span><br><span class="line"><span class="built_in">export</span> https_proxy=socks5://127.0.0.1:10800</span><br></pre></td></tr></table></figure>
+<h2 id="快速安装"><a href="#快速安装" class="headerlink" title="快速安装"></a>快速安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自动安装（有时候墙内特别慢，会timeout，建议先翻墙）</span></span><br><span class="line">curl -sfL https://get.k3s.io | sh -</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果已经下载了k3s，可以手动启动</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 服务端，Kubeconfig 位于 /etc/rancher/k3s/k3s.yaml</span></span><br><span class="line">k3s server &amp;</span><br><span class="line"></span><br><span class="line"><span class="comment"># agent端， NODE_TOKEN 位于 /var/lib/rancher/k3s/server/node-token</span></span><br><span class="line">k3s agent --server https://myserver:6443 --token <span class="variable">$&#123;NODE_TOKEN&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="k3s参数科普"><a href="#k3s参数科普" class="headerlink" title="k3s参数科普"></a>k3s参数科普</h2><ul>
+<li>指定启动参数</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">k3s server --<span class="built_in">disable</span>-agent</span><br><span class="line">k3s server --no-deploy traefik </span><br><span class="line">k3s server --no-deploy servicelb</span><br><span class="line">k3s server --no-deploy coredns</span><br><span class="line"></span><br><span class="line">k3s agent -u <span class="variable">$&#123;SERVER_URL&#125;</span> -t <span class="variable">$&#123;NODE_TOKEN&#125;</span> --no-flannel &amp;</span><br><span class="line">k3s agent -s <span class="variable">$&#123;SERVER_URL&#125;</span> -t <span class="variable">$&#123;NODE_TOKEN&#125;</span> --docker &amp;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>指定k8s参数</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Adding extra argument can be done by passing the following flags to server or agent:</span></span><br><span class="line"></span><br><span class="line">--kube-apiserver-arg value</span><br><span class="line">--kube-scheduler-arg value</span><br><span class="line">--kube-controller-arg value</span><br><span class="line">--kubelet-arg value</span><br><span class="line">--kube-proxy-arg value</span><br><span class="line"></span><br><span class="line"><span class="comment">#For example to add the following arguments -v=9 and log-file=/tmp/kubeapi.log to the kube-apiserver, you should pass the following:</span></span><br><span class="line"></span><br><span class="line">k3s server --kube-apiserver-arg v=9 --kube-apiserver-arg <span class="built_in">log</span>-file=/tmp/kubeapi.log</span><br></pre></td></tr></table></figure>
+<h2 id="kubeedge场景配置"><a href="#kubeedge场景配置" class="headerlink" title="kubeedge场景配置"></a>kubeedge场景配置</h2><p>通过上面的参数配置介绍，结合kubeedge的需求，以及我的机器的配置有限，裁减掉一些没用的服务，最终的启动文件如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/systemd/system/k3s.service</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Lightweight Kubernetes</span><br><span class="line">Documentation=https://k3s.io</span><br><span class="line">After=network-online.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">EnvironmentFile=/etc/systemd/system/k3s.service.env</span><br><span class="line">ExecStartPre=-/sbin/modprobe br_netfilter</span><br><span class="line">ExecStartPre=-/sbin/modprobe overlay</span><br><span class="line">ExecStart=/usr/<span class="built_in">local</span>/bin/k3s \</span><br><span class="line">    server \</span><br><span class="line">    --no-deploy traefik \ <span class="comment"># 没用，干掉</span></span><br><span class="line">    --docker \ <span class="comment"># 之所以选择使用docker的原因是发现当前k3s集成的containerd有报错，没时间去慢慢查询；另外，docker处理镜像比较方便</span></span><br><span class="line">    --no-deploy servicelb \  <span class="comment"># 没用，干掉</span></span><br><span class="line">    <span class="comment">#--kube-apiserver-arg insecure-bind-address=0.0.0.0 \  </span></span><br><span class="line">    <span class="comment">#--kube-apiserver-arg insecure-port=8080</span></span><br><span class="line"></span><br><span class="line">KillMode=process</span><br><span class="line">Delegate=yes</span><br><span class="line">LimitNOFILE=infinity</span><br><span class="line">LimitNPROC=infinity</span><br><span class="line">LimitCORE=infinity</span><br><span class="line">TasksMax=infinity</span><br><span class="line">TimeoutStartSec=0</span><br><span class="line">Restart=always</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>记得修改之后需要执行<code>systemctl daemon-reload</code>来生效。</p>
+<h2 id="pause镜像问题"><a href="#pause镜像问题" class="headerlink" title="pause镜像问题"></a>pause镜像问题</h2><p>由于k3s默认是使用containerd，而非docker的；而且containerd的sock文件与docker的containerd的sock文件不一样，所以通过docker拉取pause镜像的方式行不通（我在上一步的启动参数中指定了使用docker，如果你要想尝试继续使用containerd，就会遇到该问题）。这里需要这样操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先在安装了docker的机器上拉取镜像</span></span><br><span class="line">$ docker pull ljchen/k8s_gcr_io_pause:3.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># tag为k3s中pause image的label</span></span><br><span class="line">$ docker tag ljchen/k8s_gcr_io_pause:3.1 k8s.gcr.io/pause:3.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存镜像为tar包</span></span><br><span class="line">$ docker save k8s.gcr.io/pause:3.1 -o pause.tar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在k3s机器上，load该tar包（注意这里指定的address）</span></span><br><span class="line">$ ctr --address=/run/k3s/containerd/containerd.sock cri load pause.tar</span><br></pre></td></tr></table></figure>
+<h1 id="kubeedge"><a href="#kubeedge" class="headerlink" title="kubeedge"></a>kubeedge</h1><p>kubedege是华为开源的一个边缘计算的项目，下面是其架构图（后续再慢慢分析，今天只讲部署）。</p>
+<p><img src="/uploads/kubeedge_arch.png" width="90%" height="90%"></p>
+<p>首先需要将kubeedge项目拉取到本地，因为需要在该项目上构建镜像。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p <span class="variable">$GOPATH</span>/src/github.com/kubeedge</span><br><span class="line">$ <span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/github.com/kubeedge</span><br><span class="line"></span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/kubeedge/kubeedge.git</span><br></pre></td></tr></table></figure>
+<p>完了之后，建议直接checkout到v1.0.0上来，其他版本之前有做过一些测试，发现不少问题。本文主要基于v1.0.0来操作。</p>
+<h2 id="cloud端"><a href="#cloud端" class="headerlink" title="cloud端"></a>cloud端</h2><p>cloud端直接部署到k3s之上，主要是controller服务。</p>
+<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><p>如果使用的不是v1.0.0版本，或者希望自己构建，可以执行以下操作。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/github.com/kubeedge/kubeedge</span><br><span class="line">$ make cloudimage</span><br></pre></td></tr></table></figure></p>
+<p>如果只是希望部署，可以使用我已经构建好的镜像 <code>ljchen/kubeedge_edgecontroller:v1.0.0</code></p>
+<h3 id="准备yaml"><a href="#准备yaml" class="headerlink" title="准备yaml"></a>准备yaml</h3><p>生成证书信息到secret中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> build/cloud; ls</span><br><span class="line">01-namespace.yaml       03-clusterrole.yaml         05-configmap.yaml  07-deployment.yaml  Dockerfile  README_zh.md</span><br><span class="line">02-serviceaccount.yaml  04-clusterrolebinding.yaml     08-service.yaml     README.md</span><br><span class="line"></span><br><span class="line">$ ../tools/certgen.sh buildSecret | tee ./06-secret.yaml</span><br></pre></td></tr></table></figure>
+<p>另外更改deployment的yaml镜像名称为<code>ljchen/kubeedge_edgecontroller:v1.0.0</code>，或者你自己构建的镜像。</p>
+<p>最后就是执行yaml文件来部署cloud。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">for</span> resource <span class="keyword">in</span> $(ls *.yaml); <span class="keyword">do</span> kubectl create -f <span class="variable">$resource</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="问题诊断"><a href="#问题诊断" class="headerlink" title="问题诊断"></a>问题诊断</h3><p>查看kubeedge命名空间下的deployment/edgecontroller的日志，会发现很多报错；这里涉及到两个地方需要做修改。</p>
+<ul>
+<li><p><strong>报证书错误，当前证书无法用在kubernetes.default.svc.cluster.local</strong><br>需要手动修改configmap/edgecontroller，删除服务后面的cluster.local</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">items:</span></span><br><span class="line"><span class="attr">- apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">    <span class="string">controller.yaml:</span> <span class="string">|</span></span><br><span class="line"><span class="string"></span><span class="attr">    controller:</span></span><br><span class="line"><span class="attr">        kube:</span></span><br><span class="line"><span class="attr">        master:</span> <span class="attr">https://kubernetes.default.svc:443</span> <span class="comment"># 这里</span></span><br><span class="line"><span class="attr">        kubeconfig:</span> <span class="string">/etc/kubeedge/cloud/kubeconfig.yaml</span></span><br><span class="line"><span class="attr">        namespace:</span> <span class="string">""</span></span><br><span class="line"><span class="attr">        content_type:</span> <span class="string">"application/vnd.kubernetes.protobuf"</span></span><br><span class="line"><span class="attr">        qps:</span> <span class="number">5</span></span><br><span class="line"><span class="attr">        burst:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">        node_update_frequency:</span> <span class="number">10</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>发现controller报没有权限操作services和endpoints，需要在对应的role中添加</strong></p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ClusterRole</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">creationTimestamp:</span> <span class="string">"2019-07-12T07:11:27Z"</span></span><br><span class="line"><span class="attr">labels:</span></span><br><span class="line"><span class="attr">    k8s-app:</span> <span class="string">kubeedge</span></span><br><span class="line"><span class="attr">    kubeedge:</span> <span class="string">edgecontroller</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">edgecontroller</span></span><br><span class="line"><span class="attr">resourceVersion:</span> <span class="string">"4847"</span></span><br><span class="line"><span class="attr">selfLink:</span> <span class="string">/apis/rbac.authorization.k8s.io/v1/clusterroles/edgecontroller</span></span><br><span class="line"><span class="attr">uid:</span> <span class="number">43</span><span class="string">c656b8-a474-11e9-b3d9-00163e149cf2</span></span><br><span class="line"><span class="attr">rules:</span></span><br><span class="line"><span class="attr">- apiGroups:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">""</span></span><br><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">nodes</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">nodes/status</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">configmaps</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">pods</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">pods/status</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">secrets</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">services</span> <span class="comment"># 这里services</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">endpoints</span> <span class="comment"># 这里endpoints</span></span><br><span class="line"><span class="attr">verbs:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">get</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">list</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">watch</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">update</span></span><br><span class="line"><span class="attr">- apiGroups:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">""</span></span><br><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">pods</span></span><br><span class="line"><span class="attr">verbs:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">delete</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>edgecontroller服务无法被edge访问</strong></p>
+<p>由于edgecontroller是clusterIP类型，无法被集群外的edge访问到，这里可以直接在部署前或者部署之后手动修改service的类型为nodePort类型。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">edgecontroller</span></span><br><span class="line"><span class="attr">namespace:</span> <span class="string">kubeedge</span></span><br><span class="line"><span class="attr">labels:</span></span><br><span class="line"><span class="attr">    k8s-app:</span> <span class="string">kubeedge</span></span><br><span class="line"><span class="attr">    kubeedge:</span> <span class="string">edgecontroller</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line"><span class="attr">ports:</span></span><br><span class="line"><span class="attr">- port:</span> <span class="number">10000</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">cloudhub</span></span><br><span class="line"><span class="attr">selector:</span></span><br><span class="line"><span class="attr">    k8s-app:</span> <span class="string">kubeedge</span></span><br><span class="line"><span class="attr">    kubeedge:</span> <span class="string">edgecontroller</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="edge端"><a href="#edge端" class="headerlink" title="edge端"></a>edge端</h2><p>edge端通过与edgecontroller通信来上报上报状态，以及获取k8s配置并执行。这里主要讲述通过脚本部署的方式，具体部署流程如下。官方文档见<a href="https://github.com/kubeedge/kubeedge/blob/master/build/edge/kubernetes/README_zh.md" target="_blank" rel="noopener">这里</a>。</p>
+<h3 id="准备镜像"><a href="#准备镜像" class="headerlink" title="准备镜像"></a>准备镜像</h3><p>首先是镜像准备，如果你希望自己构建镜像，请执行以下脚本。如果不想再构建，可以直接使用我构建好的镜像: <code>ljchen/kubeedge_edgecore:v1.0.0</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查环境是否ready</span></span><br><span class="line">$ <span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/github.com/kubeedge/kubeedge/build/edge</span><br><span class="line">$ ./run_daemon.sh prepare</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建镜像</span></span><br><span class="line">$ <span class="built_in">cd</span> <span class="variable">$GOPATH</span>/src/github.com/kubeedge/kubeedge</span><br><span class="line">$ make edgeimage</span><br></pre></td></tr></table></figure>
+<h3 id="拷贝证书信息"><a href="#拷贝证书信息" class="headerlink" title="拷贝证书信息"></a>拷贝证书信息</h3><p>您需要去拷贝edge certs文件包括edge.crt和edge.key到您想要部署edge part的k8s节点上的/etc/kubeedge/certs/文件夹中。这里我是直接将cloud端主机上的/etc/kubeedge/目录打包并scp到edge端主机上解压的。</p>
+<h3 id="cloudhub信息"><a href="#cloudhub信息" class="headerlink" title="cloudhub信息"></a>cloudhub信息</h3><p>由于edge端是通过cloudhub来访问k8s api-server的，edge端的edgehub会与cloudhub进行websocket通信，需要确保该目标服务器端口可以被访问。该端口的查看方式如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ kce get svc</span><br><span class="line">NAME             TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)           AGE</span><br><span class="line">edgecontroller   NodePort   10.43.161.49   &lt;none&gt;        10000:30744/TCP   2d3h</span><br></pre></td></tr></table></figure>
+<p>就是edgecontroller的10000端口映射到主机nodePort的端口号。</p>
+<h3 id="启动脚本"><a href="#启动脚本" class="headerlink" title="启动脚本"></a>启动脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$GOPATH</span>/src/github.com/kubeedge/kubeedge/build/edge/run_daemon.sh only_run_edge  \</span><br><span class="line">    image=<span class="string">"kubeedge/edgecore:v1.0.0"</span> \</span><br><span class="line">    cloudhub=<span class="variable">$&#123;k3s-server-IP&#125;</span>:30744 \</span><br><span class="line">    edgename=edgenode \ </span><br><span class="line">    arch=amd64 \</span><br><span class="line">    qemu_arch=x86_64 \</span><br><span class="line">    certpath=/etc/kubeedge/certs \</span><br><span class="line">    certfile=/etc/kubeedge/certs/edge.crt \</span><br><span class="line">    keyfile=/etc/kubeedge/certs/edge.key</span><br></pre></td></tr></table></figure>
+<h3 id="创建node节点"><a href="#创建node节点" class="headerlink" title="创建node节点"></a>创建node节点</h3><p>在k3s服务器节点上通过以下yaml文件来创建一个node，保存为node.yaml之后，执行<code>kubectl apply -f node.yaml</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Node</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">edgenode</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">edge-node</span></span><br><span class="line">    <span class="string">node-role.kubernetes.io/edge:</span> <span class="string">""</span> <span class="comment"># 切忌！必须带上这个label，否则你就慢慢查问题吧</span></span><br></pre></td></tr></table></figure>
+<p>然后，查看node状态可以看到edge已经上报状态到k3s了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">$ kc get nodes</span><br><span class="line">NAME        STATUS   ROLES    AGE     VERSION</span><br><span class="line">aliyun-vm   Ready    master   3d7h    v1.14.3-k3s.1</span><br><span class="line">edgenode    Ready    edge     3h26m   v1.10.9-kubeedge-v1.0.0</span><br><span class="line"></span><br><span class="line">$ kc describe node edgenode</span><br><span class="line">Name:               edgenode</span><br><span class="line">Roles:              edge</span><br><span class="line">Labels:             name=edge-node</span><br><span class="line">Annotations:        kubectl.kubernetes.io/last-applied-configuration:</span><br><span class="line">                      &#123;<span class="string">"apiVersion"</span>:<span class="string">"v1"</span>,<span class="string">"kind"</span>:<span class="string">"Node"</span>,<span class="string">"metadata"</span>:&#123;<span class="string">"annotations"</span>:&#123;&#125;,<span class="string">"labels"</span>:&#123;<span class="string">"name"</span>:<span class="string">"edge-node"</span>&#125;,<span class="string">"name"</span>:<span class="string">"edgenode"</span>&#125;&#125;</span><br><span class="line">                    node.alpha.kubernetes.io/ttl: 0</span><br><span class="line">CreationTimestamp:  Mon, 15 Jul 2019 18:18:37 +0800</span><br><span class="line">Taints:             &lt;none&gt;</span><br><span class="line">Unschedulable:      <span class="literal">false</span></span><br><span class="line">Conditions:</span><br><span class="line">  Type    Status  LastHeartbeatTime                 LastTransitionTime                Reason      Message</span><br><span class="line">  ----    ------  -----------------                 ------------------                ------      -------</span><br><span class="line">  Ready   True    Mon, 15 Jul 2019 21:45:01 +0800   Mon, 15 Jul 2019 21:45:01 +0800   EdgeReady   edge is posting ready status</span><br><span class="line">Addresses:</span><br><span class="line">  InternalIP:  172.18.0.2</span><br><span class="line">  Hostname:    bc9fc8d547f7</span><br><span class="line">Capacity:</span><br><span class="line"> cpu:     1</span><br><span class="line"> memory:  991Mi</span><br><span class="line"> pods:    110</span><br><span class="line">Allocatable:</span><br><span class="line"> cpu:     1</span><br><span class="line"> memory:  891Mi</span><br><span class="line"> pods:    110</span><br><span class="line">System Info:</span><br><span class="line"> Machine ID:</span><br><span class="line"> System UUID:</span><br><span class="line"> Boot ID:</span><br><span class="line"> Kernel Version:             3.10.0-862.14.4.el7.x86_64</span><br><span class="line"> OS Image:                   Alpine Linux v3.10</span><br><span class="line"> Operating System:           linux</span><br><span class="line"> Architecture:               amd64</span><br><span class="line"> Container Runtime Version:  docker://3.10.0</span><br><span class="line"> Kubelet Version:            v1.10.9-kubeedge-v1.0.0</span><br><span class="line"> Kube-Proxy Version:</span><br><span class="line">PodCIDR:                     10.42.1.0/24</span><br><span class="line">Non-terminated Pods:         (1 <span class="keyword">in</span> total)</span><br><span class="line">  Namespace                  Name                      CPU Requests  CPU Limits  Memory Requests  Memory Limits  AGE</span><br><span class="line">  ---------                  ----                      ------------  ----------  ---------------  -------------  ---</span><br><span class="line">  default                    nginx-7db9fccd9b-shkw7    0 (0%)        0 (0%)      0 (0%)           0 (0%)         44m</span><br><span class="line">Allocated resources:</span><br><span class="line">  (Total limits may be over 100 percent, i.e., overcommitted.)</span><br><span class="line">  Resource           Requests  Limits</span><br><span class="line">  --------           --------  ------</span><br><span class="line">  cpu                0 (0%)    0 (0%)</span><br><span class="line">  memory             0 (0%)    0 (0%)</span><br><span class="line">  ephemeral-storage  0 (0%)    0 (0%)</span><br><span class="line">Events:              &lt;none&gt;</span><br></pre></td></tr></table></figure>
+<p>接下来，就可以像使用普通k8s一样部署你的应用到edge节点（你可以把节点换成你的树莓派或者其他开发板）了。enjoy yourself ^_^</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/07/15/基于k3s部署kubeedge/" title="基于K3s部署kubeedge">http://ljchen.net/2019/07/15/基于k3s部署kubeedge/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/opensource/" rel="tag"># opensource</a>
+          
+            <a href="/tags/rancher/" rel="tag"># rancher</a>
+          
+            <a href="/tags/kubeedge/" rel="tag"># kubeedge</a>
+          
+            <a href="/tags/edge-compute/" rel="tag"># edge-compute</a>
+          
+            <a href="/tags/k3s/" rel="tag"># k3s</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/09/knative-eventing必知原理/" rel="next" title="Knative Eventing必知原理">
+                <i class="fa fa-chevron-left"></i> Knative Eventing必知原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/21/kubeedge实现原理/" rel="prev" title="Kubeedge实现原理">
+                Kubeedge实现原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#K3S"><span class="nav-number">1.</span> <span class="nav-text">K3S</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux如何翻墙"><span class="nav-number">1.1.</span> <span class="nav-text">Linux如何翻墙</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速安装"><span class="nav-number">1.2.</span> <span class="nav-text">快速安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#k3s参数科普"><span class="nav-number">1.3.</span> <span class="nav-text">k3s参数科普</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kubeedge场景配置"><span class="nav-number">1.4.</span> <span class="nav-text">kubeedge场景配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pause镜像问题"><span class="nav-number">1.5.</span> <span class="nav-text">pause镜像问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kubeedge"><span class="nav-number">2.</span> <span class="nav-text">kubeedge</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cloud端"><span class="nav-number">2.1.</span> <span class="nav-text">cloud端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建镜像"><span class="nav-number">2.1.1.</span> <span class="nav-text">构建镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备yaml"><span class="nav-number">2.1.2.</span> <span class="nav-text">准备yaml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题诊断"><span class="nav-number">2.1.3.</span> <span class="nav-text">问题诊断</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#edge端"><span class="nav-number">2.2.</span> <span class="nav-text">edge端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备镜像"><span class="nav-number">2.2.1.</span> <span class="nav-text">准备镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝证书信息"><span class="nav-number">2.2.2.</span> <span class="nav-text">拷贝证书信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cloudhub信息"><span class="nav-number">2.2.3.</span> <span class="nav-text">cloudhub信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动脚本"><span class="nav-number">2.2.4.</span> <span class="nav-text">启动脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建node节点"><span class="nav-number">2.2.5.</span> <span class="nav-text">创建node节点</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/07/15/基于k3s部署kubeedge/';
+          this.page.identifier = '2019/07/15/基于k3s部署kubeedge/';
+          this.page.title = '基于K3s部署kubeedge';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

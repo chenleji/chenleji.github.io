@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>Knative流量的秘密 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/06/29/knative流量的秘密/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Knative流量的秘密</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-29T15:08:17+08:00">2019-06-29</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cloud-native/" itemprop="url" rel="index">
+                    <span itemprop="name">cloud-native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/29/knative流量的秘密/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/06/29/knative流量的秘密/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">11 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="/uploads/TaiShan-2.jpg" rel="gallery_ck8o9pn2l003ajroy9elud6ms" itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/uploads/TaiShan-2.jpg" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>knative在service里面实现了serverless的功能，其中最重要的莫过于按需来启动服务，并基于流量来弹性伸缩。在社区的文档里面找到这样一张架构设计图，先初略理解一下，详细介绍一下其流量转发流程。</p>
+<p>该文基于knative v0.6.0版本。</p>
+<a id="more"></a>
+<p><img src="/uploads/knative-service-arch.png" width="100%" height="100%"></p>
+<h1 id="模型抽象"><a href="#模型抽象" class="headerlink" title="模型抽象"></a>模型抽象</h1><p>这里说的模型，其实就是knative的service里面关于CRD的定义。其中声明在外的莫属<code>service</code>、<code>configuration</code>、<code>revision</code>以及<code>route</code>。但是要真正搞明白整个模型的原作原理，理解清楚所有CRD的关联关系是非常有必要的。</p>
+<p><img src="/uploads/knative-code-crds.png" width="90%" height="90%"></p>
+<p>上图展示了从<code>service</code>衍生出来的所有CRD的血缘关系，下面简述其流程和个CRD的作用。</p>
+<ol>
+<li>当用户创建一个knative的service的时候，其controller会对应创建出<code>configuration</code>和<code>route</code>；这一块较简单，因为service的spec里面其实是包含了对configuration和traffic的定义的。</li>
+<li>花开两支，<code>configuration</code>一方面基于配置创建对应的<code>revision</code>；另一方面，<code>route</code>除了创建externalService类型的<code>service</code>用于将流量指向istio网关外，同时还创建了<code>clusterIngress</code>（作用很重要）。</li>
+<li><code>clusterIngress</code>是对各种可用于knative流量入口组件的抽象。对于底层是istio的环境，networkController会将clusterIngress资源转化为istio的<code>virtualService</code>配置，从而提供将外部流量转发到集群内部的功能。</li>
+<li>对于<code>revision</code>来讲，其controller一方面基于资源描述创建出<code>deployment</code>、<code>imageCache</code>等资源；另一方面，为了提供serverless功能，controller还对应创建了<code>podAutoScaler</code>。需要知道的是<code>podAutoScaler</code>有两种实现，分别对应kpa和hpa。</li>
+<li>autoscaler controller又实现了基于<code>podAutoScaler</code>创建对应的<code>sks</code>(serverlessService)。如果策略是基于kpa的，就需要一套监控流量和并发请求量的机制，于是又创建了private和public的<code>service</code>专用于访问实例上监控组件sidecar的端口。</li>
+</ol>
+<p><strong>代码实现</strong></p>
+<p>上面的分析，具体的代码实现流程见下图。</p>
+<p><img src="/uploads/knative-code-service.png" width="90%" height="90%"></p>
+<h1 id="流量转发"><a href="#流量转发" class="headerlink" title="流量转发"></a>流量转发</h1><p>当外部流量需要访问内部服务时，其流量的转发流程如何？接下来分小节介绍主要的流量转发逻辑。</p>
+<h2 id="流量入口"><a href="#流量入口" class="headerlink" title="流量入口"></a>流量入口</h2><h3 id="服务映射"><a href="#服务映射" class="headerlink" title="服务映射"></a>服务映射</h3><p>之前在将CRD资源的时候有提到<code>clusterIngress</code>资源，以及对应的的ExternalService类型的<code>service</code>，这里是一个简单的实例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master knative]<span class="comment"># kc describe svc autoscale-go</span></span><br><span class="line">Name:              autoscale-go</span><br><span class="line">Namespace:         default</span><br><span class="line">Labels:            serving.knative.dev/route=autoscale-go</span><br><span class="line">Annotations:       &lt;none&gt;</span><br><span class="line">Selector:          &lt;none&gt;</span><br><span class="line">Type:              ExternalName</span><br><span class="line">IP:</span><br><span class="line">External Name:     istio-ingressgateway.istio-system.svc.cluster.local</span><br><span class="line">Session Affinity:  None</span><br><span class="line">Events:            &lt;none&gt;</span><br></pre></td></tr></table></figure>
+<p>该service的作用是，当请求<code>autoscale-go.default.example.com</code>时（cluster名字换成环境的cluster name），DNS会直接返回external name<code>istio-ingressgateway.istio-system.svc.cluster.local</code>作为响应。相当于就将对autoscale-go服务的访问，重定向到了istio的ingressgateway上。而Istio上早已按照<code>clusterIngress</code>的要求，配置好了流量转发规则。</p>
+<h3 id="转发规则"><a href="#转发规则" class="headerlink" title="转发规则"></a>转发规则</h3><p>serverlessservice有两种模式，<code>proxy</code>和<code>service</code>。其中<code>proxy</code>会将流量转发到activator上，而<code>service</code>则会将流量转发到对应的后端实例上真正处理业务。</p>
+<p>我们先假设此时后端的deployment并没有启动起来，或者是很久没有请求流量，pod已经被autoscaler出于节约资源消耗的目的干掉了，即serverlessservice处于<code>proxy</code>模式。此时istio的配置如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment"># istioctl pc listener istio-ingressgateway-67cbb7f6c6-bqv2h.istio-system</span></span><br><span class="line">ADDRESS     PORT      TYPE</span><br><span class="line">0.0.0.0     80        HTTP</span><br><span class="line">0.0.0.0     15090     HTTP</span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment"># istioctl pc route istio-ingressgateway-67cbb7f6c6-bqv2h.istio-system -o json</span></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"http.80"</span>,</span><br><span class="line">        <span class="string">"virtualHosts"</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"name"</span>: <span class="string">"autoscale-go.default.example.com:80"</span>,</span><br><span class="line">                <span class="string">"domains"</span>: [</span><br><span class="line">                    <span class="string">"autoscale-go.default.example.com"</span>,</span><br><span class="line">                    <span class="string">"autoscale-go.default.example.com:80"</span></span><br><span class="line">                ],</span><br><span class="line">                <span class="string">"routes"</span>: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="string">"match"</span>: &#123;</span><br><span class="line">                            <span class="string">"prefix"</span>: <span class="string">"/"</span>,</span><br><span class="line">                            <span class="string">"headers"</span>: [</span><br><span class="line">                                &#123;</span><br><span class="line">                                    <span class="string">"name"</span>: <span class="string">":authority"</span>,</span><br><span class="line">                                    <span class="string">"regexMatch"</span>: <span class="string">"^autoscale-go\\.default(?::\\d&#123;1,5&#125;)?$"</span></span><br><span class="line">                                &#125;</span><br><span class="line">                            ]</span><br><span class="line">                        &#125;,</span><br><span class="line">                        <span class="string">"route"</span>: &#123;</span><br><span class="line">                            <span class="string">"cluster"</span>: <span class="string">"outbound|80||autoscale-go-52f52.default.svc.cluster.local"</span>,</span><br><span class="line">                            <span class="string">"timeout"</span>: <span class="string">"600s"</span>,</span><br><span class="line">                            <span class="string">"retryPolicy"</span>: &#123;</span><br><span class="line">                                <span class="string">"retryOn"</span>: <span class="string">"connect-failure,refused-stream,unavailable,cancelled,resource-exhausted,retriable-status-codes"</span>,</span><br><span class="line">                                <span class="string">"numRetries"</span>: 3,</span><br><span class="line">                                <span class="string">"perTryTimeout"</span>: <span class="string">"600s"</span>,</span><br><span class="line">                                <span class="string">"retryHostPredicate"</span>: [</span><br><span class="line">                                    &#123;</span><br><span class="line">                                        <span class="string">"name"</span>: <span class="string">"envoy.retry_host_predicates.previous_hosts"</span></span><br><span class="line">                                    &#125;</span><br><span class="line">                                ],</span><br><span class="line">                                <span class="string">"hostSelectionRetryMaxAttempts"</span>: <span class="string">"3"</span>,</span><br><span class="line">                                <span class="string">"retriableStatusCodes"</span>: [</span><br><span class="line">                                    503</span><br><span class="line">                                ]</span><br><span class="line">                            &#125;,</span><br><span class="line">                            <span class="string">"maxGrpcTimeout"</span>: <span class="string">"600s"</span></span><br><span class="line">                        &#125;,</span><br><span class="line">                        ...</span><br><span class="line">                    &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>查看EDS的配置信息，发现其对应的路由为IP<code>10.244.0.234</code>的8012端口。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment"># istioctl pc endpoint istio-ingressgateway-67cbb7f6c6-bqv2h.istio-system -o json</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"outbound|80||autoscale-go-52f52.default.svc.cluster.local"</span>,</span><br><span class="line">        <span class="string">"addedViaApi"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">"hostStatuses"</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"address"</span>: &#123;</span><br><span class="line">                    <span class="string">"socketAddress"</span>: &#123;</span><br><span class="line">                        <span class="string">"address"</span>: <span class="string">"10.244.0.234"</span>,</span><br><span class="line">                        <span class="string">"portValue"</span>: 8012</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                ...</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在来看此时该IP是activator对应的pod IP地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment"># kc get pod -o wide --all-namespaces | grep 10.244.0.234</span></span><br><span class="line">knative-serving      activator-5b7d897458-xv4tp                      1/1     Running   0          132m   10.244.0.234    k8s-master   &lt;none&gt;           &lt;none&gt;</span><br></pre></td></tr></table></figure>
+<p>查看service上面的流量以及对应的转发目标变为activator。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master knative]<span class="comment"># kc get svc</span></span><br><span class="line">NAME                         TYPE           CLUSTER-IP       EXTERNAL-IP                                           PORT(S)             AGE</span><br><span class="line">alertmanager-operated        ClusterIP      None             &lt;none&gt;                                                9093/TCP,6783/TCP   7d2h</span><br><span class="line">autoscale-go                 ExternalName   &lt;none&gt;           istio-ingressgateway.istio-system.svc.cluster.local   &lt;none&gt;              148m</span><br><span class="line">autoscale-go-52f52           ClusterIP      10.108.134.58    &lt;none&gt;                                                80/TCP              148m</span><br><span class="line">autoscale-go-52f52-metrics   ClusterIP      10.109.214.47    &lt;none&gt;                                                9090/TCP            148m</span><br><span class="line">autoscale-go-52f52-priv      ClusterIP      10.106.251.157   &lt;none&gt;                                                80/TCP              148m</span><br><span class="line">kubernetes                   ClusterIP      10.96.0.1        &lt;none&gt;                                                443/TCP             66d</span><br><span class="line">prometheus-operated          ClusterIP      None             &lt;none&gt;                                                9090/TCP            7d2h</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s-master knative]<span class="comment"># kc get ep</span></span><br><span class="line">NAME                         ENDPOINTS                                               AGE</span><br><span class="line">autoscale-go-52f52           10.244.0.234:9090,10.244.0.234:8012,10.244.0.234:8013   148m</span><br><span class="line">autoscale-go-52f52-metrics   &lt;none&gt;                                                  148m</span><br><span class="line">autoscale-go-52f52-priv      &lt;none&gt;                                                  148m</span><br></pre></td></tr></table></figure>
+<p>所以，我们可以判断：当很久没有流量请求的时候，serverlessservice会切换到<code>proxy</code>模式，其autoscaler逻辑会将pod全干掉；而此时，为了检测到外部的流量请求，Istio将流量转发到activator上面。</p>
+<h2 id="弹性伸缩"><a href="#弹性伸缩" class="headerlink" title="弹性伸缩"></a>弹性伸缩</h2><p>通过上面的分析，相信大家对serverlessservice的弹性伸缩都有了一个直观的了解。接下来该部分通过两个小节介绍弹性伸缩的工作原理。</p>
+<p><strong><em>弹性伸缩分为<code>hpa</code>和<code>kpa</code>:</em></strong></p>
+<ul>
+<li><code>hpa</code>：基于一些监控指标，比如CPU、memory等的情况来决定是否需要扩缩容pod的数量，另外hpa不支持将实例数降到0个。</li>
+<li><code>kpa</code>：基于监控到的并发请求数来自动弹性伸缩实例数，当并发搞的时候就扩容，当持续一段时间没有请求的时候，就让pod休假，将流量转给看门人activator来中转。一旦有新请求，立马召回pod，并对外服务。</li>
+</ul>
+<h3 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h3><p>前面提到的activator就是触发器，它的作用就是为那些几乎没有流量访问的服务充当看门人。显然这个看门人并不是只为某个VIP客户服务，而是为大家一起服务的。那activator都做了些什么？当流量到了的时候，它又是如何通知正处于放空状态的服务实例的呢？</p>
+<p><strong>作用</strong></p>
+<ol>
+<li>当service的实例数为0的时候，activator代替service接收流量，统计流量和并发数量，并通过websocket上报到autoscaler服务。</li>
+<li>当service的实例启动起来后，activator通过获取revision和serverlessservice来找到对应的service，并探测该service的服务是否已经可以访问，一旦准备好，就发送流量。</li>
+<li>通过一系列的handler链来打印日志，记录trace信息，限速，零时存储请求内容，响应probe和healthcheck等。</li>
+</ol>
+<p><strong>核心工作流程</strong></p>
+<ol>
+<li>作为代理看门人，activator收到外部访问service的请求后，第一件事请就是去除报文中的header信息，按照revision name作为key产生一条event。</li>
+<li>如果从来没有改key的event，就可以判断这是到某一个客户的第一条请求，此时看门人需要立刻通过websocket上报到autoscaler（autoscaler的逻辑会创建service的实例）。</li>
+<li>当然，activator并非只做这些，它还记录日志，trace信息等，最重要的一点，activator会基于报文header中的信息来知道其所请求的revision以及sks。</li>
+<li>通过查询sks的privateService来找到该service的healthCheck probe地址，探测其服务是否ready。一旦probe成功就会将缓存的报文发送到目标服务。</li>
+</ol>
+<p><strong>代码实现</strong></p>
+<p><img src="/uploads/knative-code-activator.png" width="90%" height="90%"></p>
+<p>其代码住逻辑分为三块，也对应三个goroutine，分别是：</p>
+<ol>
+<li>监控上报</li>
+<li>监控数据统计</li>
+<li>报文处理（包含多个处理链）</li>
+</ol>
+<h3 id="弹性伸缩逻辑"><a href="#弹性伸缩逻辑" class="headerlink" title="弹性伸缩逻辑"></a>弹性伸缩逻辑</h3><p>在触发器的流程中，我们提到当触发器发现某个报文是对某个revision的第一个请求时，会通过websocket上报到autoscaler controller。接下来，我们看看autoscaler的处理流程。</p>
+<p><strong>功能</strong></p>
+<ol>
+<li>autoscalr的核心作用就是做弹性伸缩的决策，为了做决策，它需要实现对上报监控指标的采集，这又分为两种形式。<ul>
+<li>通过websocket上报来收集activator的报文请求指标；</li>
+<li>通过定时pull的形势来从metrics service获取queue中统计的指标；</li>
+</ul>
+</li>
+<li>基于metric指标来做弹性伸缩决策并下发。</li>
+</ol>
+<p><strong>代码实现</strong></p>
+<p><img src="/uploads/knative-code-autoscale.png" width="90%" height="90%"></p>
+<p>由于这里重点讲流量，该代码基本是按照功能来实现，这里就不再做讲解。</p>
+<p>这里重点讲一下autoscaler将service的pod拉起来了之后的动作，通过代码里面可以看到，<code>ks.applyScale</code>最后会走到<code>c.reconcileSKS</code>。这里其实是更改serverlessservice的模式，从<code>proxy</code>切换到<code>service</code>，而接下来的又做了什么？请参考service controller的逻辑。</p>
+<p>当pod启动起来之后，对应的private Service会基于selector而选中新起来的pod，从而监控流量将从pod的8012端口采集。</p>
+<h3 id="流量监控"><a href="#流量监控" class="headerlink" title="流量监控"></a>流量监控</h3><p>上面提到，当pod启动之后，autoscaler会从pod的8012端口采集监控指标。这里的监控指标是如何产生的？应用需要关注吗？这些问题在这一节来解答。</p>
+<p><strong>作用</strong></p>
+<p>首先，knative中的revision在创建deploy的时候，会为其自动加入一个sidecar，这个container就是queue-proxy;在整个平台中，queue-proxy的作用非常重要。</p>
+<ol>
+<li>基于一层反向代理，收集访问业务container的流量情况，对外暴露9090(即：metrics的访问端口)</li>
+<li>在反向代理上，基于配置的并发数来限制外部访问的请求速率；</li>
+<li>对外提供对主容器进行healthcheck以及drain的接口（admin的端口:8022)，(业务代理端口: http1:8012，http2:8013）;</li>
+</ol>
+<p><strong>代码实现</strong></p>
+<p><img src="/uploads/knative-service-queue.png" width="100%" height="100%"></p>
+<p><strong>实验</strong></p>
+<p>autoscaler通过周期性的抓取每一个业务容器对应queue-proxy的metrics来感知实时流量情况的。当外部往service发包的时候，在pod的queue container网卡上抓包可以发现有很多的prometheus metrics的报文，collector拉取指标的频率为每秒4次，具体指标见下图的抓包细节：</p>
+<p><img src="/uploads/queue-metrics.png" width="100%" height="100%"></p>
+<p>在报文里面发现来收集metrics的IP地址为<code>10.244.0.235</code>, 通过在k8s里面查询，发现该IP为autoscaler的地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment"># kc get pod -o wide --all-namespaces | grep 10.244.0.235</span></span><br><span class="line">knative-serving      autoscaler-74f47bfff8-7znzv                     1/1     Running   0          15d   10.244.0.235    k8s-master   &lt;none&gt;           &lt;none&gt;</span><br></pre></td></tr></table></figure>
+<p>当服务启动后，各服务的具体内容如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment"># kc get serverlessservice</span></span><br><span class="line">NAME                 SERVICENAME          PRIVATESERVICENAME        READY   REASON</span><br><span class="line">autoscale-go-52f52   autoscale-go-52f52   autoscale-go-52f52-priv   True</span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment"># kc get revisions</span></span><br><span class="line">NAME                 SERVICE NAME         GENERATION   READY   REASON</span><br><span class="line">autoscale-go-52f52   autoscale-go-52f52   1            True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment"># kc get deploy</span></span><br><span class="line">NAME                            READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">autoscale-go-52f52-deployment   1/1     1            1           141m</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment"># kc get svc</span></span><br><span class="line">NAME                         TYPE           CLUSTER-IP       EXTERNAL-IP                                           PORT(S)             AGE</span><br><span class="line">autoscale-go                 ExternalName   &lt;none&gt;           istio-ingressgateway.istio-system.svc.cluster.local   &lt;none&gt;              142m</span><br><span class="line">autoscale-go-52f52           ClusterIP      10.108.134.58    &lt;none&gt;                                                80/TCP              142m</span><br><span class="line">autoscale-go-52f52-metrics   ClusterIP      10.109.214.47    &lt;none&gt;                                                9090/TCP            142m</span><br><span class="line">autoscale-go-52f52-priv      ClusterIP      10.106.251.157   &lt;none&gt;                                                80/TCP              142m</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment"># kc get ep</span></span><br><span class="line">NAME                         ENDPOINTS            AGE</span><br><span class="line">alertmanager-operated        &lt;none&gt;               7d2h</span><br><span class="line">autoscale-go-52f52           10.244.0.18:8012     142m</span><br><span class="line">autoscale-go-52f52-metrics   10.244.0.18:9090     142m</span><br><span class="line">autoscale-go-52f52-priv      10.244.0.18:8012     142m</span><br><span class="line">kubernetes                   10.200.204.76:6443   66d</span><br><span class="line">prometheus-operated          &lt;none&gt;               7d2h</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment"># istioctl  ps</span></span><br><span class="line">NAME                                                   CDS        LDS        EDS               RDS        PILOT                            VERSION</span><br><span class="line">istio-ingressgateway-67cbb7f6c6-bqv2h.istio-system     SYNCED     SYNCED     SYNCED (100%)     SYNCED     istio-pilot-75984f55cc-5brpc     1.1.3</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment"># istioctl pc endpoint istio-ingressgateway-67cbb7f6c6-bqv2h.istio-system -o json</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"outbound|80||autoscale-go-52f52.default.svc.cluster.local"</span>,</span><br><span class="line">    <span class="string">"addedViaApi"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"hostStatuses"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"address"</span>: &#123;</span><br><span class="line">                <span class="string">"socketAddress"</span>: &#123;</span><br><span class="line">                    <span class="string">"address"</span>: <span class="string">"10.244.0.18"</span>,</span><br><span class="line">                    <span class="string">"portValue"</span>: 8012</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/06/29/knative流量的秘密/" title="Knative流量的秘密">http://ljchen.net/2019/06/29/knative流量的秘密/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/k8s/" rel="tag"># k8s</a>
+          
+            <a href="/tags/cloud-native/" rel="tag"># cloud-native</a>
+          
+            <a href="/tags/service-mesh/" rel="tag"># service-mesh</a>
+          
+            <a href="/tags/knative/" rel="tag"># knative</a>
+          
+            <a href="/tags/autoscale/" rel="tag"># autoscale</a>
+          
+            <a href="/tags/serverless/" rel="tag"># serverless</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/19/knative-build实现/" rel="next" title="Knative Build实现">
+                <i class="fa fa-chevron-left"></i> Knative Build实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/29/tekton安装镜像/" rel="prev" title="Tekton安装镜像">
+                Tekton安装镜像 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#模型抽象"><span class="nav-number">1.</span> <span class="nav-text">模型抽象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#流量转发"><span class="nav-number">2.</span> <span class="nav-text">流量转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#流量入口"><span class="nav-number">2.1.</span> <span class="nav-text">流量入口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务映射"><span class="nav-number">2.1.1.</span> <span class="nav-text">服务映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转发规则"><span class="nav-number">2.1.2.</span> <span class="nav-text">转发规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#弹性伸缩"><span class="nav-number">2.2.</span> <span class="nav-text">弹性伸缩</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#触发器"><span class="nav-number">2.2.1.</span> <span class="nav-text">触发器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#弹性伸缩逻辑"><span class="nav-number">2.2.2.</span> <span class="nav-text">弹性伸缩逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流量监控"><span class="nav-number">2.2.3.</span> <span class="nav-text">流量监控</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/06/29/knative流量的秘密/';
+          this.page.identifier = '2019/06/29/knative流量的秘密/';
+          this.page.title = 'Knative流量的秘密';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

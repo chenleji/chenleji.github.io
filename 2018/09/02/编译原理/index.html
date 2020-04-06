@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>编译原理 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2018/09/02/编译原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">编译原理</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T20:46:58+08:00">2018-09-02</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/programming-language/" itemprop="url" rel="index">
+                    <span itemprop="name">programming-language</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/02/编译原理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/02/编译原理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">13 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>一般高级语言程序编译的过程：<code>预处理</code>、<code>编译</code>、<code>汇编</code>、<code>链接</code>。</p>
+<p>gcc在后台实际上也经历了这几个过程，我们可以通过<code>-v</code>参数查看它的编译细节，如果想看某个具体的编译过程，则可以分别使用<code>-E</code>, <code>-S</code>, <code>-c</code>和 <code>-O</code>，对应的后台工具则分别为cpp,cc1,as,ld。</p>
+<p>下面我们将逐步分析这几个过程以及相关的内容，诸如语法检查、代码调试、汇编语言等。<br><a id="more"></a></p>
+<h1 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h1><p>预处理是C语言程序从源代码变成可执行程序的第一步，主要是C语言编译器对各种预处理命令进行处理，包括头文件的包含、宏定义的扩展、条件编译的选择等。打印出预处理之后的结果：<code>gcc -E hello.c</code> 或者 <code>cpp hello.c</code>这样我们就可以看到源代码中的各种预处理命令是如何被解释的，从而方便理解和查错。</p>
+<p>gcc调用了cpp的(虽然我们通过gcc的-v仅看到cc1)，cpp即The C Preprocessor，主要用来预处理宏定义、文件包含、条件编译等。下面介绍它的一个比较重要的选项-D。在命令行定义宏：<code>gcc –Dmacro=1 hello.c</code> 或者 <code>cpp –Dmacro=1 hello.c</code>等同于在文件的开头定义宏，即<code>#define maco</code>，但是在命令行定义更灵活。例如，在源代码中有这些语句:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DEBUG</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"this code is for debuggingn"</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><p>编译之前，C语言编译器会进行词法分析、语法分析(-fsyntax-only)，接着会把源代码翻译成中间语言，即汇编语言。如果想看到这个中间结果，可以用-S选项。</p>
+<p>编译程序工作时，先分析，后综合，从而得到目标程序。所谓<code>分析</code>，是指<code>词法分析</code>和<code>语法分析</code>；所谓综合是指代码优化，存储分配和代码生成。为了完成这些分析综合任务，编译程序采用对源程序进行多次扫描的办法，每次扫描集中完成一项或几项任务，也有一项任务分散到几次扫描去完成的。</p>
+<p>下面举一个四遍扫描的例子：</p>
+<ul>
+<li>第一遍扫描做词法分析；</li>
+<li>第二遍扫描做语法分析；</li>
+<li>第三遍扫描做代码优化和存储分配；</li>
+<li>第四遍扫描做代码生成。 </li>
+</ul>
+<p>值得一提的是，大多数的编译程序直接产生机器语言的目标代码，形成可执行的目标文件，但也有的编译程序则先产生汇编语言一级的符号代码文件，然后再调用汇编程序进行翻译加工处理，最后产生可执行的机器语言目标文件。 </p>
+<p>语法检查之后是翻译动作，gcc提供了一个优化选项<code>-O</code>，以便根据不同的运行平台和用户要求产生经过优化的汇编代码。例如，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -o hello hello.c             <span class="comment">#采用默认选项，不优化</span></span><br><span class="line">$ gcc -O2 -o hello2 hello.c        <span class="comment">#优化等次是2</span></span><br><span class="line">$ gcc -Os -o hellos hello.c        <span class="comment">#优化目标代码的大小</span></span><br><span class="line"></span><br><span class="line">$ time ./hello			    <span class="comment">#查看代码运行时间</span></span><br><span class="line">hello, world</span><br></pre></td></tr></table></figure>
+<p>根据上面的简单演示，可以看出gcc有很多不同的优化选项，主要看用户的需求了，目标代码的大小和效率之间貌似存在一个<code>纠缠</code>，需要开发人员自己权衡。</p>
+<p>下面我们通过<code>-S</code>选项来看看编译出来的中间结果，汇编语言，还是以之前那个hello.c为例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -S hello.c        <span class="comment">#默认输出是hello.s，可自己指定，输出到屏幕-o -，输出到其他文件-o file</span></span><br><span class="line">$ cat hello.s</span><br><span class="line">cat hello.s</span><br><span class="line">        .file   <span class="string">"hello.c"</span></span><br><span class="line">        .section        .rodata</span><br><span class="line">.LC0:</span><br><span class="line">        .string <span class="string">"hello, world"</span></span><br><span class="line">        .text</span><br><span class="line">.globl main</span><br><span class="line">        .<span class="built_in">type</span>   main, @<span class="keyword">function</span></span><br><span class="line">main:</span><br><span class="line">        leal    4(%esp), %ecx</span><br><span class="line">        andl    $-16, %esp</span><br><span class="line">        pushl   -4(%ecx)</span><br><span class="line">        pushl   %ebp</span><br><span class="line">        movl    %esp, %ebp</span><br><span class="line">        pushl   %ecx</span><br><span class="line">        subl    <span class="variable">$4</span>, %esp</span><br><span class="line">        movl    $.LC0, (%esp)</span><br><span class="line">        call    puts</span><br><span class="line">        movl    <span class="variable">$0</span>, %eax</span><br><span class="line">        addl    <span class="variable">$4</span>, %esp</span><br><span class="line">        popl    %ecx</span><br><span class="line">        popl    %ebp</span><br><span class="line">        leal    -4(%ecx), %esp</span><br><span class="line">        ret</span><br><span class="line">        .size   main, .-main</span><br><span class="line">        .ident  <span class="string">"GCC: (GNU) 4.1.3 20070929 (prerelease) (Ubuntu 4.1.2-16ubuntu2)"</span></span><br><span class="line">        .section        .note.GNU-stack,<span class="string">""</span>,@progbits</span><br></pre></td></tr></table></figure>
+<p>和intel的汇编语法不太一样，这里用的是AT&amp;T语法格式。这里需要补充的是，在写C语言代码时，如果能够对编译器比较熟悉（工作原理和一些细节）的话，可能会很有帮助。包括这里的优化选项(有些优化选项可能在汇编时采用)和可能的优化措施。</p>
+<h1 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h1><p>把作为中间结果的汇编代码翻译成了机器代码，即目标代码，不过它还不可以运行。如果要产生这一中间结果，可用gcc的<code>-c</code>选项，当然，也可通过as命令汇编语言源文件来产生。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ file hello.s</span><br><span class="line">hello.s: ASCII assembler program text</span><br><span class="line"></span><br><span class="line">$ gcc -c hello.s             <span class="comment">#用gcc把汇编语言编译成目标代码</span></span><br><span class="line">$ file hello.o               <span class="comment">#file命令可以用来查看文件的类型</span></span><br><span class="line">hello.o: ELF 32-bit LSB relocatable, Intel 80386, version 1 (SYSV), not stripped</span><br><span class="line"></span><br><span class="line">$ as -o hello.o hello.s      <span class="comment">#用as把汇编语言编译成目标代码</span></span><br><span class="line">$ file hello.o</span><br><span class="line">hello.o: ELF 32-bit LSB relocatable, Intel 80386, version 1 (SYSV), not stripped</span><br></pre></td></tr></table></figure>
+<p>gcc和as默认产生的目标代码都是ELF格式的，因此这里主要讨论ELF格式的目标代码。目标代码不再是普通的文本格式，无法直接通过文本编辑器浏览，需要一些专门的工具。</p>
+<p>binutils(GNU Binary Utilities)的很多工具都采用这个库来操作目标文件，这类工具有<code>objdump, objcopy, nm, strip</code>等，不过另外一款非常优秀的分析工具readelf并不是基于这个库，所以你也应该可以直接用elf.h头文件中定义的相关结构来操作ELF文件。</p>
+<blockquote>
+<p>ELF文件的结构：</p>
+<ol>
+<li>ELF Header (ELF文件头)说明了文件的类型，大小，运行平台，节区数目等。</li>
+<li>Porgram Headers Table (程序头表，实际上叫段表好一些，用于描述可执行文件和可共享库)<br>Section 1<br>Section 2<br>…</li>
+<li>Section Headers Table(节区头部表，用于链接可重定位文件成可执行文件或共享库)</li>
+</ol>
+</blockquote>
+<p>可以分别通过 readelf文件的<code>-h</code>，<code>-l</code>和<code>-S</code>参数查看ELF文件头(ELF Header)、程序头部表（Program Headers Table，段表）和节区表(Section Headers Table)。</p>
+<p>下面通过这几段代码来演示通过<code>readelf -h</code>参数查看ELF的不同类型。期间将演示如何创建动态连接库(即可共享文件)、静态连接库，并比较它们的异同。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -c myprintf.c test.c              <span class="comment">#编译产生两个目标文件myprintf.o和test.o，它们都是可重定位文件(REL)</span></span><br><span class="line">$ readelf -h test.o | grep Type    </span><br><span class="line">  Type:                              REL (Relocatable file)</span><br><span class="line">$ readelf -h myprintf.o | grep Type</span><br><span class="line">  Type:                              REL (Relocatable file)</span><br><span class="line">$ gcc -o <span class="built_in">test</span> myprintf.o test.o          <span class="comment">#根据目标代码连接产生可执行文件，这里的文件类型是可执行的(EXEC)</span></span><br><span class="line">$ readelf -h <span class="built_in">test</span> | grep Type</span><br><span class="line">  Type:                              EXEC (Executable file)</span><br><span class="line">$ ar rcsv libmyprintf.a myprintf.o       <span class="comment">#用ar命令创建一个静态连接库</span></span><br><span class="line">$ readelf -h libmyprintf.a | grep Type   <span class="comment">#因此，使用静态连接库和可重定位文件一样，它们之间唯一不同是前者可以是多个可重定位文件的“集合”。</span></span><br><span class="line">  Type:                              REL (Relocatable file)</span><br><span class="line">$ gcc -o <span class="built_in">test</span> test.o -llib -L./          <span class="comment">#可以直接连接进去，也可以使用-l参数，-L指定库的搜索路径</span></span><br><span class="line">$ gcc -Wall myprintf.o -shared -Wl,-soname,libmyprintf.so.0 -o libmyprintf.so.0.0</span><br><span class="line">                                         <span class="comment">#编译产生动态链接库，并支持major和minor版本号，动态链接库类型为DYN</span></span><br><span class="line">$ ln -sf libmyprintf.so.0.0 libmyprintf.so.0</span><br><span class="line">$ ln -sf libmyprintf.so.0 libmyprintf.so</span><br><span class="line">$ readelf -h libmyprintf.so | grep Type</span><br><span class="line">  Type:                              DYN (Shared object file)</span><br><span class="line">$ gcc -o <span class="built_in">test</span> test.o -llib -L./          <span class="comment">#编译时和静态连接库类似，但是执行时需要指定动态连接库的搜索路径</span></span><br><span class="line">$ LD_LIBRARY_PATH=./ ./<span class="built_in">test</span>              <span class="comment">#LD_LIBRARY_PATH为动态链接库的搜索路径</span></span><br><span class="line">$ gcc -static -o <span class="built_in">test</span> test.o -llib -L./  <span class="comment">#在不指定static时会优先使用动态链接库，指定时则阻止使用动态连接库这个时候会把所有静态连接库文件加入到可执行文件中.</span></span><br></pre></td></tr></table></figure>
+<p>可重定位文件本身不可以运行，仅仅是作为可执行文件、静态连接库（也是可重定位文件）、动态连接库的 “组件”。</p>
+<p>下面来看看ELF文件的主体内容，节区（Section)。ELF文件具有很大的灵活性，它通过文件头组织整个文件的总体结构，通过节区表 (Section Headers Table)和程序头（Program Headers Table或者叫段表)来分别描述可重定位文件和可执行文件。在可重定位文件中，节区表描述的就是各种节区本身；而在可执行文件中，程序头描述的是由各个节区组成的段（Segment），以便程序运行时动态装载器知道如何对它们进行内存映像，从而方便程序加载和运行。</p>
+<p>可以通过readelf的-S参数查看ELF的节区。先来看看可重定位文件的节区信息，通过节区表来查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -c myprintf.c             <span class="comment">#默认编译好myprintf.c，将产生一个可重定位的文件myprintf.o</span></span><br><span class="line"></span><br><span class="line">$ readelf -S myprintf.o         <span class="comment">#通过查看myprintf.o的节区表查看节区信息</span></span><br><span class="line">There are 11 section headers, starting at offset 0xc0:</span><br><span class="line">Section Headers:</span><br><span class="line">  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al</span><br><span class="line">  [ 0]                   NULL            00000000 000000 000000 00      0   0  0</span><br><span class="line">  [ 1] .text             PROGBITS        00000000 000034 000018 00  AX  0   0  4</span><br><span class="line">  [ 2] .rel.text         REL             00000000 000334 000010 08      9   1  4</span><br><span class="line">  [ 3] .data             PROGBITS        00000000 00004c 000000 00  WA  0   0  4</span><br><span class="line">  [ 4] .bss              NOBITS          00000000 00004c 000000 00  WA  0   0  4</span><br><span class="line">  [ 5] .rodata           PROGBITS        00000000 00004c 00000e 00   A  0   0  1</span><br><span class="line">  [ 6] .comment          PROGBITS        00000000 00005a 000012 00      0   0  1</span><br><span class="line">  [ 7] .note.GNU-stack   PROGBITS        00000000 00006c 000000 00      0   0  1</span><br><span class="line">  [ 8] .shstrtab         STRTAB          00000000 00006c 000051 00      0   0  1</span><br><span class="line">  [ 9] .symtab           SYMTAB          00000000 000278 0000a0 10     10   8  4</span><br><span class="line">  [10] .strtab           STRTAB          00000000 000318 00001a 00      0   0  1</span><br><span class="line">Key to Flags:</span><br><span class="line">  W (write), A (alloc), X (execute), M (merge), S (strings)</span><br><span class="line">  I (info), L (link order), G (group), x (unknown)</span><br><span class="line">  O (extra OS processing required) o (OS specific), p (processor specific)</span><br><span class="line"></span><br><span class="line">$ objdump -d -j .text myprintf.o  <span class="comment">#这里是程序指令部分，用objdump的-d选项可以看到反编译的结果， #-j指定需要查看的节区</span></span><br><span class="line">myprintf.o:     file format elf32-i386</span><br><span class="line">Disassembly of section .text:</span><br><span class="line">00000000 &lt;myprintf&gt;:</span><br><span class="line">   0:   55                      push   %ebp</span><br><span class="line">   1:   89 e5                   mov    %esp,%ebp</span><br><span class="line">   3:   83 ec 08                sub    <span class="variable">$0x8</span>,%esp</span><br><span class="line">   6:   83 ec 0c                sub    <span class="variable">$0xc</span>,%esp</span><br><span class="line">   9:   68 00 00 00 00          push   <span class="variable">$0x0</span></span><br><span class="line">   e:   e8 <span class="built_in">fc</span> ff ff ff          call   f &lt;myprintf+0xf&gt;</span><br><span class="line">  13:   83 c4 10                add    <span class="variable">$0x10</span>,%esp</span><br><span class="line">  16:   c9                      leave</span><br><span class="line">  17:   c3                      ret</span><br><span class="line"></span><br><span class="line">$ readelf -r myprintf.o            <span class="comment">#用-r选项可以看到有关重定位的信息，这里有两部分需要重定位</span></span><br><span class="line">Relocetion section <span class="string">'.rel.text'</span> at offset 0x334 contains 2 entries:</span><br><span class="line"> Offset     Info    Type            Sym.Value  Sym. Name</span><br><span class="line">0000000a  00000501 R_386_32          00000000   .rodata</span><br><span class="line">0000000f  00000902 R_386_PC32        00000000   puts</span><br><span class="line"></span><br><span class="line">$ readelf -x .rodata myprintf.o     <span class="comment">#.rodata节区包含只读数据，即我们要打印的hello, world!.</span></span><br><span class="line">Hex dump of section <span class="string">'.rodata'</span>:</span><br><span class="line">  0x00000000 68656c6c 6f2c2077 6f726c64 2100     hello, world!.</span><br><span class="line"></span><br><span class="line">$ readelf -x .data myprintf.o       <span class="comment">#没有这个节区,.data应该包含一些初始化的数据</span></span><br><span class="line">Section <span class="string">'.data'</span> has no data to dump.</span><br><span class="line"></span><br><span class="line">$ readelf -x .bss myprintf.o        <span class="comment">#也没有这个节区，.bss应该包含一些未初始化的数据，程序默认初始为0</span></span><br><span class="line">Section <span class="string">'.bss'</span> has no data to dump.</span><br><span class="line"></span><br><span class="line">$ readelf -x .comment myprintf.o    <span class="comment">#是一些注释，可以看到是是GCC的版本信息</span></span><br><span class="line">Hex dump of section <span class="string">'.comment'</span>:</span><br><span class="line">  0x00000000 00474343 3a202847 4e552920 342e312e .GCC: (GNU) 4.1.</span><br><span class="line">  0x00000010 3200                                2.</span><br><span class="line"></span><br><span class="line">$ readelf -x .note.GNU-stack myprintf.o <span class="comment">#这个也没有内容</span></span><br><span class="line">Section <span class="string">'.note.GNU-stack'</span> has no data to dump.</span><br><span class="line"></span><br><span class="line">$ readelf -x .shstrtab myprintf.o   <span class="comment">#包括所有节区的名字</span></span><br><span class="line">Hex dump of section <span class="string">'.shstrtab'</span>:</span><br><span class="line">  0x00000000 002e7379 6d746162 002e7374 72746162 ..symtab..strtab</span><br><span class="line">  0x00000010 002e7368 73747274 6162002e 72656c2e ..shstrtab..rel.</span><br><span class="line">  0x00000020 74657874 002e6461 7461002e 62737300 text..data..bss.</span><br><span class="line">  0x00000030 2e726f64 61746100 2e636f6d 6d656e74 .rodata..comment</span><br><span class="line">  0x00000040 002e6e6f 74652e47 4e552d73 7461636b ..note.GNU-stack</span><br><span class="line">  0x00000050 00                                  .</span><br><span class="line"></span><br><span class="line">$ readelf –x .symtab myprintf.o      <span class="comment">#符号表，包括所有用到的相关符号信息，如函数名、变量名</span></span><br><span class="line">Symbol table <span class="string">'.symtab'</span> contains 10 entries:</span><br><span class="line">   Num:    Value  Size Type    Bind   Vis      Ndx Name</span><br><span class="line">     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND</span><br><span class="line">     1: 00000000     0 FILE    LOCAL  DEFAULT  ABS myprintf.c</span><br><span class="line">     2: 00000000     0 SECTION LOCAL  DEFAULT    1</span><br><span class="line">     3: 00000000     0 SECTION LOCAL  DEFAULT    3</span><br><span class="line">     4: 00000000     0 SECTION LOCAL  DEFAULT    4</span><br><span class="line">     5: 00000000     0 SECTION LOCAL  DEFAULT    5</span><br><span class="line">     6: 00000000     0 SECTION LOCAL  DEFAULT    7</span><br><span class="line">     7: 00000000     0 SECTION LOCAL  DEFAULT    6</span><br><span class="line">     8: 00000000    24 FUNC    GLOBAL DEFAULT    1 myprintf</span><br><span class="line">     9: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND puts</span><br><span class="line"></span><br><span class="line">$ readelf -x .strtab myprintf.o 	 <span class="comment">#字符串表，用到的字符串，包括文件名、函数名、变量名等。</span></span><br><span class="line">Hex dump of section <span class="string">'.strtab'</span>:</span><br><span class="line">  0x00000000 006d7970 72696e74 662e6300 6d797072 .myprintf.c.mypr</span><br><span class="line">  0x00000010 696e7466 00707574 7300              intf.puts.</span><br></pre></td></tr></table></figure>
+<p>从上表可以看出，对于可重定位文件，会包含这些基本节区<code>.text, .rel.text, .data, .bss, .rodata, .comment, .note.GNU-stack, .shstrtab, .symtab和.strtab</code>。</p>
+<p>看一看 myprintf.c 产生的汇编代码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -S myprintf.c</span><br><span class="line">$ cat myprintf.s</span><br><span class="line">        .file   <span class="string">"myprintf.c"</span></span><br><span class="line">        .section        .rodata</span><br><span class="line">.LC0:</span><br><span class="line">        .string <span class="string">"hello, world!"</span></span><br><span class="line">        .text</span><br><span class="line">.globl myprintf</span><br><span class="line">        .<span class="built_in">type</span>   myprintf, @<span class="keyword">function</span></span><br><span class="line">myprintf:</span><br><span class="line">        pushl   %ebp</span><br><span class="line">        movl    %esp, %ebp</span><br><span class="line">        subl    <span class="variable">$8</span>, %esp</span><br><span class="line">        subl    <span class="variable">$12</span>, %esp</span><br><span class="line">        pushl   $.LC0</span><br><span class="line">        call    puts</span><br><span class="line">        addl    <span class="variable">$16</span>, %esp</span><br><span class="line">        leave</span><br><span class="line">        ret</span><br><span class="line">        .size   myprintf, .-myprintf</span><br><span class="line">        .ident  <span class="string">"GCC: (GNU) 4.1.2"</span></span><br><span class="line">        .section        .note.GNU-stack,<span class="string">""</span>,@progbits</span><br></pre></td></tr></table></figure>
+<h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p>链接是处理可重定位文件，把它们的各种符号引用和符号定义转换为可执行文件中的合适信息(一般是虚拟内存地址)的过程。链接又分为静态链接和动态链接，前者是程序开发阶段程序员用ld(gcc实际上在后台调用了ld)静态链接器手动链接的过程，而动态链接则是程序运行期间系统调用动态链接器(ld-linux.so)自动链接的过程。比如，如果链接到可执行文件中的是静态连接库libmyprintf.a，那么.rodata节区在链接后需要被重定位到一个绝对的虚拟内存地址，以便程序运行时能够正确访问该节区中的字符串信息。而对于puts，因为它是动态连接库libc.so中定义的函数，所以会在程序运行时通过动态符号链接找出puts函数在内存中的地址，以便程序调用该函数。</p>
+<p>静态链接过程主要是把可重定位文件依次读入，分析各个文件的文件头，进而依次读入各个文件的节区，并计算各个节区的虚拟内存位置，对一些需要重定位的符号进行处理，设定它们的虚拟内存地址等，并最终产生一个可执行文件或者是动态链接库。这个链接过程是通过ld来完成的，ld在链接时使用了一个链接脚本（linker scripq），该链接脚本处理链接的具体细节。这里主要介绍可重定位文件中的节区（节区表描述的）和可执行文件中段（程序头描述的）的对应关系以及gcc编译时采用的一些默认链接选项。</p>
+<p>下面先来看看可执行文件的节区信息，通过程序头（段表）来查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">$ readelf -S test.o      <span class="comment">#为了比较，先把test.o的节区表也列出</span></span><br><span class="line">There are 10 section headers, starting at offset 0xb4:</span><br><span class="line">Section Headers:</span><br><span class="line">  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al</span><br><span class="line">  [ 0]                   NULL            00000000 000000 000000 00      0   0  0</span><br><span class="line">  [ 1] .text             PROGBITS        00000000 000034 000024 00  AX  0   0  4</span><br><span class="line">  [ 2] .rel.text         REL             00000000 0002ec 000008 08      8   1  4</span><br><span class="line">  [ 3] .data             PROGBITS        00000000 000058 000000 00  WA  0   0  4</span><br><span class="line">  [ 4] .bss              NOBITS          00000000 000058 000000 00  WA  0   0  4</span><br><span class="line">  [ 5] .comment          PROGBITS        00000000 000058 000012 00      0   0  1</span><br><span class="line">  [ 6] .note.GNU-stack   PROGBITS        00000000 00006a 000000 00      0   0  1</span><br><span class="line">  [ 7] .shstrtab         STRTAB          00000000 00006a 000049 00      0   0  1</span><br><span class="line">  [ 8] .symtab           SYMTAB          00000000 000244 000090 10      9   7  4</span><br><span class="line">  [ 9] .strtab           STRTAB          00000000 0002d4 000016 00      0   0  1</span><br><span class="line">Key to Flags:</span><br><span class="line">  W (write), A (alloc), X (execute), M (merge), S (strings)</span><br><span class="line">  I (info), L (link order), G (group), x (unknown)</span><br><span class="line">  O (extra OS processing required) o (OS specific), p (processor specific)</span><br><span class="line"></span><br><span class="line">$ gcc -o <span class="built_in">test</span> test.o libmyprintf.o</span><br><span class="line">$ readelf -l <span class="built_in">test</span>        <span class="comment">#我们发现，test和test.o,libmyprintf.o相比，多了很多节区，如.interp和.init等</span></span><br><span class="line">Elf file <span class="built_in">type</span> is EXEC (Executable file)</span><br><span class="line">Entry point 0x80482b0</span><br><span class="line">There are 7 program headers, starting at offset 52</span><br><span class="line">Program Headers:</span><br><span class="line">  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align</span><br><span class="line">  PHDR           0x000034 0x08048034 0x08048034 0x000e0 0x000e0 R E 0x4</span><br><span class="line">  INTERP         0x000114 0x08048114 0x08048114 0x00013 0x00013 R   0x1</span><br><span class="line">      [Requesting program interpreter: /lib/ld-linux.so.2]</span><br><span class="line">  LOAD           0x000000 0x08048000 0x08048000 0x0047c 0x0047c R E 0x1000</span><br><span class="line">  LOAD           0x00047c 0x0804947c 0x0804947c 0x00104 0x00108 RW  0x1000</span><br><span class="line">  DYNAMIC        0x000490 0x08049490 0x08049490 0x000c8 0x000c8 RW  0x4</span><br><span class="line">  NOTE           0x000128 0x08048128 0x08048128 0x00020 0x00020 R   0x4</span><br><span class="line">  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x4</span><br><span class="line"></span><br><span class="line"> Section to Segment mapping:</span><br><span class="line">  Segment Sections...</span><br><span class="line">   00     </span><br><span class="line">   01     .interp </span><br><span class="line">   02     .interp .note.ABI-tag .<span class="built_in">hash</span> .dynsym .dynstr .gnu.version .gnu.version_r .rel.dyn .rel.plt .init .plt .text .fini .rodata .eh_frame </span><br><span class="line">   03     .ctors .dtors .jcr .dynamic .got .got.plt .data .bss </span><br><span class="line">   04     .dynamic </span><br><span class="line">   05     .note.ABI-tag </span><br><span class="line">   06</span><br></pre></td></tr></table></figure>
+<p>上表给出了可执行文件的如下几个段(segment)，</p>
+<ul>
+<li>PHDR: 给出了程序表自身的大小和位置，不能出现一次以上。</li>
+<li>INTERP: 因为程序中调用了puts（在动态链接库中定义），使用了动态连接库，因此需要动态装载器／链接器(ld-linux.so)</li>
+<li>LOAD: 包括程序的指令，.text等节区都映射在该段，只读(R)</li>
+<li>LOAD: 包括程序的数据，.data, .bss等节区都映射在该段，可读写(RW)</li>
+<li>DYNAMIC: 动态链接相关的信息，比如包含有引用的动态连接库名字等信息</li>
+<li>NOTE: 给出一些附加信息的位置和大小</li>
+<li>GNU_STACK: 这里为空，应该是和GNU相关的一些信息</li>
+</ul>
+<p>这里的段可能包括之前的一个或者多个节区，也就是说经过链接之后原来的节区被重排了，并映射到了不同的段，这些段将告诉系统应该如何把它加载到内存中。这些新的节区来自哪里？它们的作用是什么呢？先来通过gcc的<code>-v</code>参数看看它的后台链接过程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -v -o <span class="built_in">test</span> test.o myprintf.o    <span class="comment">#把可重定位文件链接成可执行文件</span></span><br><span class="line">Reading specs from /usr/lib/gcc/i486-slackware-linux/4.1.2/specs</span><br><span class="line">Target: i486-slackware-linux</span><br><span class="line">Configured with: ../gcc-4.1.2/configure --prefix=/usr --<span class="built_in">enable</span>-shared --<span class="built_in">enable</span>-languages=ada,c,c++,fortran,java,objc --<span class="built_in">enable</span>-threads=posix --<span class="built_in">enable</span>-__cxa_atexit --<span class="built_in">disable</span>-checking --with-gnu-ld --verbose --with-arch=i486 --target=i486-slackware-linux --host=i486-slackware-linux</span><br><span class="line">Thread model: posix</span><br><span class="line">gcc version 4.1.2</span><br><span class="line"> /usr/libexec/gcc/i486-slackware-linux/4.1.2/collect2 --eh-frame-hdr -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -o <span class="built_in">test</span> /usr/lib/gcc/i486-slackware-linux/4.1.2/../../../crt1.o /usr/lib/gcc/i486-slackware-linux/4.1.2/../../../crti.o /usr/lib/gcc/i486-slackware-linux/4.1.2/crtbegin.o -L/usr/lib/gcc/i486-slackware-linux/4.1.2 -L/usr/lib/gcc/i486-slackware-linux/4.1.2 -L/usr/lib/gcc/i486-slackware-linux/4.1.2/../../../../i486-slackware-linux/lib -L/usr/lib/gcc/i486-slackware-linux/4.1.2/../../.. test.o myprintf.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/i486-slackware-linux/4.1.2/crtend.o /usr/lib/gcc/i486-slackware-linux/4.1.2/../../../crtn.o</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2018/09/02/编译原理/" title="编译原理">http://ljchen.net/2018/09/02/编译原理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c-language/" rel="tag"># c-language</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/25/kafka原理总结/" rel="next" title="Kafka原理总结">
+                <i class="fa fa-chevron-left"></i> Kafka原理总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/11/redis知识点整理/" rel="prev" title="Redis知识点整理">
+                Redis知识点整理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#预处理"><span class="nav-number">1.</span> <span class="nav-text">预处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译"><span class="nav-number">2.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#汇编"><span class="nav-number">3.</span> <span class="nav-text">汇编</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#链接"><span class="nav-number">4.</span> <span class="nav-text">链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2018/09/02/编译原理/';
+          this.page.identifier = '2018/09/02/编译原理/';
+          this.page.title = '编译原理';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

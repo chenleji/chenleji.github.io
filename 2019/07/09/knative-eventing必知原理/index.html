@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>Knative Eventing必知原理 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/07/09/knative-eventing必知原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Knative Eventing必知原理</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-09T10:39:04+08:00">2019-07-09</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cloud-native/" itemprop="url" rel="index">
+                    <span itemprop="name">cloud-native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/09/knative-eventing必知原理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/09/knative-eventing必知原理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">15 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="/uploads/YunNan-4.jpg" rel="gallery_ck8o9pn2j0034jroy9s3sv4er" itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/uploads/YunNan-4.jpg" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>serverless需要有一套广泛兼容多种事件的时间触发框架，从而支持在不同应用场景下基于事件来创建server，对外提供服务。knative的eventing的目标就是提供这样一套框架。当前knative原生支持的event类型还比较有限，但是系统提供了开放的container source，可以基于需求自定义实现。本篇的示例主要基于系统sample文档的in-memory-channel来论述其实现原理。<br><a id="more"></a></p>
+<h1 id="概念理解"><a href="#概念理解" class="headerlink" title="概念理解"></a>概念理解</h1><p>由于整个knative都是建立在k8s之上的，knative的实现完全基于k8s原生的编程框架。所以，要理解eventing的整个原理，我们先来分别了解其定义的CRD资源，以及它们之间的联动关系。</p>
+<h2 id="CRD资源"><a href="#CRD资源" class="headerlink" title="CRD资源"></a>CRD资源</h2><p>通过在k8s上过滤eventing的crd资源，可以看到knative v0.7.0提供了一下的资源定义。他们都有什么作用，以及彼此之间存在何种依赖关系？接下来将做分析。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">~  kc get crd | grep eventing</span><br><span class="line">apiserversources.sources.eventing.knative.dev        2019-07-06T14:34:04Z</span><br><span class="line">brokers.eventing.knative.dev                         2019-07-06T14:34:04Z</span><br><span class="line">channels.eventing.knative.dev                        2019-07-06T14:34:04Z</span><br><span class="line">clusterchannelprovisioners.eventing.knative.dev      2019-07-06T14:34:04Z</span><br><span class="line">containersources.sources.eventing.knative.dev        2019-07-06T14:34:04Z</span><br><span class="line">cronjobsources.sources.eventing.knative.dev          2019-07-06T14:34:04Z</span><br><span class="line">eventtypes.eventing.knative.dev                      2019-07-06T14:34:04Z</span><br><span class="line">subscriptions.eventing.knative.dev                   2019-07-06T14:34:04Z</span><br><span class="line">triggers.eventing.knative.dev                        2019-07-06T14:34:04Z</span><br></pre></td></tr></table></figure>
+<p>可以按照功能，将其分为两大类：</p>
+<ul>
+<li><p><code>source相关</code><br><strong><em>抽象事件类型，适用于每一种source</em></strong><br>eventtypes.eventing.knative.dev<br><strong><em>系统支持的三种source</em></strong><br>apiserversources.sources.eventing.knative.dev<br>containersources.sources.eventing.knative.dev<br>cronjobsources.sources.eventing.knative.dev</p>
+</li>
+<li><p><code>broker-trigger相关</code><br><strong><em>顶层抽象</em></strong><br>brokers.eventing.knative.dev<br>triggers.eventing.knative.dev<br><strong><em>逻辑层</em></strong><br>channels.eventing.knative.dev<br>subscriptions.eventing.knative.dev<br><strong>物理实现</strong><br>clusterchannelprovisioners.eventing.knative.dev</p>
+</li>
+</ul>
+<h2 id="关联关系"><a href="#关联关系" class="headerlink" title="关联关系"></a>关联关系</h2><p><img src="/uploads/knative-eventing-crds.png" width="90%" height="90%"></p>
+<p>上图列出了所有的CRD，他们的作用和关联关系如下：</p>
+<ol>
+<li>三个source CRD创建之后，其controller会主动部署对应的deployment; deployment实现了从producer收集event，并转发到下一跳的逻辑，相当于event进入knative-eventing系统的入口；</li>
+<li>当创建namespace的时候，如果指定了label <code>knative-eventing-injection=enabled</code>，knative会在该namespace自动创建default broker；</li>
+<li>broker和trigger抽象了event转发的逻辑，为了实现broker，controller会分别创建该broker的ingress-channel和trigger-channel以及用于租户业务namespace与eventing system namespace之间event转发的deployment和service；</li>
+<li>trigger是依赖于broker的，如果trigger不指定broker，会自动使用default broker，trigger中明确定义了subscription；</li>
+<li>subscription在这里涉及到两部分，一部分是用户创建trigger时指定的业务相关的订阅和SINK；另一部分是系统内置的，trigger channel在fanout了消息之后，需要reply通道，ingress-channel和ingress-subscription就是为了实现该通道的转发逻辑；</li>
+<li>clusterchannelprovisioners在当前版本中还保留，但是后续会被废弃掉，转而采用各个provisioner对应的CRD。这里可以理解为channel之下对应的物理实现，通过解析channel中的subscription信息来fanout事件。</li>
+</ol>
+<h1 id="broker-trigger实例"><a href="#broker-trigger实例" class="headerlink" title="broker-trigger实例"></a>broker-trigger实例</h1><p>按照官网的步骤来部署一个<code>ApiServerSource</code>类型的source采集k8s的event，并经过一些列的channel之后，最终达到ksvc来展示出来。<a href="https://knative.dev/docs/eventing/samples/kubernetes-event-source/" target="_blank" rel="noopener">具体步骤详见这里</a>。忽略一些非关键的步骤，我们来重点看看几个核心概念都是如何定义的，以及他们之间的关联关系。</p>
+<h2 id="consumer"><a href="#consumer" class="headerlink" title="consumer"></a>consumer</h2><p>先准备好最终展示所接收event的ksvc，该资源受autoscale的控制，在没有请求的情况下，pod实例数会自动缩容到0值。查看yaml配置文件的最后一段是knative service containers的定义，这里的镜像的功能是显示接收到的event信息 (为了墙内拉取方便，镜像已经被替换地址)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: serving.knative.dev/v1alpha1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: event-display</span><br><span class="line">  namespace: default</span><br><span class="line">spec:</span><br><span class="line">  template:</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">        - image: ljchen/knative_eventing-sources_cmd_event_display:v0.7.0</span><br></pre></td></tr></table></figure>
+<p>部署好之后，可以看到对应的pod和service信息如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> ~  kc get deploy,svc,pod</span><br><span class="line">NAME                                                     READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">deployment.extensions/event-display-xnztn-deployment     1/1     1            1           15h</span><br><span class="line"></span><br><span class="line">NAME                                       TYPE           CLUSTER-IP       EXTERNAL-IP                                               PORT(S)             AGE</span><br><span class="line">service/event-display                      ExternalName   &lt;none&gt;           istio-ingressgateway.istio-system.svc.cluster.local       &lt;none&gt;              15h</span><br><span class="line">service/event-display-xnztn                ClusterIP      10.111.128.248   &lt;none&gt;                                                    80/TCP              15h</span><br><span class="line">service/event-display-xnztn-m5j2x          ClusterIP      10.110.215.179   &lt;none&gt;                                                    80/TCP              15h</span><br><span class="line">service/event-display-xnztn-xqtmr          ClusterIP      10.105.98.248    &lt;none&gt;                                                    9090/TCP,9091/TCP   15h</span><br><span class="line"></span><br><span class="line">NAME                                                   READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod/event-display-xnztn-deployment-797c9bbcd8-hd8l4    2/2     Running   0          96s</span><br></pre></td></tr></table></figure>
+<h2 id="source"><a href="#source" class="headerlink" title="source"></a>source</h2><p>首先是event的来源，这里由于是<code>ApiServerSource</code>，只需直接指定对应的配置文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: sources.eventing.knative.dev/v1alpha1</span><br><span class="line">kind: ApiServerSource</span><br><span class="line">metadata:</span><br><span class="line">  name: testevents</span><br><span class="line">  namespace: default</span><br><span class="line">spec:</span><br><span class="line">  serviceAccountName: events-sa</span><br><span class="line">  mode: Resource</span><br><span class="line">  resources:</span><br><span class="line">    - apiVersion: v1</span><br><span class="line">      kind: Event</span><br><span class="line">  sink:</span><br><span class="line">    apiVersion: eventing.knative.dev/v1alpha1</span><br><span class="line">    kind: Broker</span><br><span class="line">    name: default</span><br></pre></td></tr></table></figure>
+<p>注意，这里配置的<code>sink</code>指定了使用<code>default broker</code>。当该yaml被应用到k8s之后，在对应的namespace下可以看到创建了一个deployment。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apiserversource</span></span><br><span class="line">~  kc get apiserversource</span><br><span class="line">NAME         AGE</span><br><span class="line">testevents   4h27m</span><br><span class="line"></span><br><span class="line"><span class="comment"># deployment, pod</span></span><br><span class="line">~  kc get deploy,pod</span><br><span class="line">NAME                                                     READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">deployment.extensions/apiserversource-testevents-57knn   1/1     1            1           4h26m                                           9090/TCP            37d</span><br><span class="line"></span><br><span class="line">NAME                                                   READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod/apiserversource-testevents-57knn-95dfb87bd-s48p4   1/1     Running   0          4h26m</span><br></pre></td></tr></table></figure>
+<p>如果查看service，会发现找不到该deploy对应的service。原因是其只watch k8s api-server，然后将k8s event信息收集到之后发送到对应的channel；因此，该服务并不对外提供其他服务。另外，该服务貌似并没有sidecar，我们知道对于knative的service都是有sidecar的，为啥呢？还是同样的原因，这是一个系统服务，不是业务的ksvc。</p>
+<h2 id="broker"><a href="#broker" class="headerlink" title="broker"></a>broker</h2><p>default broker是自动创建的，创建的时候需要为namespace配置对应的label（如果不配置的话，会导致broker无法被自动创建，整个event链路不通），具体如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label namespace default knative-eventing-injection=enabled</span><br></pre></td></tr></table></figure>
+<p>在执行完命令之后，最直观的是可以查看到已经创建的broker <code>default</code>（通过查看该broker的status可以看到address，即外部的访问地址）；在default namespace下可以看到，已经自动部署了两个deployment。但是如果我们通过查看knative的eventing CRD可以发现更多的资源被创建了出来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># broker</span></span><br><span class="line">~  kc get broker</span><br><span class="line">NAME      READY   REASON   HOSTNAME                                   AGE</span><br><span class="line">default   True             default-broker.default.svc.cluster.local   10h</span><br><span class="line"></span><br><span class="line"><span class="comment"># broker详情</span></span><br><span class="line">~  kc get broker default -o yaml</span><br><span class="line">apiVersion: eventing.knative.dev/v1alpha1</span><br><span class="line">kind: Broker</span><br><span class="line">metadata:</span><br><span class="line">  ......</span><br><span class="line">status:</span><br><span class="line">  IngressChannel: <span class="comment"># ingress channel</span></span><br><span class="line">    apiVersion: eventing.knative.dev/v1alpha1</span><br><span class="line">    kind: Channel</span><br><span class="line">    name: default-kn-ingress</span><br><span class="line">    namespace: default</span><br><span class="line">  address:  <span class="comment"># 对外访问的地址信息(并不是指向channel，而是deployment)</span></span><br><span class="line">    hostname: default-broker.default.svc.cluster.local</span><br><span class="line">    url: http://default-broker.default.svc.cluster.local</span><br><span class="line">  ......</span><br><span class="line">  triggerChannel: <span class="comment"># trigger channel</span></span><br><span class="line">    apiVersion: eventing.knative.dev/v1alpha1</span><br><span class="line">    kind: Channel</span><br><span class="line">    name: default-kn-trigger</span><br><span class="line">    namespace: default</span><br><span class="line"></span><br><span class="line"><span class="comment"># channels</span></span><br><span class="line">~  kc get channels</span><br><span class="line">NAME                 READY   REASON   AGE</span><br><span class="line">default-kn-ingress   True             10h <span class="comment"># 用于reply的channel</span></span><br><span class="line">default-kn-trigger   True             10h <span class="comment"># 主channel</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># channel provisioners (后面会废弃该方式)</span></span><br><span class="line">~  kc get clusterchannelprovisioners.eventing.knative.dev</span><br><span class="line">NAME        READY   REASON   AGE</span><br><span class="line"><span class="keyword">in</span>-memory   True             11h</span><br><span class="line"></span><br><span class="line"><span class="comment"># subscriptions </span></span><br><span class="line"><span class="comment">#（属于ingress侧的订阅, 将ingressChannel事件订阅到default-broker-ingress上，用于reply）</span></span><br><span class="line">~  kc get subscriptions.eventing.knative.dev</span><br><span class="line">NAME                             READY   REASON   AGE</span><br><span class="line">internal-ingress-default-fv8bg   True             10h</span><br><span class="line"></span><br><span class="line"><span class="comment"># deployment, service and pod （将流量引入in-memory channel的业务端组件）</span></span><br><span class="line">~  kc get deploy,svc,pod</span><br><span class="line">NAME                                                   READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">deployment.extensions/default-broker-filter            1/1     1            1           96s</span><br><span class="line">deployment.extensions/default-broker-ingress           1/1     1            1           96s</span><br><span class="line"></span><br><span class="line">NAME                                       TYPE           CLUSTER-IP       EXTERNAL-IP                                               PORT(S)             AGE</span><br><span class="line"><span class="comment"># 业务端组件ingress和filter的service</span></span><br><span class="line">service/default-broker                     ClusterIP      10.101.17.164    &lt;none&gt;                                                    80/TCP,9090/TCP     10h</span><br><span class="line">service/default-broker-filter              ClusterIP      10.97.228.135    &lt;none&gt;                                                    80/TCP,9090/TCP     10h</span><br><span class="line"><span class="comment"># 真正channel的service（都映射到dispatcher上）</span></span><br><span class="line">service/default-kn-ingress-channel-4xxz2   ExternalName   &lt;none&gt;           <span class="keyword">in</span>-memory-dispatcher.knative-eventing.svc.cluster.local   &lt;none&gt;              10h</span><br><span class="line">service/default-kn-trigger-channel-zbrlw   ExternalName   &lt;none&gt;           <span class="keyword">in</span>-memory-dispatcher.knative-eventing.svc.cluster.local   &lt;none&gt;              10h</span><br><span class="line"></span><br><span class="line">NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod/default-broker-filter-744ff96759-x4nbt   1/1     Running   0          97s</span><br><span class="line">pod/default-broker-ingress-96cd4b769-qswm2   1/1     Running   0          97s</span><br></pre></td></tr></table></figure>
+<h2 id="trigger"><a href="#trigger" class="headerlink" title="trigger"></a>trigger</h2><p>下面是trigger的配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: eventing.knative.dev/v1alpha1</span><br><span class="line">kind: Trigger</span><br><span class="line">metadata:</span><br><span class="line">  name: testevents-trigger</span><br><span class="line">  namespace: default</span><br><span class="line">spec: <span class="comment"># 未指定broker，默认使用default broker</span></span><br><span class="line">  subscriber: <span class="comment"># 指定trigger侧订阅到consumer</span></span><br><span class="line">    ref:</span><br><span class="line">      apiVersion: serving.knative.dev/v1alpha1</span><br><span class="line">      kind: Service</span><br><span class="line">      name: event-display</span><br></pre></td></tr></table></figure>
+<p>在subscriber.ref可以看到，其将event内容发送到了event-display这一个knative service。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># trigger</span></span><br><span class="line"> ~  kc get trigger</span><br><span class="line">NAME                 READY   REASON   BROKER    SUBSCRIBER_URI                                   AGE</span><br><span class="line">testevents-trigger   True             default   http://event-display.default.svc.cluster.local   12s</span><br><span class="line"></span><br><span class="line"><span class="comment"># subscriptions 多出来了一条记录 default-testevents-trigger-rrhzn</span></span><br><span class="line"><span class="comment">#（属于trigger侧的订阅, 固定将triggerChannel事件订阅到default-broker-filter上，event订阅的URI中会带上详细trigger信息，用于反查trigger中用户指定的subscription内容）</span></span><br><span class="line"> ~  kc get subscriptions</span><br><span class="line">NAME                               READY   REASON   AGE</span><br><span class="line">default-testevents-trigger-rrhzn   True             7m31s</span><br><span class="line"><span class="comment">#internal-ingress-default-fv8bg     True             10h</span></span><br></pre></td></tr></table></figure>
+<h1 id="数据平面"><a href="#数据平面" class="headerlink" title="数据平面"></a>数据平面</h1><p>前面是整个创建流程，以及对应的资源属性，接下来分析一下event转发的数据面流程，先来看官方的一张控制面与转发面的图。</p>
+<p><img src="/uploads/knative-eventing-cd-plane.png" width="90%" height="90%"></p>
+<p>由于该图较老，只体现了channel与scription这一层的概念，且数据面较抽象。我重新基于broker&amp;trigger以及in-memory-channel整理了该图，具体如下。</p>
+<p><img src="/uploads/knative-eventing-imc-dataplane.png" width="90%" height="90%"></p>
+<p>其中实现部分为真正event的转发流程，broker-ingress、broker-filter与上面的channel之间通过虚线连接的部分是逻辑链路。黑色的连线为event转发，红色为反向的reply链路。in-memory-dispatcher是imc的底层实现，如果是使用kafka就应该替换为kafaka deployment。这里先不做详细描述，具体见下文逐步分析。</p>
+<h2 id="source源"><a href="#source源" class="headerlink" title="source源"></a>source源</h2><p>前面讲到，当我们将apiserversource配置下发后，controller会在namespace下部署出一个deployment，该deployment的作用是收集k8s的evnet并发送到指定的SINK。由于我们指定的是default broker，经controller处理之后，其参数变为了default-broker这个service的访问地址（即，broker的总入口）；具体见下面操作中对应的注释信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"> ~  kc get deployment.extensions/apiserversource-testevents-57knn -o yaml</span><br><span class="line">apiVersion: extensions/v1beta1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  ......</span><br><span class="line">spec:</span><br><span class="line">  ......</span><br><span class="line">  template:</span><br><span class="line">    ......</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - env:</span><br><span class="line">        - name: SINK_URI  <span class="comment"># 重点关注该value，为default-broker这个service</span></span><br><span class="line">          value: http://default-broker.default.svc.cluster.local</span><br><span class="line">        - name: MODE</span><br><span class="line">          value: Resource</span><br><span class="line">        - name: API_VERSION</span><br><span class="line">          value: v1</span><br><span class="line">        - name: KIND</span><br><span class="line">          value: Event</span><br><span class="line">        - name: CONTROLLER</span><br><span class="line">          value: <span class="string">"false"</span></span><br><span class="line">        - name: SYSTEM_NAMESPACE</span><br><span class="line">          valueFrom:</span><br><span class="line">            fieldRef:</span><br><span class="line">              apiVersion: v1</span><br><span class="line">              fieldPath: metadata.namespace</span><br><span class="line">        image: ljchen/knative_eventing_cmd_apiserver_receive_adapter:v0.7.0</span><br><span class="line">        ......</span><br><span class="line">status:</span><br><span class="line">  ......</span><br></pre></td></tr></table></figure>
+<p>当event接收到后，直接转发到SINK_URL指定的default-broker地址。自此，source部分的工作已经完结，接下来在看看default-broker。</p>
+<h2 id="broker-amp-triger"><a href="#broker-amp-triger" class="headerlink" title="broker &amp; triger"></a>broker &amp; triger</h2><p>broker在逻辑层面包含ingress-channel和trigger-channel，对应在数据面位于eventing的system namespace下有对应的dispatcher。同时，位于业务的namespace中会有broker-ingress和broker-filter两个deployment用来负责dispatcher与业务层之间event的转发。</p>
+<h3 id="broker-ingress"><a href="#broker-ingress" class="headerlink" title="broker-ingress"></a>broker-ingress</h3><p>既然已经知道流量是转发给default-broker这个service的，直接查看该service以及对应的endpoint的地址，确定其对应pod和deployment。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># service, endpoint</span></span><br><span class="line">~  kc get svc,ep default-broker</span><br><span class="line">NAME                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE</span><br><span class="line">service/default-broker   ClusterIP   10.101.17.164   &lt;none&gt;        80/TCP,9090/TCP   15h</span><br><span class="line"></span><br><span class="line">NAME                       ENDPOINTS                           AGE</span><br><span class="line">endpoints/default-broker   10.244.0.69:9090,10.244.0.69:8080   15h</span><br></pre></td></tr></table></figure>
+<p>根据endpoint的IP地址，查找对应pod，deployment。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pod</span></span><br><span class="line">~  kc get pod -o wide | grep 10.244.0.69</span><br><span class="line">default-broker-ingress-96cd4b769-qswm2             1/1     Running   0          4h46m   10.244.0.69    k8s-master   &lt;none&gt;           &lt;none&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># deployment</span></span><br><span class="line">~  kc get deploy default-broker-ingress</span><br><span class="line">NAME                     READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">default-broker-ingress   1/1     1            1           4h48m</span><br></pre></td></tr></table></figure>
+<p>该deployment的配置信息如下，这里面关键信息已经在注释中标明。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">~  kc get deploy default-broker-ingress -o yaml</span><br><span class="line">apiVersion: extensions/v1beta1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  ......</span><br><span class="line">spec:</span><br><span class="line">  ......</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      eventing.knative.dev/broker: default  <span class="comment"># broker的名称为default</span></span><br><span class="line">      eventing.knative.dev/brokerRole: ingress  <span class="comment"># 这里指定了broker的角色为ingress，难道还有其他的角色？是的，就是trigger role</span></span><br><span class="line">  ......</span><br><span class="line">  template:</span><br><span class="line">    ......</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - env:</span><br><span class="line">        ......</span><br><span class="line">        - name: FILTER</span><br><span class="line">        - name: CHANNEL  <span class="comment"># 该deployment接受到event之后，发送到下一个channel的名称 </span></span><br><span class="line">          value: default-kn-trigger-channel-zbrlw.default.svc.cluster.local</span><br><span class="line">        - name: BROKER   <span class="comment"># 该deploy所属的broker</span></span><br><span class="line">          value: default  </span><br><span class="line">        image: ljchen/knative_eventing_cmd_broker_ingress:v0.7.0  <span class="comment"># 镜像已经替换</span></span><br><span class="line">        ......</span><br><span class="line">status:</span><br><span class="line">  ......</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下一跳channel的service表明发送到knative-eventing ns，ingress-channel和trigger-channel都发到同一个external-ip，即imc的底层in-memory-dispatcher</span></span><br><span class="line">~  kc get svc</span><br><span class="line">NAME                               TYPE           CLUSTER-IP       EXTERNAL-IP                                               PORT(S)             AGE</span><br><span class="line"><span class="comment">#default-kn-ingress-channel-4xxz2   ExternalName   &lt;none&gt;           in-memory-dispatcher.knative-eventing.svc.cluster.local   &lt;none&gt;              16h</span></span><br><span class="line">default-kn-trigger-channel-zbrlw   ExternalName   &lt;none&gt;           <span class="keyword">in</span>-memory-dispatcher.knative-eventing.svc.cluster.local   &lt;none&gt;              16h</span><br><span class="line"></span><br><span class="line"><span class="comment"># knative-eventing system namespace中查看服务</span></span><br><span class="line">~  kke get svc</span><br><span class="line">NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE</span><br><span class="line"><span class="keyword">in</span>-memory-dispatcher   ClusterIP   10.98.22.109    &lt;none&gt;        80/TCP     17h</span><br><span class="line"></span><br><span class="line"><span class="comment"># endpoint</span></span><br><span class="line">~  kke get ep <span class="keyword">in</span>-memory-dispatcher</span><br><span class="line">NAME                   ENDPOINTS          AGE</span><br><span class="line"><span class="keyword">in</span>-memory-dispatcher   10.244.0.43:8080   17h</span><br><span class="line"></span><br><span class="line"><span class="comment"># pod</span></span><br><span class="line">~  kke get pod -o wide | grep 10.244.0.43</span><br><span class="line"><span class="keyword">in</span>-memory-channel-dispatcher-ffd969cd9-vhblf   1/1     Running   0          17h   10.244.0.43   k8s-master   &lt;none&gt;           &lt;none&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># deployment</span></span><br><span class="line">~  kke get deploy</span><br><span class="line">NAME                           READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line"><span class="keyword">in</span>-memory-channel-dispatcher   1/1     1            1           17h</span><br></pre></td></tr></table></figure>
+<h3 id="dispatcher"><a href="#dispatcher" class="headerlink" title="dispatcher"></a>dispatcher</h3><p>自此，我们似乎再也没有线索，不知道event到了in-memory-dispatcher之后是如何转发的。但是通过查看dispatcher代码了解到，该deployment转发event的逻辑是基于channel的subscription配置信息。由于当前对应为triggerChannel，通过查询其channel <code>default-kn-trigger</code>可知：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># channel description "default-kn-trigger"</span></span><br><span class="line">~  kc describe channels default-kn-trigger</span><br><span class="line">Name:         default-kn-trigger</span><br><span class="line">Kind:         Channel</span><br><span class="line">....</span><br><span class="line">Spec:</span><br><span class="line">  Provisioner:</span><br><span class="line">    API Version:  eventing.knative.dev/v1alpha1</span><br><span class="line">    Kind:         ClusterChannelProvisioner</span><br><span class="line">    Name:         <span class="keyword">in</span>-memory</span><br><span class="line">  Subscribable:</span><br><span class="line">    Subscribers:</span><br><span class="line">      Generation:  1</span><br><span class="line">      Ref:</span><br><span class="line">        Name:          default-testevents-trigger-rrhzn</span><br><span class="line">        Namespace:     default</span><br><span class="line">        UID:           9985ef4e-a05a-11e9-84ef-525400ff729a</span><br><span class="line">      Reply URI:       http://default-kn-ingress-channel-4xxz2.default.svc.cluster.local</span><br><span class="line">      Subscriber URI:  http://default-broker-filter.default.svc.cluster.local/triggers/default/testevents-trigger/99849cd0-a05a-11e9-84ef-525400ff729a   <span class="comment"># 找到其fanout的下一跳URL了。注意，这个URI除了host之外，还有一串信息</span></span><br><span class="line">      UID:             9985ef4e-a05a-11e9-84ef-525400ff729a</span><br><span class="line">Status:</span><br><span class="line">  Address: <span class="comment"># 对外通过该地址来接收发往该channel的event</span></span><br><span class="line">    Hostname:  default-kn-trigger-channel-zbrlw.default.svc.cluster.local</span><br><span class="line">    URL:       http://default-kn-trigger-channel-zbrlw.default.svc.cluster.local</span><br><span class="line">  ....</span><br></pre></td></tr></table></figure>
+<p>报文会被dispacher fanout到subscriber URI，也就是default-broker-filter这个服务。</p>
+<h3 id="broker-filter"><a href="#broker-filter" class="headerlink" title="broker-filter"></a>broker-filter</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">~  kc get svc default-broker-filter</span><br><span class="line">NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE</span><br><span class="line">default-broker-filter   ClusterIP   10.97.228.135   &lt;none&gt;        80/TCP,9090/TCP   17h</span><br><span class="line"></span><br><span class="line">~  kc get ep default-broker-filter</span><br><span class="line">NAME                    ENDPOINTS                           AGE</span><br><span class="line">default-broker-filter   10.244.0.68:9090,10.244.0.68:8080   17h</span><br><span class="line"></span><br><span class="line">~  kc get pod -o wide | grep 10.244.0.68</span><br><span class="line">default-broker-filter-744ff96759-x4nbt             1/1     Running   0          7h      10.244.0.68    k8s-master   &lt;none&gt;           &lt;none&gt;</span><br><span class="line"></span><br><span class="line">~  kc get deploy default-broker-filter</span><br><span class="line">NAME                               READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">default-broker-filter              1/1     1            1           7h1m</span><br></pre></td></tr></table></figure>
+<p>到这里似乎又卡壳了，因为通过查看default-broker-filter的配置，得不到任何有关其下一跳的信息。通过分析代码，发现代码中通过报文URI中的路径信息（<code>http://default-broker-filter.default.svc.cluster.local/triggers/default/testevents-trigger/99849cd0-a05a-11e9-84ef-525400ff729a</code>）来获取到trigger名称（<code>default/testevents-trigger</code>），然后再提取trigger的subscriber来定位到下一跳，最终将event发送给knative-service即event-display。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: eventing.knative.dev/v1alpha1</span><br><span class="line">kind: Trigger</span><br><span class="line">metadata:</span><br><span class="line">  name: testevents-trigger</span><br><span class="line">  namespace: default</span><br><span class="line">spec:</span><br><span class="line">  subscriber:</span><br><span class="line">    ref:</span><br><span class="line">      apiVersion: serving.knative.dev/v1alpha1</span><br><span class="line">      kind: Service</span><br><span class="line">      name: event-display</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/07/09/knative-eventing必知原理/" title="Knative Eventing必知原理">http://ljchen.net/2019/07/09/knative-eventing必知原理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/k8s/" rel="tag"># k8s</a>
+          
+            <a href="/tags/cloud-native/" rel="tag"># cloud-native</a>
+          
+            <a href="/tags/service-mesh/" rel="tag"># service-mesh</a>
+          
+            <a href="/tags/knative/" rel="tag"># knative</a>
+          
+            <a href="/tags/eventing/" rel="tag"># eventing</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/30/tekton原理/" rel="next" title="Tekton原理">
+                <i class="fa fa-chevron-left"></i> Tekton原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/15/基于k3s部署kubeedge/" rel="prev" title="基于K3s部署kubeedge">
+                基于K3s部署kubeedge <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念理解"><span class="nav-number">1.</span> <span class="nav-text">概念理解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CRD资源"><span class="nav-number">1.1.</span> <span class="nav-text">CRD资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关联关系"><span class="nav-number">1.2.</span> <span class="nav-text">关联关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#broker-trigger实例"><span class="nav-number">2.</span> <span class="nav-text">broker-trigger实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#consumer"><span class="nav-number">2.1.</span> <span class="nav-text">consumer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#source"><span class="nav-number">2.2.</span> <span class="nav-text">source</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#broker"><span class="nav-number">2.3.</span> <span class="nav-text">broker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trigger"><span class="nav-number">2.4.</span> <span class="nav-text">trigger</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据平面"><span class="nav-number">3.</span> <span class="nav-text">数据平面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#source源"><span class="nav-number">3.1.</span> <span class="nav-text">source源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#broker-amp-triger"><span class="nav-number">3.2.</span> <span class="nav-text">broker &amp; triger</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#broker-ingress"><span class="nav-number">3.2.1.</span> <span class="nav-text">broker-ingress</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dispatcher"><span class="nav-number">3.2.2.</span> <span class="nav-text">dispatcher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#broker-filter"><span class="nav-number">3.2.3.</span> <span class="nav-text">broker-filter</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/07/09/knative-eventing必知原理/';
+          this.page.identifier = '2019/07/09/knative-eventing必知原理/';
+          this.page.title = 'Knative Eventing必知原理';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

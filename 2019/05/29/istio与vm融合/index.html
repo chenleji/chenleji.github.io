@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>Istio与vm融合 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2019/05/29/istio与vm融合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Istio与vm融合</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-29T17:45:33+08:00">2019-05-29</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cloud-native/" itemprop="url" rel="index">
+                    <span itemprop="name">cloud-native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/29/istio与vm融合/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/29/istio与vm融合/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">12 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="/uploads/YunNan-6.jpg" rel="gallery_ck8o9pn2c002gjroyjm0i61mt" itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/uploads/YunNan-6.jpg" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>最近在搞ISTIO与VM集成的方案，官网上有一些文档，按照流程部署下去发现问题不少。下面对在遇到验证中遇到的一些问题和调试经验都整理了一下，供大家参考。</p>
+<a id="more"></a>
+<h1 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h1><p>接下来的实验的拓扑图如下所示：<br><img src="/uploads/bookinfo.png" width="80%" height="80%"></p>
+<h2 id="基础网络准备"><a href="#基础网络准备" class="headerlink" title="基础网络准备"></a>基础网络准备</h2><p>为了使VM与已经部署了ISTIO的K8S集群连通，我们需要先把VM加入到k8s集群，这样会自动部署flannel网络，保障POD网络可通。这块如果使用kubeadm来部署的k8s的话，比较简单，直接<code>kubeadm join</code>就可以加入一个新的集群了。</p>
+<p>为了让VM的应用可以直接使用服务名称来通信，需要修改vm的域名解析服务的配置文件 (从k8s的任意一个pod上拷贝<code>/etc/resolv.conf</code>)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/resolv.conf</span><br><span class="line"><span class="comment"># Your system has been configured with 'manage-resolv-conf' set to true.</span></span><br><span class="line"><span class="comment"># As a result, cloud-init has written this file with configuration data</span></span><br><span class="line"><span class="comment"># that it has been provided. Cloud-init, by default, will write this file</span></span><br><span class="line"><span class="comment"># a single time (PER_ONCE).</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#nameserver 183.60.83.19</span></span><br><span class="line"><span class="comment">#nameserver 183.60.82.98</span></span><br><span class="line"></span><br><span class="line">nameserver 10.96.0.10</span><br><span class="line">search default.svc.cluster.local svc.cluster.local cluster.local</span><br><span class="line">options ndots:5</span><br></pre></td></tr></table></figure>
+<h2 id="预安装"><a href="#预安装" class="headerlink" title="预安装"></a>预安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl create namespace istio-system</span><br><span class="line"></span><br><span class="line">helm template install/kubernetes/helm/istio-init --name istio-init --namespace istio-system | kubectl apply -f -</span><br></pre></td></tr></table></figure>
+<h2 id="安装istio"><a href="#安装istio" class="headerlink" title="安装istio"></a>安装istio</h2><p>主要是需要指定 meshExpansion 扩展：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">helm install --<span class="built_in">set</span> global.meshExpansion.enabled=<span class="literal">true</span> install/kubernetes/helm/istio --name istio --namespace istio-system --values install/kubernetes/helm/istio/values-istio-demo.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者安装istio（带meshExpansion-认证）</span></span><br><span class="line">helm install --<span class="built_in">set</span> global.meshExpansion.enabled=<span class="literal">true</span> install/kubernetes/helm/istio --name istio --namespace istio-system --values install/kubernetes/helm/istio/values-istio-demo-auth.yaml</span><br></pre></td></tr></table></figure>
+<h2 id="cluster-env"><a href="#cluster-env" class="headerlink" title="cluster.env"></a>cluster.env</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; cluster.env</span><br><span class="line">ISTIO_CP_AUTH=MUTUAL_TLS           <span class="comment"># 需要使用这个值，很重要</span></span><br><span class="line">ISTIO_SERVICE_CIDR=10.244.0.0/16   <span class="comment"># Pod子网CIDR</span></span><br><span class="line">ISTIO_INBOUND_PORTS=3306,9080      <span class="comment"># VM上对外提供服务的端口号</span></span><br><span class="line">POD_NAME=details                   <span class="comment"># 似乎作用不大，可以随意</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">sudo cp cluster.env /var/lib/istio/envoy</span><br></pre></td></tr></table></figure>
+<h2 id="准备证书"><a href="#准备证书" class="headerlink" title="准备证书"></a>准备证书</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n istio-system get secret istio.default -o jsonpath=<span class="string">'&#123;.data.root-cert\.pem&#125;'</span> |base64 --decode &gt; root-cert.pem</span><br><span class="line"></span><br><span class="line">kubectl -n istio-system get secret istio.default -o jsonpath=<span class="string">'&#123;.data.key\.pem&#125;'</span> |base64 --decode &gt; key.pem</span><br><span class="line"></span><br><span class="line">kubectl -n istio-system get secret istio.default -o jsonpath=<span class="string">'&#123;.data.cert-chain\.pem&#125;'</span> |base64 --decode &gt; cert-chain.pem</span><br><span class="line"></span><br><span class="line">sudo mkdir -p /etc/certs</span><br><span class="line"></span><br><span class="line">sudo cp &#123;root-cert.pem,cert-chain.pem,key.pem&#125; /etc/certs</span><br></pre></td></tr></table></figure>
+<h2 id="安装sidecar"><a href="#安装sidecar" class="headerlink" title="安装sidecar"></a>安装sidecar</h2><h3 id="Debian包"><a href="#Debian包" class="headerlink" title="Debian包"></a>Debian包</h3><p>针对Ubuntu，可以直接从官方下载安装包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://storage.googleapis.com/istio-release/releases/1.1.6/deb/istio-sidecar.deb &gt; istio-sidecar.deb</span><br><span class="line"></span><br><span class="line">sudo dpkg -i istio-sidecar.deb</span><br></pre></td></tr></table></figure>
+<h3 id="RPM包"><a href="#RPM包" class="headerlink" title="RPM包"></a>RPM包</h3><p>针对CentOS系统，需要自己编译安装包：</p>
+<ul>
+<li><p>编译</p>
+<p>  在本地的GOPATH目录下克隆istio，然后在istio的根目录执行</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /go/src/github.com/istio/istio</span><br><span class="line">make rpm/builder-image</span><br><span class="line">make rpm/proxy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装</p>
+<p>  然后在/go/src/out/目录下可以找到对应的rpm包。<br>  在安装rpm包的时候，会发现没有GLIBC_2.18,解决方法如下：</p>
+<p>  下载：wget <a href="http://mirrors.ustc.edu.cn/gnu/libc/glibc-2.18.tar.gz" target="_blank" rel="noopener">http://mirrors.ustc.edu.cn/gnu/libc/glibc-2.18.tar.gz</a><br>  解压：tar -zxvf glibc-2.18.tar.gz</p>
+<p>  进入解压文件夹，创建文件夹build, 运行configure配置：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line"></span><br><span class="line">../configure --prefix=/usr</span><br><span class="line">make -j4</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="准备用户"><a href="#准备用户" class="headerlink" title="准备用户"></a>准备用户</h2><blockquote>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd istio-proxy</span><br><span class="line">sudo chown -R istio-proxy /etc/certs /var/lib/istio/envoy</span><br></pre></td></tr></table></figure>
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start istio-auth-node-agent</span><br><span class="line">sudo systemctl start istio</span><br></pre></td></tr></table></figure>
+<h2 id="sidecar-env"><a href="#sidecar-env" class="headerlink" title="sidecar.env"></a>sidecar.env</h2><p>内容如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## cat sidecar.env  | grep -v '#' </span></span><br><span class="line">ISTIO_SERVICE=details</span><br><span class="line">ISTIO_SVC_IP=10.244.3.0</span><br><span class="line">ENVOY_USER=istio-proxy</span><br><span class="line">ISTIO_AGENT_FLAGS=<span class="string">"--zipkinAddress zipkin.istio-system:9411 --proxyLogLevel debug"</span></span><br></pre></td></tr></table></figure>
+<h2 id="重启ISTIO服务"><a href="#重启ISTIO服务" class="headerlink" title="重启ISTIO服务"></a>重启ISTIO服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart istio</span><br></pre></td></tr></table></figure>
+<h2 id="部署业务"><a href="#部署业务" class="headerlink" title="部署业务"></a>部署业务</h2><p>首先使用bookinfo中的示例来部署整个调用链中的服务和workload。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f istio-1.1.6/samples/bookinfo/platform/kube/bookinfo.yaml</span><br></pre></td></tr></table></figure>
+<p>等k8s中所有服务都起来之后，删除details这个deployment以及其对应的services。然后在github上找到details的<a href="https://github.com/istio/istio/blob/master/samples/bookinfo/src/details/details.rb" target="_blank" rel="noopener">ruby代码文件</a>，拷贝到VM上保存为<code>ruby_server.rb</code>。</p>
+<p>在VM上需要直接使用ubuntu用户来运行该服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby ./ruby_server.rb 9080</span><br></pre></td></tr></table></figure>
+<p>在k8s集群里面，重新创建details服务:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">istioctl -n default register details 10.244.3.0 http:9080</span><br><span class="line"><span class="comment"># 这里的 10.244.3.0 是VM的IP地址，http为通信协议，9080为details服务对外暴露的端口号</span></span><br></pre></td></tr></table></figure>
+<p>部署istio转发规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f istio-1.1.6/samples/bookinfo/networking/destination-rule-all.yaml</span><br><span class="line">kubectl apply -f istio-1.1.6/samples/bookinfo/networking/virtual-service-all-v1.yaml</span><br></pre></td></tr></table></figure>
+<h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><p><strong>调用链</strong></p>
+<p><img src="/uploads/jeager-traceline.png" width="100%" height="100%"><br><img src="/uploads/jeager-topo.png" width="100%" height="100%"></p>
+<p><strong>Granfana</strong></p>
+<p><img src="/uploads/istio-granfana.png" width="100%" height="100%"></p>
+<h1 id="待解决问题"><a href="#待解决问题" class="headerlink" title="待解决问题"></a>待解决问题</h1><h2 id="VM网络转发"><a href="#VM网络转发" class="headerlink" title="VM网络转发"></a>VM网络转发</h2><p>到当前，bookinfo的流量转发应该能够正常，但是还存在一个问题：</p>
+<p>如果直接在vm上通过service名称来访问k8s中的其他服务，将无法经过sidecar。其主要原因是iptables，通过查看配置可以看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># iptables -t nat -nvL OUTPUT</span></span><br><span class="line">Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)</span><br><span class="line"> pkts bytes target     prot opt <span class="keyword">in</span>     out     <span class="built_in">source</span>               destination         </span><br><span class="line"> 744K   82M KUBE-SERVICES  all  --  *      *       0.0.0.0/0            0.0.0.0/0            /* kubernetes service portals */</span><br><span class="line"> 2285  137K ISTIO_OUTPUT  tcp  --  *      *       0.0.0.0/0            0.0.0.0/0</span><br></pre></td></tr></table></figure>
+<p>由于我们在VM上部署了k8s，kube-proxy的KUBE-SERVICES链要优先于ISTIO_OUTPUT导致上面的问题。</p>
+<h2 id="Prometheus监控vm-envoy"><a href="#Prometheus监控vm-envoy" class="headerlink" title="Prometheus监控vm-envoy"></a>Prometheus监控vm-envoy</h2><p>由于prometheus对所有sidecar的envoy监控是通过k8s来做服务发现的，而VM的envoy并没有在k8s中体现出来。这块需要我们手动配置prometheus的target。</p>
+<p>具体通过修改istio-system命令空间下prometheus configmap的配置, 添加<code>vm-envoy-stats</code>任务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">global:</span><br><span class="line">  scrape_interval: 15s</span><br><span class="line">  scrape_timeout: 10s</span><br><span class="line">  evaluation_interval: 1m</span><br><span class="line">scrape_configs:</span><br><span class="line">- job_name: vm-envoy-stats</span><br><span class="line">  scrape_interval: 15s</span><br><span class="line">  scrape_timeout: 10s</span><br><span class="line">  metrics_path: /stats/prometheus</span><br><span class="line">  scheme: http</span><br><span class="line">  static_configs:</span><br><span class="line">  - targets:</span><br><span class="line">    - 10.244.3.0:15090</span><br></pre></td></tr></table></figure>
+<h2 id="kiali视图"><a href="#kiali视图" class="headerlink" title="kiali视图"></a>kiali视图</h2><p>当前还没有办法在kiali上展现出vm上流量的视图，虽然可以展示出details的service信息，但是一直报该service缺少了sidecar。我认为这应该和kialai对pod的映射有关，后续考虑看一下它的实现逻辑，应该有解决的方法。</p>
+<h1 id="调试经验"><a href="#调试经验" class="headerlink" title="调试经验"></a>调试经验</h1><h2 id="查看envoy的配置信息"><a href="#查看envoy的配置信息" class="headerlink" title="查看envoy的配置信息"></a>查看envoy的配置信息</h2><p>对于pod的sidecar，直接通过nsenter进入到pid的net namespace下（对于VM直接在VM上）执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># curl localhost:15000/help</span></span><br><span class="line">admin commands are:</span><br><span class="line">  /: Admin home page</span><br><span class="line">  /certs: <span class="built_in">print</span> certs on machine</span><br><span class="line">  /clusters: upstream cluster status</span><br><span class="line">  /config_dump: dump current Envoy configs (experimental)</span><br><span class="line">  /contention: dump current Envoy mutex contention stats (<span class="keyword">if</span> enabled)</span><br><span class="line">  /cpuprofiler: <span class="built_in">enable</span>/<span class="built_in">disable</span> the CPU profiler</span><br><span class="line">  /healthcheck/fail: cause the server to fail health checks</span><br><span class="line">  /healthcheck/ok: cause the server to pass health checks</span><br><span class="line">  /heapprofiler: <span class="built_in">enable</span>/<span class="built_in">disable</span> the heap profiler</span><br><span class="line">  /<span class="built_in">help</span>: <span class="built_in">print</span> out list of admin commands</span><br><span class="line">  /hot_restart_version: <span class="built_in">print</span> the hot restart compatibility version</span><br><span class="line">  /listeners: <span class="built_in">print</span> listener addresses</span><br><span class="line">  /logging: query/change logging levels</span><br><span class="line">  /memory: <span class="built_in">print</span> current allocation/heap usage</span><br><span class="line">  /quitquitquit: <span class="built_in">exit</span> the server</span><br><span class="line">  /reset_counters: reset all counters to zero</span><br><span class="line">  /runtime: <span class="built_in">print</span> runtime values</span><br><span class="line">  /runtime_modify: modify runtime values</span><br><span class="line">  /server_info: <span class="built_in">print</span> server version/status information</span><br><span class="line">  /stats: <span class="built_in">print</span> server stats</span><br><span class="line">  /stats/prometheus: <span class="built_in">print</span> server stats <span class="keyword">in</span> prometheus format</span><br></pre></td></tr></table></figure>
+<p>当然, 对于pod如果是指查看xds的配置，可以直接执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># istioctl ps</span></span><br><span class="line">NAME                                                   CDS        LDS        EDS               RDS          PILOT                            VERSION</span><br><span class="line">details.default                                        SYNCED     SYNCED     SYNCED (50%)      SYNCED       istio-pilot-59954cff67-wxgnr     1.1.3</span><br><span class="line">istio-egressgateway-7dbbb87698-ds9j2.istio-system      SYNCED     SYNCED     SYNCED (100%)     NOT SENT     istio-pilot-59954cff67-wxgnr     1.1.3</span><br><span class="line">istio-ingressgateway-565b894b5f-rn2l2.istio-system     SYNCED     SYNCED     SYNCED (100%)     NOT SENT     istio-pilot-59954cff67-wxgnr     1.1.3</span><br><span class="line">productpage-v1-79458795bc-jdvg6.default                SYNCED     SYNCED     SYNCED (50%)      SYNCED       istio-pilot-59954cff67-wxgnr     1.1.3</span><br><span class="line">ratings-v1-5b7cd6c58f-559nb.default                    SYNCED     SYNCED     SYNCED (50%)      SYNCED       istio-pilot-59954cff67-wxgnr     1.1.3</span><br><span class="line">ratings-v2-mysql-vm-74978d9b97-mlv8r.default           SYNCED     SYNCED     SYNCED (50%)      SYNCED       istio-pilot-59954cff67-wxgnr     1.1.3</span><br><span class="line">reviews-v1-54c7c79486-wrw6f.default                    SYNCED     SYNCED     SYNCED (50%)      SYNCED       istio-pilot-59954cff67-wxgnr     1.1.3</span><br><span class="line">reviews-v2-7dc5785684-zccst.default                    SYNCED     SYNCED     SYNCED (50%)      SYNCED       istio-pilot-59954cff67-wxgnr     1.1.3</span><br><span class="line">reviews-v3-6c464d7bf4-5px2m.default                    SYNCED     SYNCED     SYNCED (50%)      SYNCED       istio-pilot-59954cff67-wxgnr     1.1.3</span><br><span class="line"></span><br><span class="line"><span class="comment"># istioctl pc listeners productpage-v1-79458795bc-jdvg6.default</span></span><br><span class="line">ADDRESS            PORT      TYPE</span><br><span class="line">10.244.1.130       9080      HTTP</span><br><span class="line">10.103.241.209     31400     TCP</span><br><span class="line">10.103.241.209     8060      TCP</span><br><span class="line">10.107.214.136     16686     TCP</span><br><span class="line">....</span><br><span class="line"><span class="comment"># 通过指定-o json可以查看到更详细的配置信息</span></span><br></pre></td></tr></table></figure>
+<h2 id="查看envoy是否GRPC上报telemetry到mixer"><a href="#查看envoy是否GRPC上报telemetry到mixer" class="headerlink" title="查看envoy是否GRPC上报telemetry到mixer"></a>查看envoy是否GRPC上报telemetry到mixer</h2><p>需要先打开envoy的日志模块，具体如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST localhost:15000/logging?level=info</span><br><span class="line">curl -X POST localhost:15000/logging?grpc=trace</span><br><span class="line"></span><br><span class="line">tailf /var/<span class="built_in">log</span>/istio/istio.err.log</span><br></pre></td></tr></table></figure>
+<p>可以看到如下信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">  strings &#123;</span><br><span class="line">    key: 3</span><br><span class="line">    value: -8</span><br><span class="line">  &#125;</span><br><span class="line">  strings &#123;</span><br><span class="line">    key: 17</span><br><span class="line">    value: -11</span><br><span class="line">  &#125;</span><br><span class="line"> ...</span><br><span class="line">&#125;</span><br><span class="line">default_words: <span class="string">"kubernetes://details.default"</span></span><br><span class="line">default_words: <span class="string">"details.default.svc.cluster.local"</span></span><br><span class="line">default_words: <span class="string">"istio-envoy"</span></span><br><span class="line">default_words: <span class="string">"Wed, 29 May 2019 07:33:10 GMT"</span></span><br><span class="line">default_words: <span class="string">"178"</span></span><br><span class="line">default_words: <span class="string">"origin.ip"</span></span><br><span class="line">default_words: <span class="string">"default"</span></span><br><span class="line">default_words: <span class="string">"kubernetes://productpage-v1-79458795bc-jdvg6.default"</span></span><br><span class="line">default_words: <span class="string">"istio://default/services/details"</span></span><br><span class="line">...</span><br><span class="line">global_word_count: 221</span><br></pre></td></tr></table></figure>
+<p>这里就是envoy的mixer filter上报到mixer的attribute信息。每一个key都对应着mixer中内置的attribute关键字的index，每一个value对应default_workds索引。具体参考<a href="https://github.com/jukylin/blog/blob/master/istio%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E2%80%94%E2%80%94mixer%E9%81%A5%E6%B5%8B%E6%8A%A5%E5%91%8A.md" target="_blank" rel="noopener">这篇</a>文章。</p>
+<p>之前遇到一个问题，发现envoy有通过grpc Report到mixer；同时在mixer的accessLog也能够看到logentry生成到stdio的访问日志。但是prometheus始终无法从istio-telemetry采集到istio_requests_total的指标。后来调查发现是手动通过istioctl register注册服务的时候，没有指定其协议类型导致的。</p>
+<h2 id="查看envoy的业务流量访问日志"><a href="#查看envoy的业务流量访问日志" class="headerlink" title="查看envoy的业务流量访问日志"></a>查看envoy的业务流量访问日志</h2><p>istio默认是不看业务流量访问日志的，因为日志量太大。如果需要调试，需要手动修改istio-system中的configmap的配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n istio-system edit cm istio</span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">data:</span><br><span class="line">  mesh: <span class="string">"# Set the following variable to true to disable policy checks by the Mixer.\n#</span></span><br><span class="line"><span class="string">    Note that metrics will still be reported to the Mixer.\ndisablePolicyChecks: true\n\n#</span></span><br><span class="line"><span class="string">    Set enableTracing to false to disable request tracing.\nenableTracing: true\n\n#</span></span><br><span class="line"><span class="string">    Set accessLogFile to empty string to disable access log.\naccessLogFile: \"/dev/stdout\"\n\n#</span></span><br></pre></td></tr></table></figure>
+<p>修改最后一行为<code>/dev/stdout</code>，这样通过查看业务pod的istio-proxy container的日志就可以看到流量的access-log了。<br>当然，对于VM可以直接修改这个值为一个目录，然后在VM上重启istio服务就可以在日志文件中看到流量信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># kc logs --tail=5 -f productpage-v1-79458795bc-jdvg6 -c istio-proxy</span></span><br><span class="line"></span><br><span class="line">[2019-05-29T07:57:21.444Z] <span class="string">"GET /productpage?u=normal HTTP/1.1"</span> 200 - <span class="string">"-"</span> 0 4083 5034 5034 <span class="string">"-"</span> <span class="string">"curl/7.47.0"</span> <span class="string">"9d5d739a-9fbd-9659-ab58-2619a6792936"</span> <span class="string">"productpage.default.svc.cluster.local:9080"</span> <span class="string">"127.0.0.1:9080"</span> inbound|9080|http|productpage.default.svc.cluster.local - 10.244.1.130:9080 10.244.3.0:51704 -</span><br><span class="line">[2019-05-29T07:57:29.495Z] <span class="string">"GET /details/0 HTTP/1.1"</span> 200 - <span class="string">"-"</span> 0 178 2 2 <span class="string">"-"</span> <span class="string">"curl/7.47.0"</span> <span class="string">"366fc77a-d9d5-9971-9a3b-60576e1ca230"</span> <span class="string">"details:9080"</span> <span class="string">"10.244.3.0:9080"</span> outbound|9080||details.default.svc.cluster.local - 10.102.237.154:9080 10.244.1.130:35582 -</span><br><span class="line">[2019-05-29T07:57:29.500Z] <span class="string">"GET /reviews/0 HTTP/1.1"</span> 500 - <span class="string">"-"</span> 0 3926 2510 2509 <span class="string">"-"</span> <span class="string">"curl/7.47.0"</span> <span class="string">"366fc77a-d9d5-9971-9a3b-60576e1ca230"</span> <span class="string">"reviews:9080"</span> <span class="string">"10.244.1.155:9080"</span> outbound|9080|v3|reviews.default.svc.cluster.local - 10.109.123.127:9080 10.244.1.130:35202 -</span><br><span class="line">[2019-05-29T07:57:32.012Z] <span class="string">"GET /reviews/0 HTTP/1.1"</span> 500 - <span class="string">"-"</span> 0 3926 2510 2509 <span class="string">"-"</span> <span class="string">"curl/7.47.0"</span> <span class="string">"366fc77a-d9d5-9971-9a3b-60576e1ca230"</span> <span class="string">"reviews:9080"</span> <span class="string">"10.244.1.155:9080"</span> outbound|9080|v3|reviews.default.svc.cluster.local - 10.109.123.127:9080 10.244.1.130:35258 -</span><br></pre></td></tr></table></figure>
+<h2 id="查看流表转发流程"><a href="#查看流表转发流程" class="headerlink" title="查看流表转发流程"></a>查看流表转发流程</h2><p><img src="/uploads/envoy-sidecar-traffic-interception.jpg" width="100%" height="100%"><br>istio中流量的转发流程可以参考jimmy的这张图, 下面要说的是具体chain中的规则。</p>
+<ul>
+<li>inbound流量</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># iptables -t nat -nvL PREROUTING</span></span><br><span class="line">Chain PREROUTING (policy ACCEPT 15 packets, 900 bytes)</span><br><span class="line"> pkts bytes target     prot opt <span class="keyword">in</span>     out     <span class="built_in">source</span>               destination         </span><br><span class="line">1969K  174M KUBE-SERVICES  all  --  *      *       0.0.0.0/0            0.0.0.0/0            /* kubernetes service portals */</span><br><span class="line"> 162K 9707K ISTIO_INBOUND  tcp  --  *      *       0.0.0.0/0            0.0.0.0/0</span><br></pre></td></tr></table></figure>
+<p>首先查看PREROUTING chain，可以看到，流量被送到ISTIO_INBOUND。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># iptables -t nat -nvL ISTIO_INBOUND</span></span><br><span class="line">Chain ISTIO_INBOUND (1 references)</span><br><span class="line"> pkts bytes target     prot opt <span class="keyword">in</span>     out     <span class="built_in">source</span>               destination         </span><br><span class="line"> 2536  152K ISTIO_IN_REDIRECT  tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:3306</span><br><span class="line">  343 20580 ISTIO_IN_REDIRECT  tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpt:9080</span><br></pre></td></tr></table></figure>
+<p>在ISTIO_INBOUND中，VM提供对外服务的端口3306和9080的流量被转发到 ISTIO_IN_REDIRECT。这里如果VM上面有新添加服务端口，需要修改了cluster.env之后重启istio服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># iptables -t nat -nvL ISTIO_IN_REDIRECT</span></span><br><span class="line">Chain ISTIO_IN_REDIRECT (2 references)</span><br><span class="line"> pkts bytes target     prot opt <span class="keyword">in</span>     out     <span class="built_in">source</span>               destination         </span><br><span class="line"> 2962  178K REDIRECT   tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            redir ports 15001</span><br></pre></td></tr></table></figure>
+<p>在 ISTIO_IN_REDIRECT中，流量被送到了envoy处理。</p>
+<ul>
+<li>outbound流量</li>
+</ul>
+<p>同理，这里只给出对应的链表规则：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># iptables -t nat -nvL OUTPUT</span></span><br><span class="line">Chain OUTPUT (policy ACCEPT 24 packets, 2927 bytes)</span><br><span class="line"> pkts bytes target     prot opt <span class="keyword">in</span>     out     <span class="built_in">source</span>               destination         </span><br><span class="line"> 782K   86M KUBE-SERVICES  all  --  *      *       0.0.0.0/0            0.0.0.0/0            /* kubernetes service portals */</span><br><span class="line"> 5033  302K ISTIO_OUTPUT  tcp  --  *      *       0.0.0.0/0            0.0.0.0/0</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># iptables -t nat -nvL ISTIO_OUTPUT</span></span><br><span class="line">Chain ISTIO_OUTPUT (1 references)</span><br><span class="line"> pkts bytes target     prot opt <span class="keyword">in</span>     out     <span class="built_in">source</span>               destination         </span><br><span class="line">    0     0 ISTIO_REDIRECT  all  --  *      lo      0.0.0.0/0           !127.0.0.1           </span><br><span class="line">  790 47400 RETURN     all  --  *      *       0.0.0.0/0            0.0.0.0/0            owner UID match 1000</span><br><span class="line"> 4387  263K RETURN     all  --  *      *       0.0.0.0/0            0.0.0.0/0            owner UID match 0</span><br><span class="line">    0     0 RETURN     all  --  *      *       0.0.0.0/0            0.0.0.0/0            owner GID match 1000</span><br><span class="line">    0     0 RETURN     all  --  *      *       0.0.0.0/0            0.0.0.0/0            owner GID match 0</span><br><span class="line">    0     0 RETURN     all  --  *      *       0.0.0.0/0            127.0.0.1           </span><br><span class="line">    0     0 ISTIO_REDIRECT  all  --  *      *       0.0.0.0/0            10.244.0.0/16       </span><br><span class="line">    2   120 RETURN     all  --  *      *       0.0.0.0/0            0.0.0.0/0</span><br></pre></td></tr></table></figure>
+<p>这里的uid 1000其实就是envoy进程的uid，而0是root。之所以这样设置，是因为如果将root的流量都干掉了，将导致ssh无法连接主机。继续查看ISTIO_REDIRECT链的规则：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># iptables -t nat -nvL ISTIO_REDIRECT</span></span><br><span class="line">Chain ISTIO_REDIRECT (2 references)</span><br><span class="line"> pkts bytes target     prot opt <span class="keyword">in</span>     out     <span class="built_in">source</span>               destination         </span><br><span class="line">    0     0 REDIRECT   tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            redir ports 15001</span><br></pre></td></tr></table></figure>
+<p>这样就基本明白了inbound和outbound流量被送进envoy之前的转发过程了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2019/05/29/istio与vm融合/" title="Istio与vm融合">http://ljchen.net/2019/05/29/istio与vm融合/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cloud-native/" rel="tag"># cloud-native</a>
+          
+            <a href="/tags/service-mesh/" rel="tag"># service-mesh</a>
+          
+            <a href="/tags/istio/" rel="tag"># istio</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/12/Apache-Flink原理/" rel="next" title="Apache Flink原理">
+                <i class="fa fa-chevron-left"></i> Apache Flink原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/02/基于consul服务发现的istio/" rel="prev" title="基于Consul服务发现的istio">
+                基于Consul服务发现的istio <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#部署"><span class="nav-number">1.</span> <span class="nav-text">部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础网络准备"><span class="nav-number">1.1.</span> <span class="nav-text">基础网络准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预安装"><span class="nav-number">1.2.</span> <span class="nav-text">预安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装istio"><span class="nav-number">1.3.</span> <span class="nav-text">安装istio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cluster-env"><span class="nav-number">1.4.</span> <span class="nav-text">cluster.env</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备证书"><span class="nav-number">1.5.</span> <span class="nav-text">准备证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装sidecar"><span class="nav-number">1.6.</span> <span class="nav-text">安装sidecar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Debian包"><span class="nav-number">1.6.1.</span> <span class="nav-text">Debian包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RPM包"><span class="nav-number">1.6.2.</span> <span class="nav-text">RPM包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备用户"><span class="nav-number">1.7.</span> <span class="nav-text">准备用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动服务"><span class="nav-number">1.8.</span> <span class="nav-text">启动服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sidecar-env"><span class="nav-number">1.9.</span> <span class="nav-text">sidecar.env</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重启ISTIO服务"><span class="nav-number">1.10.</span> <span class="nav-text">重启ISTIO服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署业务"><span class="nav-number">1.11.</span> <span class="nav-text">部署业务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果展示"><span class="nav-number">1.12.</span> <span class="nav-text">效果展示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#待解决问题"><span class="nav-number">2.</span> <span class="nav-text">待解决问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#VM网络转发"><span class="nav-number">2.1.</span> <span class="nav-text">VM网络转发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prometheus监控vm-envoy"><span class="nav-number">2.2.</span> <span class="nav-text">Prometheus监控vm-envoy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kiali视图"><span class="nav-number">2.3.</span> <span class="nav-text">kiali视图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调试经验"><span class="nav-number">3.</span> <span class="nav-text">调试经验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看envoy的配置信息"><span class="nav-number">3.1.</span> <span class="nav-text">查看envoy的配置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看envoy是否GRPC上报telemetry到mixer"><span class="nav-number">3.2.</span> <span class="nav-text">查看envoy是否GRPC上报telemetry到mixer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看envoy的业务流量访问日志"><span class="nav-number">3.3.</span> <span class="nav-text">查看envoy的业务流量访问日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看流表转发流程"><span class="nav-number">3.4.</span> <span class="nav-text">查看流表转发流程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2019/05/29/istio与vm融合/';
+          this.page.identifier = '2019/05/29/istio与vm融合/';
+          this.page.title = 'Istio与vm融合';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

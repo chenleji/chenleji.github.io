@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>Kafka原理总结 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2018/08/25/kafka原理总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Kafka原理总结</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T12:37:40+08:00">2018-08-25</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/distributed-system/" itemprop="url" rel="index">
+                    <span itemprop="name">distributed-system</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/25/kafka原理总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/08/25/kafka原理总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">16 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>研究了rocket-mq之后，一直想知道为什么kafka会这么火, 终于有时间学习了一下这块的内容, 简单总结以备以后查阅。<br><a id="more"></a></p>
+<h1 id="部署架构"><a href="#部署架构" class="headerlink" title="部署架构"></a>部署架构</h1><p><img src="/uploads/kafka.png" width="45%" height="45%"></p>
+<p>其实这个架构和rocket-mq比较像，差异是rocket-mq使用了nameserver，而kafka使用zookeeper来做配置协调中心。</p>
+<h1 id="组成原理"><a href="#组成原理" class="headerlink" title="组成原理"></a>组成原理</h1><p>主要涉及kafka从broker启动、生产者发送消息、broker分发消息到消费者消费消息的流程。<br><img src="/uploads/kafka-arch.png" width="55%" height="55%"></p>
+<h2 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h2><ul>
+<li>所有的broker启动后都注册到zookeeper，写到<code>/brokers/ids</code>目录下；</li>
+<li>Broker组件订阅这个路径，当有borker加入、删除就能够立即知道其broker的信息了；</li>
+<li>健康检查机制，Broker长时间丢失连接会被自动回收；</li>
+<li>基于此，producer在配置的时候，并不需要填写所有broker的地址，只需要填写几个broker的地址就可以通过他们去发现自己需要写topic的broker了。</li>
+</ul>
+<h2 id="Controller的作用"><a href="#Controller的作用" class="headerlink" title="Controller的作用"></a>Controller的作用</h2><ul>
+<li>Broker起来后选举出一个controller，controller是使用锁的方式来实现的。即在zookeeper的<code>/controller</code>目录，谁先写入数据，谁就是controller；</li>
+<li>新的controller会获得一个递增的epoch，如果其他broker收到老controller发出来的消息，消息体重会带着旧的epoch，就直接忽略消息；</li>
+<li>其他broker会一直watch <code>/controller</code>的变化；并等待当前controller挂了之后抢占controller的地位。</li>
+<li>controller的职责是管控broker与topic中partition主备映射关系；</li>
+<li>当broker挂掉、新加broker时，controller通过watch可以感知到变化；它会通过分析挂掉的broker中的partition的副本来重新选举出partition的leader，并将变化下发到相关的broker；</li>
+</ul>
+<h2 id="生产者"><a href="#生产者" class="headerlink" title="生产者"></a>生产者</h2><p><img src="/uploads/kafka-producer.png" width="80%" height="80%"></p>
+<ul>
+<li>Producer先序列化数据，按照topic分类（下面还有key/value），然后按照负载均衡算法push消息到topic的不同partition；</li>
+<li>Producer发送消息的模式有三种: oneway(结果未知)， sync(阻塞)， async(有回调函数)；</li>
+<li>Producer可以设置Acks方式，可以设置为: 1. 发送后立即返回(0);  2. 等待主partition保存后返回(1);  3.等待副本patirion复制完成后返回(-1);</li>
+</ul>
+<h2 id="Topic与Partition"><a href="#Topic与Partition" class="headerlink" title="Topic与Partition"></a>Topic与Partition</h2><ul>
+<li>Topic可以有多个partition，可以基于各种算法来将消息分类到不同partition，拥有同样key的消息会放到同一个partition；</li>
+<li>partition是物理实现，可以指定partition的副本数；</li>
+<li>Topic下的partition数量可以递增，但是不能递减；</li>
+</ul>
+<blockquote>
+<p>Kafka的设计也是源自生活，好比是为公路运输，不同的起始点和目的地需要修不同高速公路（<code>主题</code>），高速公路上可以提供多条车道（<code>分区</code>），流量大的公路多修几条车道保证畅通，流量小的公路少修几条车道避免浪费。收费站好比<code>消费者</code>，车多的时候多开几个一起收费避免堵在路上，车少的时候开几个让汽车并道就好了。</p>
+</blockquote>
+<h2 id="分区再分配"><a href="#分区再分配" class="headerlink" title="分区再分配"></a>分区再分配</h2><ul>
+<li>新增的broker是不会自动地分担己有topic的负载的，它只会对增加broker后新创建的topic生效；</li>
+<li>如果要让新增 broker为己有的 topic服务，用户必须手动地调整己有topic的分区分布，将一部分分区搬移到新增broker上。这就是分区重分配(partition reassignment)；</li>
+<li>可以基于自带的脚本<code>kafka-reassign-partitions.sh</code>来实现，该脚本分为generate和execute阶段，generate阶段可以看到系统推荐分配的方案；</li>
+<li>使用脚本<code>kafka-reassign-partitions.sh</code>，同样可以为topic增加副本数。</li>
+</ul>
+<h2 id="Parition主备复制"><a href="#Parition主备复制" class="headerlink" title="Parition主备复制"></a>Parition主备复制</h2><ul>
+<li>kafka的高可用是通过topic的每一个partition多个副本来实现的；</li>
+<li>partition的副本负责从leader拷贝数据，数据中包含了offset等信息；</li>
+<li><strong>kafka的leader负责处理外部的读写操作，follower不对外服务，只有备份的作用；</strong></li>
+<li>partition的副本会发送回复信息给leader，leader基于此来判断副本是否保持同步；</li>
+<li>只有同步的分区副本才能在leader挂后被选为新的leader；</li>
+<li>消费者只能看到已经被复制到ISR（in-sync replica）的消息，分区副本从leader复制消息之前，理论上leader是不允许该消息被consumer消费的，因为这样的消息不安全。</li>
+<li>因为各种各样的原因，一小部分replica开始落后于leader replica的进度。当滞后到一定程度(<code>replica.lag.time.max.ms</code>)时，Kafka会将这些replica “踢”出 ISR。当这些replica重新“追上”了leader的进度时，那么Kafka会将它们加回到ISR中。</li>
+<li>kafka几个关键数据: <code>HW</code>（high water）代表follower已经同步的offset；<code>LEO</code>（log end offset）代表leader/follower的数据结尾offset。<code>LAG</code> 代表consumer的偏移，（LAG = HW - Consumer offset）。<br><img src="/uploads/kafka-lag.png" width="60%" height="60%"></li>
+</ul>
+<h2 id="消费者组再均衡"><a href="#消费者组再均衡" class="headerlink" title="消费者组再均衡"></a>消费者组再均衡</h2><ul>
+<li>这里的再均衡是针对consumer group中的consumer来讲！</li>
+<li>Topic如果增加partition，或者consumer group中的consumer有变动，均需要重新分配分区（再均衡）；</li>
+<li>Consumer的变动是通过定期向broker协调者发送心跳报文来实现的，心跳报文中包含了群属关系以及分区所有权关系；</li>
+<li>在再均衡期间，消费者无法读取消息；</li>
+<li>Consumer读取消息，并将offset发送到一个__consumer_offset的特殊<code>topic</code>中，该消息包含了每个分区的偏移量；</li>
+<li>一旦再均衡后，新的consumer可以继续按照之前的offset工作；</li>
+</ul>
+<blockquote>
+<p><strong>__consumer_offset</strong></p>
+<ol>
+<li>可以把它想象成一个KV格式的消息，key就是一个三元组: <code>group.id+topic+分区号</code>，而value就是offset的值。</li>
+<li>每次consumer读取了消息就往该topic发送消息，kafka负责执行压缩算法，只保留最新的offset数据。</li>
+<li>该topic默认有50个partition</li>
+</ol>
+</blockquote>
+<p><strong>Rebalance协议</strong></p>
+<ul>
+<li>JoinGroup请求<br>   consumer请求加入组 (当收集全JoinGroup 请求后， coordinator从中选择一个consumer担任group的 leader，并把所有成员信息以及它们的订阅信息发送给leader)。</li>
+<li>SyncGroup请求<br>   group leader把分配方案同步更新到组内所有成员中(一旦分配完成，leader会把这个分配方案封装进 SyncGroup请求并发送给coordinator。组内所有成员都会发送SyncGroup请求，不过只有leader发送的SyncGroup请求中包含了分配方案。coordinator接收到分配方案后把属于每个consumer的方案<code>consumer group分配方案是在consumer端执行的</code>单独抽取出来作为syncGroup请求的response返还给各自的 consumer)。 </li>
+<li>Heartbeat请求<br>   consumer定期向coordinator汇报心跳表明自己依然存活。</li>
+<li>LeaveGroup请求<br>   consumer主动通知coordinator该consumer即将离组。</li>
+<li>DescribeGroup请求<br>   查看组的所有信息，包括成员信息、协议信息、分配方案以及订阅信息等 。该请求类型主要供管理员使用 。 coordinator不使用该请求执行 rebalance。</li>
+</ul>
+<h2 id="消息存储"><a href="#消息存储" class="headerlink" title="消息存储"></a>消息存储</h2><ul>
+<li>Broker的消息保存策略为：<ol>
+<li>保存指定时间; </li>
+<li>保存达到某一Size;</li>
+</ol>
+</li>
+</ul>
+<h2 id="Log文件"><a href="#Log文件" class="headerlink" title="Log文件"></a>Log文件</h2><p>创建topic时，Kafka为该topic的每个分区在文件系统中创建了一个对应的子目录，名字是: <code>&lt;topic&gt;-&lt;分区号&gt;</code>, 如<code>operation-product-sync-4</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@centos operation-product-sync-4]<span class="comment"># ll -h</span></span><br><span class="line">total 5.9G</span><br><span class="line">-rw-r--r-- 1 root root 105K Oct  4 08:15 00000000000002227127.index</span><br><span class="line">-rw-r--r-- 1 root root 1.0G Oct  4 08:15 00000000000002227127.log</span><br><span class="line">-rw-r--r-- 1 root root 151K Oct  4 08:15 00000000000002227127.timeindex</span><br><span class="line">-rw-r--r-- 1 root root 293K Oct  4 13:10 00000000000002247767.index</span><br><span class="line">-rw-r--r-- 1 root root 1.0G Oct  4 13:10 00000000000002247767.log</span><br><span class="line">-rw-r--r-- 1 root root   10 Oct  4 08:15 00000000000002247767.snapshot</span><br><span class="line">-rw-r--r-- 1 root root 428K Oct  4 13:10 00000000000002247767.timeindex</span><br><span class="line">-rw-r--r-- 1 root root  10M Oct  4 19:03 00000000000002455169.index</span><br><span class="line">-rw-r--r-- 1 root root 409M Oct  4 19:03 00000000000002455169.log</span><br><span class="line">-rw-r--r-- 1 root root   10 Oct  4 13:10 00000000000002455169.snapshot</span><br><span class="line">-rw-r--r-- 1 root root  10M Oct  4 19:03 00000000000002455169.timeindex</span><br><span class="line">-rw-r--r-- 1 root root   15 Oct  4 13:13 leader-epoch-checkpoint</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>.log</code>文件是日志段文件，保存着真实的Kafka记录，Kafka使用该文件第一条记录对应的offset来命名此文件（默认最大1G）；</li>
+<li><code>.index</code>和<code>.timeindex</code>文件都是与日志段对应的<code>位移索引</code>文件和<code>时间戳索引</code>文件；每写入（<code>log.index.interval.bytes</code>，默认4K）数据才更新一次索引文件。</li>
+<li><code>位移索引</code>保存的是与索引文件起始位移的差值。索引文件文件名中的位移就是该索引文件的起始位移；</li>
+<li><code>时间戳索引</code>项保存的是时间戳与位移的映射关系，给定时间戳之后根据此索引文件只能找到不大于该时间戳的最大位移，稍后还需要拿着返回的位移再去位移索引文件中定位真实的物理文件位置。</li>
+<li><code>log compaction</code> 只会根据某种策略有选择性地移除log中的消息，而不会变更消息的offset值。kafka通过cleaner组件来压实log；该配置是topic级别的，必须指定key。</li>
+</ul>
+<h2 id="消费者"><a href="#消费者" class="headerlink" title="消费者"></a>消费者</h2><ul>
+<li>Kafka支持Consumer group，它可以保障每一个group中只有一个consumer消费某条消息；</li>
+<li>如果要广播消息，需要创建多个consumer group；</li>
+<li>Consumer的数量不要超过分区数量，否者某些consumer会闲置。</li>
+</ul>
+<blockquote>
+<p><strong>consumer group</strong></p>
+<ol>
+<li>一个consumer group可能有若干个consumer实例(一个group只有一个实例也是允许的):</li>
+<li>对于同一个group而言，topic的每条消息只能被发送到group下的一个consumer实例上:</li>
+<li>topic消息可以被发送到多个group中。</li>
+</ol>
+</blockquote>
+<h1 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h1><h2 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h2><p><strong>broker 端</strong></p>
+<ul>
+<li>适当增加 num.replica.fetchers，但不超过CPU核数。 </li>
+<li>调优 GC 避免经常性的Full GC。</li>
+</ul>
+<p><strong>producer 端</strong></p>
+<ul>
+<li>适当增加 batch.size，比如 100~512 KB </li>
+<li>适当增加 linger.ms，比如 10~100 毫秒</li>
+<li>设置 compression均pe=lz4</li>
+<li>acks=0 或 1</li>
+<li>retries = 0</li>
+<li>若多线程共享 producer或分区数很多，增加 buffer.memory</li>
+</ul>
+<p><strong>consumer 端</strong></p>
+<ul>
+<li>采用多 consumer实例。</li>
+<li>增加 fetch.min.bytes，比如 100000。</li>
+</ul>
+<h2 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h2><p><strong>broker 端</strong></p>
+<ul>
+<li>适度增加 num.replica.fetchers。 </li>
+<li>避免创建过多topic分区。</li>
+</ul>
+<p><strong>producer 端</strong></p>
+<ul>
+<li>设置 linger.ms=0</li>
+<li>设置 compression.type=none</li>
+<li>设置 acks=1 或 0</li>
+</ul>
+<p><strong>consumer 端</strong></p>
+<ul>
+<li>设置 fetch.min.bytes=1。</li>
+</ul>
+<h2 id="持久性"><a href="#持久性" class="headerlink" title="持久性"></a>持久性</h2><p><strong>broker 端</strong></p>
+<ul>
+<li>设置 auto.create.topics.enable=false</li>
+<li>设置 replication.factor= 3, min.insync.replicas = replication.factor - 1</li>
+<li>设置 default.replication.factor=3</li>
+<li>设置 broker.rack属性分散分区数据到不同机架</li>
+<li>设置 log.flush.interval.message 和 log.flush.interval.ms为一个较小的值</li>
+</ul>
+<p><strong>producer 端</strong></p>
+<ul>
+<li>设置 acks=all</li>
+<li>设置retries为一个较大的值，比如 10~300</li>
+<li>设置 max.in.flight.requests.per.connection=1</li>
+<li>设置 enable.idempotence=true 启用幂等性</li>
+</ul>
+<p><strong>consumer 端</strong></p>
+<ul>
+<li>设置 auto.commit.enable=false</li>
+<li>消息消费成功后调用 commitSync 提交位移；</li>
+</ul>
+<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><p><strong>broker 端</strong></p>
+<ul>
+<li>避免创建过多分区</li>
+<li>设置 unclean.leader.election.enable=true</li>
+<li>设置 min.insync.replicas=1</li>
+<li>设置 num.recovery.threads.per.data.dir=broker端参数log.dirs中设置的目录数</li>
+</ul>
+<p><strong>producer 端</strong></p>
+<ul>
+<li>设置 acks=1，若一定要设置为all，则遵循上面broker端的min.insyn.replicas配置</li>
+</ul>
+<p><strong>consumer 端</strong></p>
+<ul>
+<li>设置 session.timeout.ms为较低的值，比如 10000</li>
+<li>设置 max.poll.interval.ms为比消息平均处理时间稍大的值</li>
+</ul>
+<h1 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h1><h2 id="规划"><a href="#规划" class="headerlink" title="规划"></a>规划</h2><p>CPU: 使用多核（ &gt; 8core），但是对单核的主频要求不高；<br>内存: 主要用于page/cache，jvm使用的heap内存并不多(&lt; 6G)；<br>磁盘: 顺序读，HDD盘基本够用，没必要上SSD；</p>
+<p><strong>典型配置：</strong></p>
+<ul>
+<li>CPU 24核。</li>
+<li>内存 32GB。</li>
+<li>磁盘 1TB 7200转 SAS盘两块。</li>
+<li>带宽 1Gb/s。</li>
+<li>ulimit -n 1000000 (永久生效：<code>vim /etc/security/limits.conf</code>)。</li>
+<li>Socket Buffer至少 64KB 一一 适用于跨机房网络传输。</li>
+</ul>
+<h2 id="kafka"><a href="#kafka" class="headerlink" title="kafka"></a>kafka</h2><p>在linux服务器上，下载并启动kafka服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载</span></span><br><span class="line"><span class="built_in">cd</span> /opt/</span><br><span class="line">wget http://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.3.0/kafka_2.12-2.3.0.tgz</span><br><span class="line">tar -xzf kafka_2.12-2.3.0.tgz</span><br><span class="line"><span class="built_in">cd</span> kafka_2.12-2.3.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动zookeeper</span></span><br><span class="line">nohup bin/zookeeper-server-start.sh config/zookeeper.properties &amp;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动kafka</span></span><br><span class="line">nohup bin/kafka-server-start.sh config/server.properties &amp;</span><br></pre></td></tr></table></figure>
+<p>验证消息的发送和消费。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建topic</span></span><br><span class="line">bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3 --topic <span class="built_in">test</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看topic列表</span></span><br><span class="line">bin/kafka-topics.sh --list --bootstrap-server localhost:9092</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送消息到topic</span></span><br><span class="line">bin/kafka-console-producer.sh --broker-list localhost:9092 --topic <span class="built_in">test</span></span><br><span class="line">~~~~~~~ <span class="comment"># 你要发送的内容</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 消费topic中的消息</span></span><br><span class="line">bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <span class="built_in">test</span> --from-beginning</span><br></pre></td></tr></table></figure>
+<h2 id="kafka-manager"><a href="#kafka-manager" class="headerlink" title="kafka-manager"></a>kafka-manager</h2><p>虽然我们能够通过脚本的方式来操作kafka消费消息，但是没有一个理想的portal还是感觉这货不过直观，接下来介绍的就是一个差不多算是最好的kafka的dashboard，<a href="https://github.com/yahoo/kafka-manager" target="_blank" rel="noopener">kafka-manager</a>，由yahoo开发。</p>
+<p>我们通过docker的方式来启动，镜像的具体信息参考<a href="https://hub.docker.com/r/hlebalbau/kafka-manager/" target="_blank" rel="noopener">这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">     -p 9000:9000  \</span><br><span class="line">     -e ZK_HOSTS=<span class="string">"&lt;zookeeper-ip&gt;:2181"</span> \</span><br><span class="line">     hlebalbau/kafka-manager:stable \</span><br><span class="line">     -Dpidfile.path=/dev/null</span><br></pre></td></tr></table></figure>
+<p>在浏览器中访问 http://{ip}:9000，可以看到界面。通过添加cluster，其实就是指定一下kafka对应zookeeper的地址；好了之后可以查看kafka集群的broker，topic，以及partition，consumer等信息。其界面如下图所示：</p>
+<p><img src="/uploads/kafka-manager.png" width="100%" height="100%"></p>
+<h2 id="zookeeper-UI"><a href="#zookeeper-UI" class="headerlink" title="zookeeper UI"></a>zookeeper UI</h2><p>前面已经说到kafka没有UI感觉很懵逼，那zookeeper其实也是如此。我们知道zookeeper一方面是做分布式协调，另一方面也是作为DB来存储了kafka和kafka-manager的配置信息。这里我们也介绍一个工具来查看zookeeper中都保存了些什么东东，有助于我们了解kafka的原理。</p>
+<p>这里要介绍的项目为<a href="https://github.com/DeemOpen/zkui" target="_blank" rel="noopener">zkui</a>, 有兴趣可以去github了解一下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name zkui -p 9090:9090 -e ZK_SERVER=&lt;zookeeper-ip&gt;:2181 rootww/zkui</span><br></pre></td></tr></table></figure>
+<p>启动之后，在浏览器访问http://{ip}:9090 就可以看到如下的界面（页面上有登录的账号信息，默认是admin/manager）。里面可以看到关于kafka和kafka-manager的配置信息。</p>
+<p><img src="/uploads/zookeeper-ui.png" width="100%" height="100%"></p>
+<p>点击页面上的export菜单，还可以直接导出所有的zookeeper配置，这样便于我们直接查看各个key的value。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#App Config Dashboard (ACD) dump created on :Sun Aug 11 11:21:04 CST 2019</span></span><br><span class="line">/admin=delete_topics=</span><br><span class="line">/brokers/ids=0=&#123;<span class="string">"listener_security_protocol_map"</span>:&#123;<span class="string">"PLAINTEXT"</span>:<span class="string">"PLAINTEXT"</span>&#125;,<span class="string">"endpoints"</span>:[<span class="string">"PLAINTEXT://master:9092"</span>],<span class="string">"jmx_port"</span>:-1,<span class="string">"host"</span>:<span class="string">"master"</span>,<span class="string">"timestamp"</span>:<span class="string">"1565487511830"</span>,<span class="string">"port"</span>:9092,<span class="string">"version"</span>:4&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/0=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/10=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/11=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/12=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/13=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/14=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/15=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/16=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/17=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/18=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/19=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/1=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/20=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/21=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/22=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/23=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/24=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/25=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/26=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/27=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/28=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/29=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/2=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/30=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/31=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/32=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/33=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/34=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/35=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/36=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/37=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/38=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/39=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/3=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/40=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/41=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/42=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/43=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/44=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/45=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/46=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/47=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/48=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/49=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/4=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/5=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/6=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/7=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/8=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/__consumer_offsets/partitions/9=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/<span class="built_in">test</span>/partitions/0=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/topic-1/partitions/0=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/topic-1/partitions/1=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers/topics/topic-1/partitions/2=state=&#123;<span class="string">"controller_epoch"</span>:1,<span class="string">"leader"</span>:0,<span class="string">"version"</span>:1,<span class="string">"leader_epoch"</span>:0,<span class="string">"isr"</span>:[0]&#125;</span><br><span class="line">/brokers=seqid=</span><br><span class="line">/cluster=id=&#123;<span class="string">"version"</span>:<span class="string">"1"</span>,<span class="string">"id"</span>:<span class="string">"YA5L4mM-S-aHeYeatKtRKw"</span>&#125;</span><br><span class="line">/config/topics=__consumer_offsets=&#123;<span class="string">"version"</span>:1,<span class="string">"config"</span>:&#123;<span class="string">"segment.bytes"</span>:<span class="string">"104857600"</span>,<span class="string">"compression.type"</span>:<span class="string">"producer"</span>,<span class="string">"cleanup.policy"</span>:<span class="string">"compact"</span>&#125;&#125;</span><br><span class="line">/config/topics=<span class="built_in">test</span>=&#123;<span class="string">"version"</span>:1,<span class="string">"config"</span>:&#123;&#125;&#125;</span><br><span class="line">/config/topics=topic-1=&#123;<span class="string">"version"</span>:1,<span class="string">"config"</span>:&#123;&#125;&#125;</span><br><span class="line">/config=brokers=</span><br><span class="line">/config=changes=</span><br><span class="line">/config=clients=</span><br><span class="line">/config=users=</span><br><span class="line">/=consumers=</span><br><span class="line">/=controller=&#123;<span class="string">"version"</span>:1,<span class="string">"brokerid"</span>:0,<span class="string">"timestamp"</span>:<span class="string">"1565487511918"</span>&#125;</span><br><span class="line">/=controller_epoch=1</span><br><span class="line">/=isr_change_notification=</span><br><span class="line">/kafka-manager/clusters/haha=topics=172.17.0.4</span><br><span class="line">/kafka-manager/configs=haha=&#123;<span class="string">"name"</span>:<span class="string">"haha"</span>,<span class="string">"curatorConfig"</span>:&#123;<span class="string">"zkConnect"</span>:<span class="string">"10.200.204.67:2181"</span>,<span class="string">"zkMaxRetry"</span>:100,<span class="string">"baseSleepTimeMs"</span>:100,<span class="string">"maxSleepTimeMs"</span>:1000&#125;,<span class="string">"enabled"</span>:<span class="literal">true</span>,<span class="string">"kafkaVersion"</span>:<span class="string">"2.2.0"</span>,<span class="string">"jmxEnabled"</span>:<span class="literal">true</span>,<span class="string">"jmxUser"</span>:null,<span class="string">"jmxPass"</span>:null,<span class="string">"jmxSsl"</span>:<span class="literal">false</span>,<span class="string">"pollConsumers"</span>:<span class="literal">true</span>,<span class="string">"filterConsumers"</span>:<span class="literal">false</span>,<span class="string">"logkafkaEnabled"</span>:<span class="literal">false</span>,<span class="string">"activeOffsetCacheEnabled"</span>:<span class="literal">false</span>,<span class="string">"displaySizeEnabled"</span>:<span class="literal">false</span>,<span class="string">"tuning"</span>:&#123;<span class="string">"brokerViewUpdatePeriodSeconds"</span>:30,<span class="string">"clusterManagerThreadPoolSize"</span>:2,<span class="string">"clusterManagerThreadPoolQueueSize"</span>:100,<span class="string">"kafkaCommandThreadPoolSize"</span>:2,<span class="string">"kafkaCommandThreadPoolQueueSize"</span>:100,<span class="string">"logkafkaCommandThreadPoolSize"</span>:2,<span class="string">"logkafkaCommandThreadPoolQueueSize"</span>:100,<span class="string">"logkafkaUpdatePeriodSeconds"</span>:30,<span class="string">"partitionOffsetCacheTimeoutSecs"</span>:5,<span class="string">"brokerViewThreadPoolSize"</span>:8,<span class="string">"brokerViewThreadPoolQueueSize"</span>:1000,<span class="string">"offsetCacheThreadPoolSize"</span>:8,<span class="string">"offsetCacheThreadPoolQueueSize"</span>:1000,<span class="string">"kafkaAdminClientThreadPoolSize"</span>:8,<span class="string">"kafkaAdminClientThreadPoolQueueSize"</span>:1000,<span class="string">"kafkaManagedOffsetMetadataCheckMillis"</span>:30000,<span class="string">"kafkaManagedOffsetGroupCacheSize"</span>:1000000,<span class="string">"kafkaManagedOffsetGroupExpireDays"</span>:7&#125;,<span class="string">"securityProtocol"</span>:<span class="string">"PLAINTEXT"</span>,<span class="string">"saslMechanism"</span>:null,<span class="string">"jaasConfig"</span>:null&#125;</span><br><span class="line">/kafka-manager/mutex=leases=</span><br><span class="line">/kafka-manager/mutex=locks=</span><br><span class="line">/kafka-manager=deleteClusters=172.17.0.4</span><br><span class="line">/=latest_producer_id_block=&#123;<span class="string">"version"</span>:1,<span class="string">"broker"</span>:0,<span class="string">"block_start"</span>:<span class="string">"0"</span>,<span class="string">"block_end"</span>:<span class="string">"999"</span>&#125;</span><br><span class="line">/=log_dir_event_notification=</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2018/08/25/kafka原理总结/" title="Kafka原理总结">http://ljchen.net/2018/08/25/kafka原理总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/distributed-system/" rel="tag"># distributed-system</a>
+          
+            <a href="/tags/kafka/" rel="tag"># kafka</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/12/docker核心原理/" rel="next" title="Docker核心原理">
+                <i class="fa fa-chevron-left"></i> Docker核心原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/02/编译原理/" rel="prev" title="编译原理">
+                编译原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#部署架构"><span class="nav-number">1.</span> <span class="nav-text">部署架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#组成原理"><span class="nav-number">2.</span> <span class="nav-text">组成原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务注册"><span class="nav-number">2.1.</span> <span class="nav-text">服务注册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Controller的作用"><span class="nav-number">2.2.</span> <span class="nav-text">Controller的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产者"><span class="nav-number">2.3.</span> <span class="nav-text">生产者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Topic与Partition"><span class="nav-number">2.4.</span> <span class="nav-text">Topic与Partition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分区再分配"><span class="nav-number">2.5.</span> <span class="nav-text">分区再分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parition主备复制"><span class="nav-number">2.6.</span> <span class="nav-text">Parition主备复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消费者组再均衡"><span class="nav-number">2.7.</span> <span class="nav-text">消费者组再均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息存储"><span class="nav-number">2.8.</span> <span class="nav-text">消息存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Log文件"><span class="nav-number">2.9.</span> <span class="nav-text">Log文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消费者"><span class="nav-number">2.10.</span> <span class="nav-text">消费者</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调优"><span class="nav-number">3.</span> <span class="nav-text">调优</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#吞吐量"><span class="nav-number">3.1.</span> <span class="nav-text">吞吐量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时延"><span class="nav-number">3.2.</span> <span class="nav-text">时延</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久性"><span class="nav-number">3.3.</span> <span class="nav-text">持久性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可用性"><span class="nav-number">3.4.</span> <span class="nav-text">可用性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实践"><span class="nav-number">4.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#规划"><span class="nav-number">4.1.</span> <span class="nav-text">规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka"><span class="nav-number">4.2.</span> <span class="nav-text">kafka</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka-manager"><span class="nav-number">4.3.</span> <span class="nav-text">kafka-manager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zookeeper-UI"><span class="nav-number">4.4.</span> <span class="nav-text">zookeeper UI</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2018/08/25/kafka原理总结/';
+          this.page.identifier = '2018/08/25/kafka原理总结/';
+          this.page.title = 'Kafka原理总结';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>

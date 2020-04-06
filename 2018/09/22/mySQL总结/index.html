@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-radar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-gopher.ico?v=6.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-gopher.ico?v=6.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.0" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ljchen,chenleji,blog,note">
+
+
+
+
+
+  <link rel="alternate" href="http://ljchen.net/atom.xml" title="ljchen's Notes" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="keywords" content="ljchen">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:site_name" content="ljchen&#39;s Notes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Categories">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ljchen.net/categories/">
+
+
+
+
+
+  <title>MySQL总结 | ljchen's Notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a731fe1bc20955500c3c6ed68017e545";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ljchen's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Quick Notes</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ljchen.net/2018/09/22/mySQL总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ljchen">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ljchen's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">MySQL总结</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-22T22:04:55+08:00">2018-09-22</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/distributed-system/" itemprop="url" rel="index">
+                    <span itemprop="name">distributed-system</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/22/mySQL总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/22/mySQL总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">13 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="/uploads/xihu-5.jpg" rel="gallery_ck8o9pn2x004ajroy9uv9djy6" itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/uploads/xihu-5.jpg" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文主要涉及MySQL核心组件、查询过程、索引等原理，另外还涉及一些不常用但较重要的命令。除此之外，一些运维的理论和命令也有提及。</p>
+<h1 id="组成原理"><a href="#组成原理" class="headerlink" title="组成原理"></a>组成原理</h1><p>主要介绍MySQL的核心组件，以及查询执行过程。</p>
+<a id="more"></a>
+<h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2><p>直接上图</p>
+<p><img src="/uploads/mysql_component.png" alt="组件"></p>
+<h2 id="查询过程"><a href="#查询过程" class="headerlink" title="查询过程"></a>查询过程</h2><ul>
+<li>客户端发送一条查询给服务器；</li>
+<li>服务器先会检查查询缓存，如果命中了缓存，则立即返回存储在缓存中的结果。否则进入下一阶段；</li>
+<li>服务器端进行SQL解析、预处理，再由优化器生成优化后对应的执行计划；</li>
+<li>根据优化器生成的执行计划，调用存储引擎的API来执行查询；</li>
+<li>将结果返回给客户端。</li>
+</ul>
+<p><img src="/uploads/mysql_search_process.png" alt="查询过程"></p>
+<h2 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h2><p>常用MySql存储引擎比较，这里重点讲MyISAM和InnoDB。</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>MyISAM</th>
+<th>InnoDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事务</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>读写效率</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>索引</td>
+<td>支持全文索引</td>
+<td>不支持全文索引</td>
+</tr>
+<tr>
+<td>外键</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>锁</td>
+<td>表锁</td>
+<td>行锁</td>
+</tr>
+<tr>
+<td>文件存储形式</td>
+<td><em>.MYD </em>.MYI *.FRM</td>
+<td>*.FRM(默认为共享表空间，可修改)</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>大量select语句</td>
+<td>大量update语句</td>
+</tr>
+<tr>
+<td>删除表后数据文件是否存在</td>
+<td>自动清除</td>
+<td>不自动清除</td>
+</tr>
+</tbody>
+</table>
+<h1 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h1><h2 id="三种类型"><a href="#三种类型" class="headerlink" title="三种类型"></a>三种类型</h2><ul>
+<li><code>表级锁</code>：(MyISAM/Memory引擎) 开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高,并发度最低。</li>
+<li><code>行级锁</code>：(InnoDB引擎) 开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低,并发度也最高。</li>
+<li><code>页面锁</code>：(BDB引擎) 开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般。</li>
+</ul>
+<h2 id="两种模式"><a href="#两种模式" class="headerlink" title="两种模式"></a>两种模式</h2><ul>
+<li><code>共享锁</code>（读锁), 不会阻塞其他进程对同一表的读请求，但会阻塞对同一表的写请求。只有当读锁释放后，才会执行其它进程的写操作。</li>
+<li><code>排它锁</code>（写锁), 会阻塞其他进程对同一表的读和写操作，只有当写锁释放后，才会执行其它进程的读写操作。</li>
+</ul>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><p><code>索引</code>: 是一种用来实现MySQL高效获取数据的数据结构。在某个字段上建索引, 就是让MySQL对该字段以索引这种数据结构来存储, 然后查找的时候就有对应的查找算法。</p>
+<p>InnoDB使用<code>B+Tree</code>, B+Tree中的B是指balance, 意为平衡。需要注意的是, B+树索引并不能找到一个给定键值的具体行, 它找到的只是被查找数据行所在的页, 接着数据库会把页读入到内存, 再在内存中进行查找, 最后得到要查找的数据。</p>
+<h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><h3 id="平衡二叉树"><a href="#平衡二叉树" class="headerlink" title="平衡二叉树"></a>平衡二叉树</h3><ul>
+<li>可以是空树</li>
+<li>如果不是空树，任何一个结点的左子树与右子树都是平衡二叉树，并且高度之差的绝对值不超过1</li>
+</ul>
+<p><img src="/uploads/avl.png" width="30%" height="30%"></p>
+<h3 id="B-树"><a href="#B-树" class="headerlink" title="B-树"></a>B-树</h3><ul>
+<li>B-树是一种多路自平衡的搜索树, 它类似普通的平衡二叉树，不同的一点是B-树允许每个节点有更多的子节点。</li>
+</ul>
+<p><img src="/uploads/B-.png" alt="B-"></p>
+<h3 id="B-树-1"><a href="#B-树-1" class="headerlink" title="B+树"></a>B+树</h3><ul>
+<li>所有关键字存储在叶子节点出现, 内部节点(非叶子节点并不存储真正的 data)</li>
+<li>为所有叶子结点增加了一个链指针</li>
+</ul>
+<p><img src="/uploads/b+.png" alt="B+"></p>
+<h2 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h2><ul>
+<li><code>普通索引</code> index：没有任何限制</li>
+<li><code>唯一索引</code> unique：允许为空值</li>
+<li><code>主键</code> primaryKey：有值且唯一</li>
+</ul>
+<h2 id="操作命令"><a href="#操作命令" class="headerlink" title="操作命令"></a>操作命令</h2><ul>
+<li>创建索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create index index1 on t_table(name);</span><br><span class="line">Query OK, 2 rows affected (0.00 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; alter table t_table add index index2 (grade);</span><br><span class="line">Query OK, 2 rows affected (0.00 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show index from t_table;</span><br><span class="line">+<span class="comment">---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+</span></span><br><span class="line">| Table   | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | <span class="keyword">Comment</span> | Index_comment |</span><br><span class="line">+<span class="comment">---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+</span></span><br><span class="line">| t_table |          <span class="number">1</span> | index1   |            <span class="number">1</span> | <span class="keyword">name</span>        | A         |        <span class="literal">NULL</span> |     <span class="literal">NULL</span> | <span class="literal">NULL</span>   | YES  | BTREE      |         |               |</span><br><span class="line">| t_table |          <span class="number">1</span> | index2   |            <span class="number">1</span> | grade       | A         |        <span class="literal">NULL</span> |     <span class="literal">NULL</span> | <span class="literal">NULL</span>   | YES  | BTREE      |         |               |</span><br><span class="line">+<span class="comment">---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+</span></span><br><span class="line"><span class="number">2</span> <span class="keyword">rows</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table t_table drop index index1;</span><br><span class="line">Query OK, 2 rows affected (0.00 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; drop index index2 on t_table;</span><br><span class="line">Query OK, 2 rows affected (0.01 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br></pre></td></tr></table></figure>
+<h1 id="SQL语句"><a href="#SQL语句" class="headerlink" title="SQL语句"></a>SQL语句</h1><p>SQL语句可以划分为三个类别：</p>
+<ul>
+<li><p><code>DDL</code>(Data Definition Languages)语句<br>数据定义语言，这些语句定义了不同的数据段、 数据库、表、列、索引等数据库对象的定义。常用的语句关键字主要包括 create、drop、alter 等。</p>
+</li>
+<li><p><code>DML</code>(Data Manipulation Language)语句<br>数据操纵语句，用于添加、删除、更新和查询数据库记录，并检查数据完整性，常用的语句关键字主要包括 insert、delete、update 和 select 等。</p>
+</li>
+<li><p><code>DCL</code>(Data Control Language)语句<br>数据控制语句，用于控制不同数据段直接的许可和 访问级别的语句。这些语句定义了数据库、表、字段、用户的访问权限和安全级别。主要的语句关键字包括 grant、revoke 等。</p>
+</li>
+</ul>
+<h1 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h1><h2 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h2><ul>
+<li>slave端的IO线程连接上master端，并请求从指定binlog日志文件的指定pos节点位置(或者从最开始的日志)开始复制之后的日志内容。</li>
+<li>master端在接收到来自slave端的IO线程请求后，通知负责复制进程的IO线程，根据slave端IO线程的请求信息，读取指定binlog日志指定pos节点位置之后的日志信息，然后返回给slave端的IO线程。该返回信息中除了binlog日志所包含的信息之外，还包括本次返回的信息在master端的binlog文件名以及在该binlog日志中的pos节点位置。</li>
+<li>slave端的IO线程在接收到master端IO返回的信息后，将接收到的binlog日志内容依次写入到slave端的relaylog文件(mysql-relay-bin.xxxxxx)的最末端，并将读取到的master端的binlog文件名和pos节点位置记录到master-info（该文件存在slave端）文件中，以便在下一次读取的时候能够清楚的告诉master “我需要从哪个binlog文件的哪个pos节点位置开始，请把此节点以后的日志内容发给我”。</li>
+<li>slave端的SQL线程在检测到relaylog文件中新增内容后，会马上解析该log文件中的内容。然后还原成在master端真实执行的那些SQL语句，并在自身按顺序依次执行这些SQL语句。这样，实际上就是在master端和slave端执行了同样的SQL语句，所以master端和slave端的数据是完全一样的。</li>
+</ul>
+<h2 id="配置流程"><a href="#配置流程" class="headerlink" title="配置流程"></a>配置流程</h2><ul>
+<li>在master库执行</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; flush tables with read lock;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show master status;</span><br><span class="line">+<span class="comment">------------------+----------+--------------+------------------+</span></span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |</span><br><span class="line">+<span class="comment">------------------+----------+--------------+------------------+</span></span><br><span class="line">| mysql-bin.000005 |      107 |              |                  |</span><br><span class="line">+<span class="comment">------------------+----------+--------------+------------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]<span class="comment"># mysqldump -uroot -p rep &gt; /usr/local/mysql/rep.sql</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; unlock tables;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在slave库执行</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql &lt; /usr/local/mysql/rep.sql</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@slave ~]<span class="comment"># vim /etc/my.cnf </span></span><br><span class="line">server-id=2          // 设置server-id，不可重复</span><br><span class="line"><span class="built_in">log</span>-bin=mysql-bin    // 开启二进制日志，用于链式复制的情况下，即这台服务器如果需要作为其他从服务器的主服务器，则需要开启这个选项</span><br><span class="line">read_only = 1       // 设置为只读</span><br><span class="line">relay_log = mysql-relay-bin  //配置中继日志</span><br><span class="line">log_slave_updates = 1        // 表示slave将复制事件写进自己的二进制日志</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; change master to</span><br><span class="line">    -&gt; master_host='192.168.30.110',</span><br><span class="line">    -&gt; master_user='rep',</span><br><span class="line">    -&gt; master_password='123456',</span><br><span class="line">    -&gt; master_log_file='mysql-bin.000005',</span><br><span class="line">    -&gt; master_log_pos=107;</span><br><span class="line">Query OK, 0 rows affected (0.06 sec)</span><br><span class="line">mysql&gt; start slave;</span><br><span class="line">Query OK, 0 rows affected (0.03 sec)</span><br></pre></td></tr></table></figure>
+<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><h3 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; ? index;</span><br><span class="line">Many <span class="keyword">help</span> items <span class="keyword">for</span> your request exist.</span><br><span class="line"><span class="keyword">To</span> make a more specific request, please <span class="keyword">type</span> <span class="string">'help &lt;item&gt;'</span>,</span><br><span class="line"><span class="keyword">where</span> &lt;item&gt; <span class="keyword">is</span> one <span class="keyword">of</span> the <span class="keyword">following</span></span><br><span class="line">topics:</span><br><span class="line">   <span class="keyword">ALTER</span> <span class="keyword">TABLE</span></span><br><span class="line">   <span class="keyword">CACHE</span> <span class="keyword">INDEX</span></span><br><span class="line">   <span class="keyword">CREATE</span> <span class="keyword">INDEX</span></span><br><span class="line">   <span class="keyword">CREATE</span> <span class="keyword">TABLE</span></span><br><span class="line">   <span class="keyword">DROP</span> <span class="keyword">INDEX</span></span><br><span class="line">   <span class="keyword">JOIN</span></span><br><span class="line">   <span class="keyword">LOAD</span> <span class="keyword">INDEX</span></span><br><span class="line">   <span class="keyword">SHOW</span></span><br><span class="line">   <span class="keyword">SHOW</span> <span class="keyword">INDEX</span></span><br><span class="line">   SPATIAL</span><br></pre></td></tr></table></figure>
+<h3 id="查看系统时间"><a href="#查看系统时间" class="headerlink" title="查看系统时间"></a>查看系统时间</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select now();</span><br><span class="line">+<span class="comment">---------------------+</span></span><br><span class="line">| now()               |</span><br><span class="line">+<span class="comment">---------------------+</span></span><br><span class="line">| 2018-09-21 08:16:48 |</span><br><span class="line">+<span class="comment">---------------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">select</span> <span class="keyword">current_time</span>;</span><br><span class="line">+<span class="comment">--------------+</span></span><br><span class="line">| current_time |</span><br><span class="line">+<span class="comment">--------------+</span></span><br><span class="line">| 08:17:02     |</span><br><span class="line">+<span class="comment">--------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table t_table(id int(11),</span><br><span class="line">    -&gt; name varchar(20),</span><br><span class="line">    -&gt; grade float );</span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br></pre></td></tr></table></figure>
+<h3 id="查询表结构"><a href="#查询表结构" class="headerlink" title="查询表结构"></a>查询表结构</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; describe t_table;</span><br><span class="line">+<span class="comment">-------+-------------+------+-----+---------+-------+</span></span><br><span class="line">| Field | Type        | Null | Key | Default | Extra |</span><br><span class="line">+<span class="comment">-------+-------------+------+-----+---------+-------+</span></span><br><span class="line">| id    | int(11)     | YES  |     | NULL    |       |</span><br><span class="line">| name  | varchar(20) | YES  |     | NULL    |       |</span><br><span class="line">| grade | float       | YES  |     | NULL    |       |</span><br><span class="line">+<span class="comment">-------+-------------+------+-----+---------+-------+</span></span><br><span class="line">3 rows in <span class="keyword">set</span> (<span class="number">0.02</span> sec)</span><br></pre></td></tr></table></figure>
+<h3 id="查询表创建语句"><a href="#查询表创建语句" class="headerlink" title="查询表创建语句"></a>查询表创建语句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show create table t_table;</span><br><span class="line">+<span class="comment">---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></span><br><span class="line">| Table   | <span class="keyword">Create</span> <span class="keyword">Table</span>                                                                                                                                                 |</span><br><span class="line">+<span class="comment">---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></span><br><span class="line">| t_table | <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`t_table`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`grade`</span> <span class="built_in">float</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=latin1 |</span><br><span class="line">+<span class="comment">---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> t_table\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">       Table: t_table</span><br><span class="line"><span class="keyword">Create</span> <span class="keyword">Table</span>: <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`t_table`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`grade`</span> <span class="built_in">float</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=latin1</span><br><span class="line"><span class="number">1</span> <span class="keyword">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line"><span class="keyword">ERROR</span>:</span><br><span class="line"><span class="keyword">No</span> <span class="keyword">query</span> specified</span><br></pre></td></tr></table></figure>
+<h3 id="插入部分数据"><a href="#插入部分数据" class="headerlink" title="插入部分数据"></a>插入部分数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into t_table(id,name) values(1,"henry");</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from t_table;</span><br><span class="line">+<span class="comment">------+-------+-------+</span></span><br><span class="line">| id   | name  | grade |</span><br><span class="line">+<span class="comment">------+-------+-------+</span></span><br><span class="line">|    1 | henry |  NULL |</span><br><span class="line">+<span class="comment">------+-------+-------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<h3 id="插入完整数据"><a href="#插入完整数据" class="headerlink" title="插入完整数据"></a>插入完整数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into t_table values(2,"cc", 3.30);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from t_table;</span><br><span class="line">+<span class="comment">------+-------+-------+</span></span><br><span class="line">| id   | name  | grade |</span><br><span class="line">+<span class="comment">------+-------+-------+</span></span><br><span class="line">|    1 | henry |  NULL |</span><br><span class="line">|    2 | cc    |   3.3 |</span><br><span class="line">+<span class="comment">------+-------+-------+</span></span><br><span class="line">2 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<h3 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update t_table set grade=1.10 where id=1;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from t_table;</span><br><span class="line">+<span class="comment">------+-------+-------+</span></span><br><span class="line">| id   | name  | grade |</span><br><span class="line">+<span class="comment">------+-------+-------+</span></span><br><span class="line">|    1 | henry |   1.1 |</span><br><span class="line">|    2 | cc    |   3.3 |</span><br><span class="line">+<span class="comment">------+-------+-------+</span></span><br><span class="line">2 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<h3 id="清空表"><a href="#清空表" class="headerlink" title="清空表"></a>清空表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from table2;</span><br><span class="line">+<span class="comment">------+------+</span></span><br><span class="line">| id   | xx   |</span><br><span class="line">+<span class="comment">------+------+</span></span><br><span class="line">|    1 | 323  |</span><br><span class="line">+<span class="comment">------+------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">truncate</span> <span class="keyword">table</span> table2;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from table2;</span><br><span class="line">Empty <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<h3 id="查询状态"><a href="#查询状态" class="headerlink" title="查询状态"></a>查询状态</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; status;</span><br><span class="line"><span class="comment">--------------</span></span><br><span class="line">mysql  Ver 14.14 Distrib 5.7.23, for Linux (x86_64) using  EditLine wrapper</span><br><span class="line"></span><br><span class="line">Connection id:		2</span><br><span class="line">Current database:	test</span><br><span class="line">Current user:		root@localhost</span><br><span class="line">SSL:			Not in <span class="keyword">use</span></span><br><span class="line"><span class="keyword">Current</span> pager:		stdout</span><br><span class="line"><span class="keyword">Using</span> <span class="keyword">outfile</span>:		<span class="string">''</span></span><br><span class="line"><span class="keyword">Using</span> delimiter:	;</span><br><span class="line">Server version:		5.7.23 MySQL Community Server (GPL)</span><br><span class="line">Protocol version:	10</span><br><span class="line">Connection:		Localhost via UNIX socket</span><br><span class="line">Server characterset:	latin1</span><br><span class="line">Db     characterset:	latin1</span><br><span class="line">Client characterset:	latin1</span><br><span class="line">Conn.  characterset:	latin1</span><br><span class="line">UNIX socket:		/var/run/mysqld/mysqld.sock</span><br><span class="line">Uptime:			1 hour 36 min 12 sec</span><br><span class="line"></span><br><span class="line">Threads: 1  Questions: 48  Slow queries: 0  Opens: 108  <span class="keyword">Flush</span> <span class="keyword">tables</span>: <span class="number">1</span>  <span class="keyword">Open</span> <span class="keyword">tables</span>: <span class="number">101</span>  Queries per <span class="keyword">second</span> <span class="keyword">avg</span>: <span class="number">0.008</span></span><br><span class="line"><span class="comment">--------------</span></span><br></pre></td></tr></table></figure>
+<h3 id="修改存储引擎"><a href="#修改存储引擎" class="headerlink" title="修改存储引擎"></a>修改存储引擎</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table t_table engine=myisam;</span><br><span class="line">Query OK, 2 rows affected (0.01 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; show create table t_table;</span><br><span class="line">+<span class="comment">---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></span><br><span class="line">| Table   | <span class="keyword">Create</span> <span class="keyword">Table</span>                                                                                                                                                 |</span><br><span class="line">+<span class="comment">---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></span><br><span class="line">| t_table | <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`t_table`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`grade`</span> <span class="built_in">float</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=MyISAM <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=latin1 |</span><br><span class="line">+<span class="comment">---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<h3 id="修改慢查询"><a href="#修改慢查询" class="headerlink" title="修改慢查询"></a>修改慢查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like '%slow%';</span><br><span class="line">+<span class="comment">---------------------------+--------------------------------------+</span></span><br><span class="line">| Variable_name             | Value                                |</span><br><span class="line">+<span class="comment">---------------------------+--------------------------------------+</span></span><br><span class="line">| log_slow_admin_statements | OFF                                  |</span><br><span class="line">| log_slow_slave_statements | OFF                                  |</span><br><span class="line">| slow_launch_time          | 2                                    |</span><br><span class="line">| slow_query_log            | OFF                                  |</span><br><span class="line">| slow_query_log_file       | /var/lib/mysql/56bd89bc82a8-slow.log |</span><br><span class="line">+<span class="comment">---------------------------+--------------------------------------+</span></span><br><span class="line">5 rows in <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">set</span> <span class="keyword">global</span> slow_query_log=<span class="keyword">ON</span>;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show variablesshow master status; like '%slow_query_log%';</span><br><span class="line">+<span class="comment">---------------------+--------------------------------------+</span></span><br><span class="line">| Variable_name       | Value                                |</span><br><span class="line">+<span class="comment">---------------------+--------------------------------------+</span></span><br><span class="line">| slow_query_log      | ON                                   |</span><br><span class="line">| slow_query_log_file | /var/lib/mysql/56bd89bc82a8-slow.log |</span><br><span class="line">+<span class="comment">---------------------+--------------------------------------+</span></span><br><span class="line"></span><br><span class="line">mysql&gt; select sleep(10);</span><br><span class="line">+<span class="comment">-----------+</span></span><br><span class="line">| sleep(10) |</span><br><span class="line">+<span class="comment">-----------+</span></span><br><span class="line">|         0 |</span><br><span class="line">+<span class="comment">-----------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">10.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">exit</span></span><br><span class="line">Bye</span><br><span class="line"></span><br><span class="line">root@<span class="number">56</span>bd89bc82a8:/# mysqldumpslow /<span class="keyword">var</span>/lib/mysql/<span class="number">56</span>bd89bc82a8-slow.log</span><br><span class="line"></span><br><span class="line">Reading mysql slow <span class="keyword">query</span> <span class="keyword">log</span> <span class="keyword">from</span> /<span class="keyword">var</span>/lib/mysql/<span class="number">56</span>bd89bc82a8-slow.log</span><br><span class="line"><span class="keyword">Count</span>: <span class="number">1</span>  <span class="keyword">Time</span>=<span class="number">0.00</span>s (<span class="number">0</span>s)  <span class="keyword">Lock</span>=<span class="number">0.00</span>s (<span class="number">0</span>s)  <span class="keyword">Rows</span>=<span class="number">0.0</span> (<span class="number">0</span>), <span class="number">0</span><span class="keyword">users</span>@<span class="number">0</span><span class="keyword">hosts</span></span><br><span class="line">  mysqld, <span class="keyword">Version</span>: N.N.N (MySQL Community <span class="keyword">Server</span> (GPL)). started <span class="keyword">with</span>:</span><br><span class="line">  # <span class="keyword">Time</span>: N-N<span class="number">-21</span>T13:N:N<span class="number">.266357</span>Z</span><br><span class="line">  # <span class="keyword">User</span>@Host: root[root] @ localhost []  <span class="keyword">Id</span>:     N</span><br><span class="line">  # Query_time: N.N  Lock_time: N.N Rows_sent: N  Rows_examined: N</span><br><span class="line">  <span class="keyword">use</span> <span class="keyword">test</span>;</span><br><span class="line">  <span class="keyword">SET</span> <span class="keyword">timestamp</span>=N;</span><br><span class="line">  <span class="keyword">select</span> <span class="keyword">sleep</span>(N)</span><br></pre></td></tr></table></figure>
+<h3 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show full processlist\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">     Id: 2</span><br><span class="line">   User: root</span><br><span class="line">   Host: localhost</span><br><span class="line">     db: test</span><br><span class="line">Command: Query</span><br><span class="line">   Time: 0</span><br><span class="line">  State: starting</span><br><span class="line">   Info: <span class="keyword">show</span> <span class="keyword">full</span> <span class="keyword">processlist</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<h3 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from t_table;</span><br><span class="line">+<span class="comment">----+-------------+---------+------------+------+---------------+------+---------+------+------+----------+-------+</span></span><br><span class="line">| id | select_type | table   | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |</span><br><span class="line">+<span class="comment">----+-------------+---------+------------+------+---------------+------+---------+------+------+----------+-------+</span></span><br><span class="line">|  1 | SIMPLE      | t_table | NULL       | ALL  | NULL          | NULL | NULL    | NULL |    2 |   100.00 | NULL  |</span><br><span class="line">+<span class="comment">----+-------------+---------+------------+------+---------------+------+---------+------+------+----------+-------+</span></span><br><span class="line">1 row in <span class="keyword">set</span>, <span class="number">1</span> <span class="keyword">warning</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<p><strong>explain查看方法：</strong></p>
+<ol>
+<li>先看查询类型“type”列，如果为ALL就不用看后面的了，因为是全表扫描；</li>
+<li>再看“key”列，看是否使用了索引；</li>
+<li>再看“rows”列，表示在SQL执行过程中扫描的行数；</li>
+</ol>
+<h3 id="半同步部署"><a href="#半同步部署" class="headerlink" title="半同步部署"></a>半同步部署</h3><ul>
+<li><p>Master</p>
+  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   # 安装插件</span><br><span class="line"><span class="keyword">INSTALL</span> <span class="keyword">PLUGIN</span> rpl_semi_sync_master <span class="keyword">SONAME</span></span><br><span class="line"># 启用半同步：</span><br><span class="line"><span class="keyword">SET</span> @@GLOBAL.rpl_semi_sync_master_enabled=<span class="number">1</span>;</span><br><span class="line">rpl_semi_sync_master_wait_point的值改为：AFTER_COMMIT</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Slave</p>
+  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSTALL</span> <span class="keyword">PLUGIN</span> rpl_semi_sync_slave <span class="keyword">SONAME</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> rpl_semi_sync_slave_enabled=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">STOP</span> <span class="keyword">SLAVE</span> IO <span class="keyword">THREAD</span>;</span><br><span class="line"><span class="keyword">START</span> <span class="keyword">SLAVE</span> IO <span class="keyword">THREAD</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="多主复制配置"><a href="#多主复制配置" class="headerlink" title="多主复制配置"></a>多主复制配置</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> <span class="keyword">TO</span> MASTER_HOST=<span class="string">'1.1.1.1'</span>,MASTER_USER=<span class="string">'user'</span>,MASTER_PASSWORD=<span class="string">'password'</span>,master_auto_position=<span class="number">1</span> <span class="keyword">FOR</span> CHANNEL <span class="string">'m1'</span>;</span><br><span class="line"><span class="keyword">START</span> <span class="keyword">SLAVE</span> <span class="keyword">FOR</span> CHANNEL <span class="string">'m1'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> <span class="keyword">TO</span> MASTER_HOST=<span class="string">'2.2.2.2'</span>,MASTER_USER=<span class="string">'user'</span>,MASTER_PASSWORD=<span class="string">'password'</span>,master_auto_position=<span class="number">1</span> <span class="keyword">FOR</span> CHANNEL <span class="string">'m2'</span>;</span><br><span class="line"><span class="keyword">START</span> <span class="keyword">SLAVE</span> <span class="keyword">FOR</span> CHANNEL <span class="string">'m2'</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="安全加固"><a href="#安全加固" class="headerlink" title="安全加固"></a>安全加固</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
+<p>主要包含以下操作：</p>
+<ul>
+<li>为root用户设置密码</li>
+<li>删除匿名账号</li>
+<li>取消root用户远程登录</li>
+<li>删除test库和对test库的访问权限</li>
+<li>刷新授权表使修改生效</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ljchen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ljchen.net/2018/09/22/mySQL总结/" title="MySQL总结">http://ljchen.net/2018/09/22/mySQL总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/distributed-system/" rel="tag"># distributed-system</a>
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/20/浅析gRPC/" rel="next" title="浅析gRPC">
+                <i class="fa fa-chevron-left"></i> 浅析gRPC
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/23/基于阿里云镜像站安装kubernetes/" rel="prev" title="基于阿里云镜像站安装Kubernetes">
+                基于阿里云镜像站安装Kubernetes <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="ljchen">
+            
+              <p class="site-author-name" itemprop="name">ljchen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="http://ljchen.net/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenleji" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chenleji@gmail.com" target="_blank" title="Email">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Email</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/chenleji" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/chenleji" target="_blank" title="Facebook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#组成原理"><span class="nav-number">1.</span> <span class="nav-text">组成原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#组件"><span class="nav-number">1.1.</span> <span class="nav-text">组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询过程"><span class="nav-number">1.2.</span> <span class="nav-text">查询过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储引擎"><span class="nav-number">1.3.</span> <span class="nav-text">存储引擎</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#锁"><span class="nav-number">2.</span> <span class="nav-text">锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#三种类型"><span class="nav-number">2.1.</span> <span class="nav-text">三种类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种模式"><span class="nav-number">2.2.</span> <span class="nav-text">两种模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#索引"><span class="nav-number">3.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法介绍"><span class="nav-number">3.1.</span> <span class="nav-text">算法介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#平衡二叉树"><span class="nav-number">3.1.1.</span> <span class="nav-text">平衡二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-树"><span class="nav-number">3.1.2.</span> <span class="nav-text">B-树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-树-1"><span class="nav-number">3.1.3.</span> <span class="nav-text">B+树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引类型"><span class="nav-number">3.2.</span> <span class="nav-text">索引类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作命令"><span class="nav-number">3.3.</span> <span class="nav-text">操作命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL语句"><span class="nav-number">4.</span> <span class="nav-text">SQL语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主从复制"><span class="nav-number">5.</span> <span class="nav-text">主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本流程"><span class="nav-number">5.1.</span> <span class="nav-text">基本流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置流程"><span class="nav-number">5.2.</span> <span class="nav-text">配置流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用操作"><span class="nav-number">5.3.</span> <span class="nav-text">常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#帮助命令"><span class="nav-number">5.3.1.</span> <span class="nav-text">帮助命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看系统时间"><span class="nav-number">5.3.2.</span> <span class="nav-text">查看系统时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建表"><span class="nav-number">5.3.3.</span> <span class="nav-text">创建表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询表结构"><span class="nav-number">5.3.4.</span> <span class="nav-text">查询表结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询表创建语句"><span class="nav-number">5.3.5.</span> <span class="nav-text">查询表创建语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入部分数据"><span class="nav-number">5.3.6.</span> <span class="nav-text">插入部分数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入完整数据"><span class="nav-number">5.3.7.</span> <span class="nav-text">插入完整数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新数据"><span class="nav-number">5.3.8.</span> <span class="nav-text">更新数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清空表"><span class="nav-number">5.3.9.</span> <span class="nav-text">清空表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询状态"><span class="nav-number">5.3.10.</span> <span class="nav-text">查询状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改存储引擎"><span class="nav-number">5.3.11.</span> <span class="nav-text">修改存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改慢查询"><span class="nav-number">5.3.12.</span> <span class="nav-text">修改慢查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看进程"><span class="nav-number">5.3.13.</span> <span class="nav-text">查看进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能分析"><span class="nav-number">5.3.14.</span> <span class="nav-text">性能分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#半同步部署"><span class="nav-number">5.3.15.</span> <span class="nav-text">半同步部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多主复制配置"><span class="nav-number">5.3.16.</span> <span class="nav-text">多主复制配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安全加固"><span class="nav-number">6.</span> <span class="nav-text">安全加固</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ljchen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">518k</span>
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.0.0</div>
+
+
+
+  <div class="footer-custom"><a target="_blank" href="http://tongji.baidu.com/web/welcome/ico?s=a731fe1bc20955500c3c6ed68017e545">网站统计</a></div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://ljchen.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://ljchen.net/2018/09/22/mySQL总结/';
+          this.page.identifier = '2018/09/22/mySQL总结/';
+          this.page.title = 'MySQL总结';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://ljchen.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.0.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.0.0"></script>
+
+
+  
+
+</body>
+</html>
