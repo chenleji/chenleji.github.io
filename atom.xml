@@ -236,9 +236,9 @@
     
       <category term="kubeedge" scheme="http://ljchen.net/tags/kubeedge/"/>
     
-      <category term="edge-compute" scheme="http://ljchen.net/tags/edge-compute/"/>
-    
       <category term="edgesite" scheme="http://ljchen.net/tags/edgesite/"/>
+    
+      <category term="edge-compute" scheme="http://ljchen.net/tags/edge-compute/"/>
     
   </entry>
   
