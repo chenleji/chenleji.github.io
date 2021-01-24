@@ -136,13 +136,13 @@
 
 <meta name="keywords" content="ljchen">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Categories">
-<meta property="og:url" content="http://ljchen.net/categories/index.html">
+<meta property="og:title" content="Tags">
+<meta property="og:url" content="http://ljchen.net/tags/index.html">
 <meta property="og:site_name" content="ljchen&#39;s Notes">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Categories">
+<meta name="twitter:title" content="Tags">
 
 
 
@@ -174,7 +174,7 @@
 
 
 
-  <link rel="canonical" href="http://ljchen.net/categories/">
+  <link rel="canonical" href="http://ljchen.net/tags/">
 
 
 
@@ -472,10 +472,18 @@
 </ul>
 <p><code>EditLog</code>事务日志文件记录每一个对文件系统元数据的改变，如在HDFS中创建一个新的文件，名称节点将会在EditLog中插入一条记录来记录这个改变。整个文件系统的名字空间，包括数据块到文件的映射、文件的属性等等都存放在<code>Fslmage</code>文件中。</p>
 <ul>
-<li>NameNode HA<br><img src="/uploads/hdfs-namenode-ha.png" width="80%" height="80%"></li>
+<li>NameNode HA<br>NameNode用于存储FsImage与EditLog，其高可用支持两种解决方案，其本质都是实现存储的高可用：</li>
 </ul>
+<ol>
+<li>运行多个NameNode，并使用类似于NFS之类的共享文件存储；</li>
+<li>运行多个NameNode，同时使用journalNode用来存储数据。</li>
+</ol>
+<p><img src="/uploads/hdfs-namenode-ha.png" width="80%" height="80%"></p>
 <p>一个NameNode处于Active状态，另一个处于Standby状态。Active NameNode对外提供服务，Standby NameNode仅通过JournalNode同步Active NameNode的状态，以便能够在它失败时快速进行切换（使用ZooKeeper）。</p>
 <p>每个Journal节点暴露RPC接口，允许NameNode读取和写入数据，数据存放在Journal节点的本地磁盘。当Active NameNode写入 EditLog时，它向集群的所有JournalNode发送写入请求，当多数节点回复确认成功写入之后， EditLog就认为是成功写入。</p>
+<ul>
+<li>SecondaryNameNode<br>由于每次nameNode启动时，都需要先加载FsImage，再加载EditLog，在合并后写入到FsImage中。如果当文件较大时，该操作较耗时。因此，增加了secondaryNameNode角色，用于按照EditLog文件大小阈值或周期性时间触发的方式来执行FsImage与EditLog的merge操作。</li>
+</ul>
 <h2 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
 <li><p><strong>block</strong><br>文件上传前需要分块，这个块就是block，一般为<code>128MB</code>，可以调整。</p>
 <blockquote>
@@ -790,7 +798,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
