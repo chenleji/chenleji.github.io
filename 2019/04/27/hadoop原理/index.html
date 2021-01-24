@@ -136,13 +136,13 @@
 
 <meta name="keywords" content="ljchen">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Tags">
-<meta property="og:url" content="http://ljchen.net/tags/index.html">
+<meta property="og:title" content="Categories">
+<meta property="og:url" content="http://ljchen.net/categories/index.html">
 <meta property="og:site_name" content="ljchen&#39;s Notes">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2020-04-06T09:24:01.506Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tags">
+<meta name="twitter:title" content="Categories">
 
 
 
@@ -174,7 +174,7 @@
 
 
 
-  <link rel="canonical" href="http://ljchen.net/tags/">
+  <link rel="canonical" href="http://ljchen.net/categories/">
 
 
 
@@ -444,7 +444,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">2 mins.</span>
+                <span title="阅读时长">4 mins.</span>
               
             </div>
           
@@ -468,12 +468,14 @@
 <a id="more"></a>
 <h1 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h1><h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><p><img src="/uploads/hdfs-arch.png" width="90%" height="90%"><br>这块就不用怎么介绍了，主要是NameNode和DataNode，一个用于存储数据块和文件映射、文件属性信息，另一个用来存放真正的业务数据; 重点要说下NameNode。</p>
 <ul>
-<li>NameNode<br><img src="/uploads/hdfs-namenode.png" width="80%" height="80%"></li>
+<li>NameNode</li>
 </ul>
+<p><img src="/uploads/hdfs-namenode.png" width="80%" height="80%"></p>
 <p><code>EditLog</code>事务日志文件记录每一个对文件系统元数据的改变，如在HDFS中创建一个新的文件，名称节点将会在EditLog中插入一条记录来记录这个改变。整个文件系统的名字空间，包括数据块到文件的映射、文件的属性等等都存放在<code>Fslmage</code>文件中。</p>
 <ul>
-<li>NameNode HA<br>NameNode用于存储FsImage与EditLog，其高可用支持两种解决方案，其本质都是实现存储的高可用：</li>
+<li>NameNode HA</li>
 </ul>
+<p>NameNode用于存储FsImage与EditLog，其高可用支持两种解决方案，其本质都是实现存储的高可用：</p>
 <ol>
 <li>运行多个NameNode，并使用类似于NFS之类的共享文件存储；</li>
 <li>运行多个NameNode，同时使用journalNode用来存储数据。</li>
@@ -482,8 +484,9 @@
 <p>一个NameNode处于Active状态，另一个处于Standby状态。Active NameNode对外提供服务，Standby NameNode仅通过JournalNode同步Active NameNode的状态，以便能够在它失败时快速进行切换（使用ZooKeeper）。</p>
 <p>每个Journal节点暴露RPC接口，允许NameNode读取和写入数据，数据存放在Journal节点的本地磁盘。当Active NameNode写入 EditLog时，它向集群的所有JournalNode发送写入请求，当多数节点回复确认成功写入之后， EditLog就认为是成功写入。</p>
 <ul>
-<li>SecondaryNameNode<br>由于每次nameNode启动时，都需要先加载FsImage，再加载EditLog，在合并后写入到FsImage中。如果当文件较大时，该操作较耗时。因此，增加了secondaryNameNode角色，用于按照EditLog文件大小阈值或周期性时间触发的方式来执行FsImage与EditLog的merge操作。</li>
+<li>SecondaryNameNode</li>
 </ul>
+<p>由于每次nameNode启动时，都需要先加载FsImage，再加载EditLog，在合并后写入到FsImage中。如果当文件较大时，该操作较耗时。因此，增加了secondaryNameNode角色，用于按照EditLog文件大小阈值或周期性时间触发的方式来执行FsImage与EditLog的merge操作。</p>
 <h2 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
 <li><p><strong>block</strong><br>文件上传前需要分块，这个块就是block，一般为<code>128MB</code>，可以调整。</p>
 <blockquote>
@@ -533,6 +536,49 @@
 <li>各任务向Application Master汇报状态和进度，在任务失败时重新启动任务；</li>
 <li>应用程序运行完成后，Application Master向Resource Manager注销并关闭自己。</li>
 </ol>
+<h1 id="操作实践"><a href="#操作实践" class="headerlink" title="操作实践"></a>操作实践</h1><h2 id="安装包"><a href="#安装包" class="headerlink" title="安装包"></a>安装包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://archive.apache.org/dist/hadoop/common/hadoop-3.3.0/hadoop-3.3.0.tar.gzhadoop-3.3.0.tar.gz</span><br><span class="line"></span><br><span class="line">tar -xzvf hadoop-3.3.0.tar.gz</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><ul>
+<li><p>etc/hadoop/core-site.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.proxyuser.ljchen.hosts<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.proxyuser.ljchen.groups<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">value</span>&gt;</span>*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>etc/hadoop/hdfs-site.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>etc/hadoop/yarn-site.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.env-whitelist<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="配置远程登录"><a href="#配置远程登录" class="headerlink" title="配置远程登录"></a>配置远程登录</h3><p>mac上需要打开 <strong>共享</strong> 中的 <strong>远程登录</strong> 功能，然后执行以下配置，保障  <strong>ssh localhost</strong> 不再要求输入密码。</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -P <span class="string">''</span> -f ~/.ssh/id_rsa</span><br><span class="line">cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br><span class="line">chmod 0600 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<h3 id="格式化HDFS文件"><a href="#格式化HDFS文件" class="headerlink" title="格式化HDFS文件"></a>格式化HDFS文件</h3>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$HADOOP_HOME</span>/bin/hdfs namenode -format</span><br></pre></td></tr></table></figure>
+<h3 id="配置变量"><a href="#配置变量" class="headerlink" title="配置变量"></a>配置变量</h3><p>在start-dfs.sh中：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HDFS_DATANODE_USER=root</span><br><span class="line">HADOOP_SECURE_DN_USER=hdfs</span><br><span class="line">HDFS_NAMENODE_USER=root</span><br><span class="line">HDFS_SECONDARYNAMENODE_USER=root</span><br></pre></td></tr></table></figure>
+<p>在start-yarn.sh中</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">YARN_RESOURCEMANAGER_USER=root</span><br><span class="line">HADOOP_SECURE_DN_USER=yarn</span><br><span class="line">YARN_NODEMANAGER_USER=root</span><br></pre></td></tr></table></figure>
+<p>hadoop-env.sh</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jvm/jre-1.8.0-openjdk</span><br></pre></td></tr></table></figure>
+<h3 id="启动脚本"><a href="#启动脚本" class="headerlink" title="启动脚本"></a>启动脚本</h3><p>  使用命令启动hdfs和yarn：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$HADOOP_HOME</span>/sbin/start-dfs.sh</span><br><span class="line"><span class="variable">$HADOOP_HOME</span>/sbin/start-yarn.sh</span><br><span class="line"></span><br><span class="line"><span class="variable">$HADOOP_HOME</span>/bin/hdfs dfs -mkdir /user</span><br><span class="line"><span class="variable">$HADOOP_HOME</span>/bin/hdfs dfs -mkdir /user/ljchen</span><br></pre></td></tr></table></figure>
+<p>  查看各角色运行状态：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@aliyun-vm ~]<span class="comment"># jps</span></span><br><span class="line">6882 NodeManager</span><br><span class="line">6754 ResourceManager</span><br><span class="line">4164 SecondaryNameNode</span><br><span class="line">3814 NameNode</span><br><span class="line">3946 DataNode</span><br><span class="line">7021 Jps</span><br></pre></td></tr></table></figure>
+<h2 id="访问节点"><a href="#访问节点" class="headerlink" title="访问节点"></a>访问节点</h2><table>
+<thead>
+<tr>
+<th>节点类型</th>
+<th>访问地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HDFS NameNode</td>
+<td><a href="http://localhost:9870" target="_blank" rel="noopener">http://localhost:9870</a></td>
+</tr>
+<tr>
+<td>Yarn</td>
+<td><a href="http://localhost:8088" target="_blank" rel="noopener">http://localhost:8088</a></td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -778,7 +824,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HDFS"><span class="nav-number">1.</span> <span class="nav-text">HDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统架构"><span class="nav-number">1.1.</span> <span class="nav-text">系统架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据流"><span class="nav-number">1.2.</span> <span class="nav-text">数据流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">1.2.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写入流程"><span class="nav-number">1.2.2.</span> <span class="nav-text">写入流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读取流程"><span class="nav-number">1.2.3.</span> <span class="nav-text">读取流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">1.3.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yarn"><span class="nav-number">2.</span> <span class="nav-text">Yarn</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#架构"><span class="nav-number">2.1.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务创建流程"><span class="nav-number">2.2.</span> <span class="nav-text">任务创建流程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HDFS"><span class="nav-number">1.</span> <span class="nav-text">HDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统架构"><span class="nav-number">1.1.</span> <span class="nav-text">系统架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据流"><span class="nav-number">1.2.</span> <span class="nav-text">数据流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">1.2.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写入流程"><span class="nav-number">1.2.2.</span> <span class="nav-text">写入流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读取流程"><span class="nav-number">1.2.3.</span> <span class="nav-text">读取流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">1.3.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yarn"><span class="nav-number">2.</span> <span class="nav-text">Yarn</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#架构"><span class="nav-number">2.1.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务创建流程"><span class="nav-number">2.2.</span> <span class="nav-text">任务创建流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作实践"><span class="nav-number">3.</span> <span class="nav-text">操作实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装包"><span class="nav-number">3.1.</span> <span class="nav-text">安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">3.2.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件"><span class="nav-number">3.2.1.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置远程登录"><span class="nav-number">3.2.2.</span> <span class="nav-text">配置远程登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化HDFS文件"><span class="nav-number">3.2.3.</span> <span class="nav-text">格式化HDFS文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置变量"><span class="nav-number">3.2.4.</span> <span class="nav-text">配置变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动脚本"><span class="nav-number">3.2.5.</span> <span class="nav-text">启动脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问节点"><span class="nav-number">3.3.</span> <span class="nav-text">访问节点</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -810,7 +856,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">518k</span>
+    <span title="站点总字数">521k</span>
   
 
   
