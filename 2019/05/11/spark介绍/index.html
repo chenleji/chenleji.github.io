@@ -444,7 +444,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">2 mins.</span>
+                <span title="阅读时长">5 mins.</span>
               
             </div>
           
@@ -521,6 +521,50 @@
 </li>
 <li><p>也可通过brew来安装</p>
   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[~] brew install apache-spark</span><br><span class="line"></span><br><span class="line">[/usr/<span class="built_in">local</span>/Cellar/apache-spark/2.4.2/bin] ls</span><br><span class="line">docker-image-tool.sh load-spark-env.sh    run-example          spark-class          spark-sql            sparkR</span><br><span class="line">find-spark-home      pyspark              spark-beeline        spark-shell          spark-submit</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="安装包"><a href="#安装包" class="headerlink" title="安装包"></a>安装包</h2>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget http://mirror.cc.columbia.edu/pub/software/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop3.2.tgz</span><br><span class="line"></span><br><span class="line">tar -xzvf spark-3.0.1-bin-hadoop3.2.tgz</span><br><span class="line">mv spark-3.0.1-bin-hadoop3.2 spark-3.0.1</span><br><span class="line"></span><br><span class="line">pip install pyspark</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><ul>
+<li><p>spark-env.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$SPARK_HOME</span>/conf</span><br><span class="line">cp spark-env.sh.template spark-env.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置spark-env.sh</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=<span class="variable">$HADOOP_HOME</span>/etc/hadoop</span><br><span class="line"><span class="built_in">export</span> SPARK_MASTER_IP=localhost</span><br><span class="line"><span class="built_in">export</span> SPARK_LOCAL_DIRS=<span class="variable">$SPARK_HOME</span></span><br><span class="line"><span class="built_in">export</span> SPARK_DRIVER_MEMORY=1g</span><br><span class="line"></span><br><span class="line"><span class="comment"># spark-history-server, 需要在hdfs上创建/spark-logs 目录</span></span><br><span class="line"><span class="built_in">export</span> SPARK_HISTORY_OPTS=<span class="string">"-Dspark.history.ui.port=18080 -Dspark.history.retainedApplications=3 -Dspark.history.fs.logDirectory=hdfs://localhost:9000/spark-logs"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>slaves</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$SPARK_HOME</span>/conf</span><br><span class="line">cp slaves.template slaves</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>spark-defaults.conf (用于启用history-server)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp spark-defaults.conf.template spark-defaults.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置spark-defaults.conf</span></span><br><span class="line">spark.master                     spark://localhost:7077</span><br><span class="line">spark.eventLog.enabled           <span class="literal">true</span></span><br><span class="line">spark.eventLog.dir               hdfs://localhost:9000/spark-logs</span><br><span class="line">spark.serializer                 org.apache.spark.serializer.KryoSerializer</span><br><span class="line">spark.driver.memory              1g</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><ul>
+<li><p>启动服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$SPARK_HOME</span>/sbin/start-all.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看多了Master和Worker进程</span></span><br><span class="line">[root@aliyun-vm spark-3.0.1]<span class="comment"># jps</span></span><br><span class="line">  9633 Worker</span><br><span class="line">  2005 SecondaryNameNode</span><br><span class="line">  1654 NameNode</span><br><span class="line">  9576 Master</span><br><span class="line">  9720 Jps</span><br><span class="line">  1790 DataNode</span><br><span class="line">  2286 ResourceManager</span><br><span class="line">  2415 NodeManager</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动history-server （可选）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$SPARK_HOME</span>/sbin/start-history-server.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看多了HistoryServer进程</span></span><br><span class="line">[root@aliyun-vm spark-3.0.1]<span class="comment"># jps</span></span><br><span class="line">  9633 Worker</span><br><span class="line">  9762 HistoryServer</span><br><span class="line">  2005 SecondaryNameNode</span><br><span class="line">  1654 NameNode</span><br><span class="line">  9576 Master</span><br><span class="line">  9804 Jps</span><br><span class="line">  1790 DataNode</span><br><span class="line">  2286 ResourceManager</span><br><span class="line">  2415 NodeManager</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>访问web界面<br>spark-master:  <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a><br>History-server: <a href="http://localhost:18080" target="_blank" rel="noopener">http://localhost:18080</a></p>
+</li>
+<li><p>连接到spark</p>
+<p>其中<code>--deploy-mode</code>参数的意思是：是否发布驱动到worker节点(cluster) 或者作为一个本地客户端 (client) (default: client)*<br>如果设置client模式, 驱动直接在spark-submit进程中启动,输入输出都可以显示在控制台.。所以这种模式特别适合REPL(读取-求值-输出循环)， 比如Spark shell。</p>
+<p><code>python方式</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在yarn上调度spark任务，完成后，可以在yarn上看到任务信息。</span></span><br><span class="line"><span class="comment">#提前使用hdfs dfs命令上传data目录下的users.txt到hdfs的根目录，然后执行以下操作。</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$SPARK_HOME</span>/bin/pyspark \</span><br><span class="line">--master yarn \</span><br><span class="line">--deploy-mode client</span><br><span class="line">&gt;&gt;&gt; textFile = spark.read.text(<span class="string">"/users.txt"</span>)</span><br><span class="line">&gt;&gt;&gt; textFile.count()</span><br><span class="line">7</span><br><span class="line">&gt;&gt;&gt; textFile.first()</span><br><span class="line">Row(value=u<span class="string">'1,BarackObama,Barack Obama'</span>)</span><br><span class="line">&gt;&gt;&gt; linesWithSpark = textFile.filter(textFile.value.contains(<span class="string">"Obama"</span>))</span><br><span class="line">&gt;&gt;&gt; textFile.filter(textFile.value.contains(<span class="string">"Obama"</span>)).count()</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p><code>提交任务</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在spark-master中启动应用，完成后，可以在spark web ui中看到任务信息。</span></span><br><span class="line"><span class="variable">$SPARK_HOME</span>/bin/spark-submit \</span><br><span class="line">  --master spark://localhost:7077 \</span><br><span class="line">  --deploy-mode client \ </span><br><span class="line">  examples/src/main/python/pi.py \</span><br><span class="line">  10</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 在yarn中启动应用，完成后，可以在spark history web ui中看到任务信息。</span></span><br><span class="line"><span class="variable">$SPARK_HOME</span>/bin/spark-submit \</span><br><span class="line">  --master yarn \</span><br><span class="line">  --deploy-mode cluster \</span><br><span class="line">  hdfs://localhost:9000/pi.py \</span><br><span class="line">  10</span><br></pre></td></tr></table></figure>
+<p>java方式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$SPARK_HOME</span>/bin/spark-shell</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark-SQL"></a>Spark-SQL</h2><ul>
+<li><p>将Hive元数据的配置文件放到spark/conf下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$SPARK_HOME</span></span><br><span class="line"><span class="built_in">cd</span> conf </span><br><span class="line">cp <span class="variable">$&#123;HIVE_HOME&#125;</span>/conf/hive-site.xml .   <span class="comment">#hive-site.xml中配置了元数据的连接</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在Spark中加入mysql的driver驱动包（因为Hive元数据是存储在MySQL上）<br>cp包进$SPARK_HOME/jars<br><code>注意</code></p>
+<ol>
+<li>Hive底层是HDFS，一定要保证HDFS进程是开启的。</li>
+<li>mysql的服务需要是开启的。</li>
+<li>想要使用Spark整合Hive，在编译Spark的时候需要在编译指令中加入-Phive -Phive-thriftserver。</li>
+<li>因为Spark配置中加入了hive-site.xml，所以默认的文件系统就是HDFS。<br>否则就是本地文件系统，create table的时候就会在本地创建/user/hive/warehouse目录 。</li>
+</ol>
 </li>
 </ul>
 
@@ -764,7 +808,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#架构"><span class="nav-number">1.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务执行过程"><span class="nav-number">2.</span> <span class="nav-text">任务执行过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通用流程"><span class="nav-number">2.1.</span> <span class="nav-text">通用流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Yarn-Cluster流程"><span class="nav-number">2.2.</span> <span class="nav-text">Yarn-Cluster流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RDD与操作"><span class="nav-number">3.</span> <span class="nav-text">RDD与操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实践"><span class="nav-number">4.</span> <span class="nav-text">实践</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#架构"><span class="nav-number">1.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务执行过程"><span class="nav-number">2.</span> <span class="nav-text">任务执行过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通用流程"><span class="nav-number">2.1.</span> <span class="nav-text">通用流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Yarn-Cluster流程"><span class="nav-number">2.2.</span> <span class="nav-text">Yarn-Cluster流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RDD与操作"><span class="nav-number">3.</span> <span class="nav-text">RDD与操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实践"><span class="nav-number">4.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装包"><span class="nav-number">4.1.</span> <span class="nav-text">安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">4.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动"><span class="nav-number">4.3.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark-SQL"><span class="nav-number">4.4.</span> <span class="nav-text">Spark-SQL</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -796,7 +840,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">525k</span>
+    <span title="站点总字数">528k</span>
   
 
   
